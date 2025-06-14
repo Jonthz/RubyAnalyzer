@@ -14,10 +14,12 @@ def get_github_username():
 
 # Definición de los tokens
 tokens = [
-    'DEF', 'IDENTIFIER', 'INTEGER', 'LBRACKET', 'RBRACKET', 'ASSIGN',
+    'DEF', 'IDENTIFIER', 'LBRACKET', 'RBRACKET', 'ASSIGN',
     'LPAREN', 'RPAREN', 'FOR', 'IN', 'DOT', 'RANGE', 'MINUS',
     'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING',
-    'LBRACE', 'RBRACE', 'PIPE', 'COMMA', 'SEMICOLON', 'EQUALS', 'LESS', 'TIMES', 'DIVIDE', 'MOD', 'POWER'
+    'LBRACE', 'RBRACE', 'PIPE', 'COMMA', 'SEMICOLON', 
+    'EQUALS', 'LESS', 'TIMES', 'DIVIDE', 'MOD', 'POWER',
+    'FLOAT', 'GLOBAL_VAR', 'INSTANCE_VAR', 'CLASS_VAR'
 ]
 
 # Definición de las expresiones regulares para los tokens
@@ -61,14 +63,16 @@ for keyword in keywords:
 
 def t_IDENTIFIER(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    t.type = keywords.get(t.value, 'IDENTIFIER')
+    # Primero verificar si es una palabra clave
+    t.type = keywords.get(t.value, None)
+    if t.type is None:
+        # Si no es palabra clave, entonces verificar si es constante o identificador
+        if t.value[0].isupper():
+            t.type = 'CONSTANT'
+        else:
+            t.type = 'IDENTIFIER'
     return t
 
-#Jonathan
-def t_INTEGER(t):
-    r'\b\d+\b'
-    t.value = int(t.value)
-    return t
 
 def t_FLOAT(t):
     r'\b\d+\.\d+\b'
@@ -109,15 +113,58 @@ def t_error(t):
     print(error_message)  # Imprimir el error en consola
     t.lexer.skip(1)
 
-#Jonathan
-# Define tokens for boolean values in Ruby
-tokens.extend(['TRUE', 'FALSE'])
+#=== Parte de Jonathan ====
+tokens.extend([
+    'INTEGER', 'TRUE', 'FALSE',
+    'IF', 'ELSIF', 'ELSE', 'UNTIL', 'NEXT', 'BREAK', 'REDO', 'RETRY', 'CASE', 'WHEN',
+    'CLASS', 'MODULE',
+    'BEGIN', 'RESCUE', 'ENSURE', 'RAISE', 'NIL',
+    'DO', 'LAMBDA', 'PROC', 'YIELD', 'SELF', 'SUPER', 'REQUIRE',
+    'CONSTANT'
+])
 
 # Add boolean values to the keywords dictionary
 keywords.update({
     'true': 'TRUE',
-    'false': 'FALSE'
+    'false': 'FALSE',
+    'if': 'IF',
+    'elsif': 'ELSIF',
+    'else': 'ELSE',
+    'until': 'UNTIL',
+    'next': 'NEXT',
+    'break': 'BREAK',
+    'redo': 'REDO',
+    'retry': 'RETRY',
+    'case': 'CASE',
+    'when': 'WHEN',
+    'class': 'CLASS',
+    'module': 'MODULE',
+    'begin': 'BEGIN',
+    'rescue': 'RESCUE',
+    'ensure': 'ENSURE',
+    'raise': 'RAISE',
+    'nil': 'NIL',
+    'do': 'DO',
+    'lambda': 'LAMBDA',
+    'proc': 'PROC',
+    'yield': 'YIELD',
+    'self': 'SELF',
+    'super': 'SUPER',
+    'require': 'REQUIRE'
 })
+
+def t_MULTILINE_COMMENT(t):
+    r'=begin(?:.|\n)*?=end'
+    t.lexer.lineno += t.value.count('\n')  # Actualiza el contador de líneas
+    pass
+
+def t_INTEGER(t):
+    r'\b\d+\b'
+    t.value = int(t.value)
+    return t
+
+#=== Parte de Jonathan ====
+
 
 # Ignorar espacios y tabulaciones
 t_ignore = ' \t'
@@ -125,14 +172,6 @@ t_ignore = ' \t'
 # Crear el analizador léxico
 lexer = lex.lex()
 
-
-lexer.input('''
-def suma(a, b)
-  return a + b
-end''')
-# Analizar el código
-for token in lexer:
-    print(token)
 
 # Función para registrar los logs con tokens y errores
 def log_tokens_and_errors(tokens, errors):
@@ -180,17 +219,38 @@ def test_lexical_analyzer(input_data):
     
     # Registra tanto los tokens como los errores encontrados
     log_tokens_and_errors(tokens, error_tokens)
+    print(f"Análisis léxico completado. Logs guardados en: {os.path.abspath('logs')}")
     print(f"Tokens reconocidos:\n{tokens}")
     print(f"Errores léxicos: {error_tokens}")
 
 # Prueba con un fragmento de código de Ruby
 input_data = """
-def quick_sort(arr)
-  return arr if arr.length <= 1
-  pivot = arr.delete_at(arr.length / 2)
-  left, right = arr.partition { |x| x < pivot }
-  return *quick_sort(left), pivot, *quick_sort(right)
+class Animal
+  def initialize(name)
+    @name = name
+  end
+  
+  def speak
+    puts "#{@name} hace un sonido."
+  end
 end
+
+# Definición de clase derivada
+class Dog < Animal
+  def initialize(name, breed)
+    super(name) # Llama al inicializador de la clase base
+    @breed = breed
+  end
+  
+  def speak
+    puts "#{@name}, el perro de raza #{@breed}, ladra."
+  end
+end
+
+# Crear un objeto de la clase derivada
+dog = Dog.new("Rex", "Pastor Alemán")
+dog.speak
+
 """
 
 test_lexical_analyzer(input_data)
