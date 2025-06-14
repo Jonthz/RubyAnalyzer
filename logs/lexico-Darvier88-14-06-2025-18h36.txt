@@ -10,8 +10,7 @@ IF: if
 IDENTIFIER: arr
 DOT: .
 IDENTIFIER: length
-LESS: <
-ASSIGN: =
+LESS_EQUAL: <=
 INTEGER: 1
 IDENTIFIER: pivot
 ASSIGN: =
