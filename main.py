@@ -1,7 +1,7 @@
 import sys
 import os
 from AnalizadorLexico import tokens, lex, test_lexical_analyzer
-
+#Algoritmos de Jonathan, Darwin y Giovanni
 algortithms = {
     "2": '''def insertion_sort(arr)
   for i in 1..arr.length - 1
@@ -35,7 +35,7 @@ end
 arr = [12, 11, 13, 5, 6]
 puts "Arreglo original: #{arr}"
 sorted_arr = quick_sort(arr)
-puts''',
+puts "Arreglo ordenado: #{sorted_arr}" ''',
     "4": '''class Animal
   def initialize(name)
     @name = name

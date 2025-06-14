@@ -33,7 +33,6 @@ t_RPAREN = r'\)'
 #fin de GIOVANNI
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
-t_PIPE = r'\|'
 t_COMMA = r','
 t_SEMICOLON = r';'
 # Parte de GIOVANNI
@@ -50,6 +49,7 @@ t_POWER = r'\*\*'
 t_EQUALS = r'=='
 t_LESS = r'<'
 #GIOVANNI
+
 t_NOT_EQUALS = r'!='
 t_GREATER_EQUAL = r'>='
 t_LESS_EQUAL = r'<='
@@ -59,6 +59,23 @@ t_OR = r'\|\|'
 t_NOT = r'!'
 
 # Parte de GIOVANNI
+#=== Parte de Darwin ====
+t_PLUS_ASSIGN = r'\+='
+t_MINUS_ASSIGN = r'-='
+t_TIMES_ASSIGN = r'\*='
+t_DIVIDE_ASSIGN = r'/='
+t_MOD_ASSIGN = r'%='
+t_POWER_ASSIGN = r'\*\*='
+t_FLOOR_DIVIDE = r'//'
+t_BITWISE_AND = r'\&'
+t_BLOCK_PARAM = r'\|[a-zA-Z_][a-zA-Z0-9_]*\|'
+t_BITWISE_OR = r'\|'
+tokens.extend([
+    'PLUS_ASSIGN', 'MINUS_ASSIGN', 'TIMES_ASSIGN',
+    'DIVIDE_ASSIGN', 'MOD_ASSIGN', 'POWER_ASSIGN', 'FLOOR_DIVIDE','BITWISE_AND', 'BITWISE_OR', 'BLOCK_PARAM'
+])
+#=== Parte de Darwin ====
+
 # Para las palabras clave, se definen como variables
 keywords = {
     'def': 'DEF',
@@ -90,11 +107,15 @@ def t_IDENTIFIER(t):
     return t
 #fin de GIOVANNI
 
+
+#=== Parte de Darwin ====
 def t_FLOAT(t):
     r'\b\d+\.\d+\b'
     t.value = float(t.value)
     return t
 # Parte de GIOVANNI
+#=== Parte de Darwin ====
+
 def t_STRING(t):
     r'\"[^\"]*\"|\'[^\']*\''
     t.value = t.value[1:-1]
@@ -188,6 +209,7 @@ t_ignore = ' \t'
 # Crear el analizador léxico
 lexer = lex.lex()
 
+#=== Parte de Darwin ====
 
 # Función para registrar los logs con tokens y errores
 def log_tokens_and_errors(tokens, errors):
@@ -238,6 +260,8 @@ def test_lexical_analyzer(input_data):
     print(f"Análisis léxico completado. Logs guardados en: {os.path.abspath('logs')}")
     print(f"Tokens reconocidos:\n{tokens}")
     print(f"Errores léxicos: {error_tokens}")
+
+#=== Parte de Darwin ====
 
 # Prueba con un fragmento de código de Ruby
 input_data = """
