@@ -13,11 +13,22 @@ t_RBRACKET = r'\]'
 t_ASSIGN = r'='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
+t_LBRACE = r'\{'
+t_RBRACE = r'\}'
+t_COMMA = r','
+t_SEMICOLON = r';'
 t_DOT = r'\.'
 t_RANGE = r'\.\.|\.{3}'
 t_MINUS = r'-'
 t_PLUS = r'\+'
 t_GREATER = r'>'
+t_TIMES = r'\*'
+t_DIVIDE = r'/'
+t_MOD = r'%'
+t_POWER = r'\*\*'
+t_ASSIGN = r'='
+t_EQUALS = r'=='
+t_LESS = r'<'
 
 # Para las palabras clave, se definen como variables
 keywords = {
@@ -45,6 +56,10 @@ def t_NUMBER(t):
     t.value = int(t.value)
     return t
 
+def t_FLOAT(t):
+    r'\b\d+\.\d+\b'
+    t.value = float(t.value)
+    return t
 
 def t_STRING(t):
     r'\"[^\"]*\"|\'[^\']*\''
@@ -56,6 +71,17 @@ def t_COMMENT(t):
     r'\#.*'
     pass  # Ignorar comentarios
 
+def t_GLOBAL_VAR(t):
+    r'\$[a-zA-Z_][a-zA-Z0-9_]*'
+    return t
+
+def t_INSTANCE_VAR(t):
+    r'@[a-zA-Z_][a-zA-Z0-9_]*'
+    return t
+
+def t_CLASS_VAR(t):
+    r'@@[a-zA-Z_][a-zA-Z0-9_]*'
+    return t
 
 def t_newline(t):
     r'\n+'
