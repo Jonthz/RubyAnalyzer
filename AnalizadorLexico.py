@@ -2,7 +2,7 @@ import ply.lex as lex
 
 # Definición de los tokens
 tokens = [
-    'DEF', 'IDENTIFIER', 'NUMBER', 'LBRACKET', 'RBRACKET', 'ASSIGN',
+    'DEF', 'IDENTIFIER', 'INTEGER', 'LBRACKET', 'RBRACKET', 'ASSIGN',
     'LPAREN', 'RPAREN', 'FOR', 'IN', 'DOT', 'RANGE', 'MINUS',
     'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING'
 ]
@@ -18,6 +18,7 @@ t_RANGE = r'\.\.|\.{3}'
 t_MINUS = r'-'
 t_PLUS = r'\+'
 t_GREATER = r'>'
+
 
 # Para las palabras clave, se definen como variables
 keywords = {
@@ -39,8 +40,8 @@ def t_IDENTIFIER(t):
     t.type = keywords.get(t.value, 'IDENTIFIER')
     return t
 
-
-def t_NUMBER(t):
+#Jonathan
+def t_INTEGER(t):
     r'\b\d+\b'
     t.value = int(t.value)
     return t
@@ -66,9 +67,28 @@ def t_error(t):
     print(f"Carácter ilegal: {t.value[0]}")
     t.lexer.skip(1)
 
+#Jonathan
+# Define tokens for boolean values in Ruby
+tokens.extend(['TRUE', 'FALSE'])
+
+# Add boolean values to the keywords dictionary
+keywords.update({
+    'true': 'TRUE',
+    'false': 'FALSE'
+})
+
 # Ignorar espacios y tabulaciones
 t_ignore = ' \t'
 
 # Crear el analizador léxico
 lexer = lex.lex()
+
+
+lexer.input('''
+def suma(a, b)
+  return a + b
+end''')
+# Analizar el código
+for token in lexer:
+    print(token)
 
