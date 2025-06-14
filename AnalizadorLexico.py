@@ -11,41 +11,54 @@ def get_github_username():
         return username
     except subprocess.CalledProcessError:
         return "usuarioGit"  # Valor predeterminado en caso de que no se encuentre el usuario
-
+# Parte de GIOVANNI
 # Definición de los tokens
 tokens = [
     'DEF', 'IDENTIFIER', 'LBRACKET', 'RBRACKET', 'ASSIGN',
     'LPAREN', 'RPAREN', 'FOR', 'IN', 'DOT', 'RANGE', 'MINUS',
     'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING',
+#fin de GIOVANNI
     'LBRACE', 'RBRACE', 'PIPE', 'COMMA', 'SEMICOLON', 
     'EQUALS', 'LESS', 'TIMES', 'DIVIDE', 'MOD', 'POWER',
-    'FLOAT', 'GLOBAL_VAR', 'INSTANCE_VAR', 'CLASS_VAR'
+    'FLOAT', 'GLOBAL_VAR', 'INSTANCE_VAR', 'CLASS_VAR',
+    'AND', 'OR', 'NOT', 'NOT_EQUALS', 'GREATER_EQUAL', 'LESS_EQUAL', 'SPACESHIP'
 ]
-
+# Parte de GIOVANNI
 # Definición de las expresiones regulares para los tokens
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
 t_ASSIGN = r'='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
+#fin de GIOVANNI
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_PIPE = r'\|'
 t_COMMA = r','
 t_SEMICOLON = r';'
+# Parte de GIOVANNI
 t_DOT = r'\.'
 t_RANGE = r'\.\.|\.{3}'
 t_MINUS = r'-'
 t_PLUS = r'\+'
 t_GREATER = r'>'
+#fin de GIOVANNI
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
 t_MOD = r'%'
 t_POWER = r'\*\*'
 t_EQUALS = r'=='
 t_LESS = r'<'
+#GIOVANNI
+t_NOT_EQUALS = r'!='
+t_GREATER_EQUAL = r'>='
+t_LESS_EQUAL = r'<='
+t_SPACESHIP = r'<=>'
+t_AND = r'&&'
+t_OR = r'\|\|'
+t_NOT = r'!'
 
-
+# Parte de GIOVANNI
 # Para las palabras clave, se definen como variables
 keywords = {
     'def': 'DEF',
@@ -55,6 +68,9 @@ keywords = {
     'end': 'END',
     'return': 'RETURN'
 }
+#fin de GIOVANNI
+
+# Parte de GIOVANNI
 
 # Agregar las palabras clave al conjunto de tokens
 for keyword in keywords:
@@ -72,13 +88,13 @@ def t_IDENTIFIER(t):
         else:
             t.type = 'IDENTIFIER'
     return t
-
+#fin de GIOVANNI
 
 def t_FLOAT(t):
     r'\b\d+\.\d+\b'
     t.value = float(t.value)
     return t
-
+# Parte de GIOVANNI
 def t_STRING(t):
     r'\"[^\"]*\"|\'[^\']*\''
     t.value = t.value[1:-1]
@@ -88,7 +104,7 @@ def t_STRING(t):
 def t_COMMENT(t):
     r'\#.*'
     pass  # Ignorar comentarios
-
+#fin de GIOVANNI
 def t_GLOBAL_VAR(t):
     r'\$[a-zA-Z_][a-zA-Z0-9_]*'
     return t
@@ -100,7 +116,7 @@ def t_INSTANCE_VAR(t):
 def t_CLASS_VAR(t):
     r'@@[a-zA-Z_][a-zA-Z0-9_]*'
     return t
-
+# Parte de GIOVANNI
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
@@ -112,7 +128,7 @@ def t_error(t):
     error_tokens.append(error_message)  # Guardamos el error en la lista
     print(error_message)  # Imprimir el error en consola
     t.lexer.skip(1)
-
+#fin de GIOVANNI
 #=== Parte de Jonathan ====
 tokens.extend([
     'INTEGER', 'TRUE', 'FALSE',
@@ -225,32 +241,26 @@ def test_lexical_analyzer(input_data):
 
 # Prueba con un fragmento de código de Ruby
 input_data = """
-class Animal
-  def initialize(name)
-    @name = name
-  end
-  
-  def speak
-    puts "#{@name} hace un sonido."
-  end
-end
-
-# Definición de clase derivada
-class Dog < Animal
-  def initialize(name, breed)
-    super(name) # Llama al inicializador de la clase base
-    @breed = breed
-  end
-  
-  def speak
-    puts "#{@name}, el perro de raza #{@breed}, ladra."
-  end
-end
-
-# Crear un objeto de la clase derivada
-dog = Dog.new("Rex", "Pastor Alemán")
-dog.speak
-
+# Algoritmo de Ordenamiento por Insercion 
+def insertion_sort(arr) 
+for i in 1..arr.length - 1 
+key = arr[i] 
+j = i - 1 
+# Mueve los elementos de arr[0..i-1] que son mayores que 
+# key, una posicion hacia adelante 
+while j >= 0 && arr[j] > key 
+arr[j + 1] = arr[j] 
+j -= 1 
+end 
+arr[j + 1] = key 
+end 
+return arr 
+end 
+# Prueba de Ordenamiento por Insercion 
+arr = [12, 11, 13, 5, 6] 
+puts "Arreglo original: #{arr}" 
+sorted_arr = insertion_sort(arr) 
+puts "Arreglo ordenado: #{sorted_arr}" 
 """
 
 test_lexical_analyzer(input_data)
