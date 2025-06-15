@@ -85,7 +85,7 @@ def main():
                 break
             lines.append(line)
         # Añadir las triples comillas al principio y final del código
-        ruby_code = "'''\n" + "\n".join(lines) + "\n'''"
+        ruby_code = "\n".join(lines) 
         test_lexical_analyzer(ruby_code)
     
     elif option in ["2", "3", "4"]:

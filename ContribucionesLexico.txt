@@ -1,0 +1,34 @@
+
+🔧 *División del trabajo en el analizador léxico según comentarios en el código*
+
+---
+
+👤 *Giovanni – Contribuciones fundamentales a la base del analizador léxico*
+
+* *Definición de tokens esenciales:* Creó los tokens básicos como DEF, IDENTIFIER, LBRACKET, RBRACKET, ASSIGN, LPAREN, RPAREN, FOR, IN, DOT, RANGE, MINUS, PLUS, GREATER, WHILE, END, RETURN, COMMENT, STRING.
+* *Expresiones regulares básicas:* Especificó los patrones léxicos para varios símbolos como corchetes, paréntesis, operadores aritméticos y el punto (.).
+* *Palabras clave básicas:* Definió palabras clave fundamentales del lenguaje (def, for, in, while, end, return) y su asignación como tipos de token.
+* *Reconocimiento de identificadores y constantes:* Implementó t_IDENTIFIER para diferenciar entre IDENTIFIER y CONSTANT.
+* *Manejo de cadenas y comentarios de una línea:* Implementó t_STRING y t_COMMENT para reconocer cadenas de texto y comentarios con #.
+* *Control de líneas y errores léxicos:* Añadió la función t_newline para contar líneas nuevas y t_error para manejar errores léxicos, guardándolos en una lista.
+
+---
+
+👤 *Darwin – Contribuciones avanzadas y estructurales*
+
+* *Implementación de operadores compuestos y especiales:* Añadió tokens como PLUS_ASSIGN, MINUS_ASSIGN, TIMES_ASSIGN, DIVIDE_ASSIGN, MOD_ASSIGN, POWER_ASSIGN, FLOOR_DIVIDE, BITWISE_AND, BITWISE_OR, y BLOCK_PARAM.
+* *Definición de expresiones regulares para los operadores anteriores:* Desarrolló los patrones que permiten al lexer reconocer dichos operadores.
+* *Reconocimiento de números decimales:* Implementó la función t_FLOAT para reconocer y convertir literales de punto flotante.
+* *Sistema de logging:* Desarrolló la función log_tokens_and_errors() para guardar en archivos los tokens y errores detectados durante el análisis.
+* *Ejecución de pruebas del analizador:* Escribió la función test_lexical_analyzer() que procesa una entrada, detecta tokens, maneja errores y genera los logs.
+* *Prueba final del lexer con código Ruby:* Preparó un ejemplo de código Ruby (ordenamiento por inserción) para probar el analizador.
+
+---
+
+👤 *Jonathan – Contribuciones de expansión semántica*
+
+* *Ampliación del vocabulario del lenguaje:* Añadió 24 nuevas palabras clave como IF, ELSIF, ELSE, UNTIL, BREAK, CLASS, MODULE, DO, RESCUE, RAISE, YIELD, REQUIRE, entre otras.
+* *Extensión del conjunto de tokens:* Agregó nuevos tipos de tokens para representar esas palabras clave y el token CONSTANT.
+* *Reconocimiento de enteros:* Implementó la función t_INTEGER para identificar y convertir números enteros.
+* *Manejo de comentarios multilínea:* Añadió soporte para comentarios tipo =begin ... =end mediante t_MULTILINE_COMMENT.
+* *Agrego palabras claves para identificar booleans.
