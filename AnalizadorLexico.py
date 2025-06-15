@@ -68,11 +68,10 @@ t_MOD_ASSIGN = r'%='
 t_POWER_ASSIGN = r'\*\*='
 t_FLOOR_DIVIDE = r'//'
 t_BITWISE_AND = r'\&'
-t_BLOCK_PARAM = r'\|[a-zA-Z_][a-zA-Z0-9_]*\|'
-t_BITWISE_OR = r'\|'
+t_PIPE = r'\|'
 tokens.extend([
     'PLUS_ASSIGN', 'MINUS_ASSIGN', 'TIMES_ASSIGN',
-    'DIVIDE_ASSIGN', 'MOD_ASSIGN', 'POWER_ASSIGN', 'FLOOR_DIVIDE','BITWISE_AND', 'BITWISE_OR', 'BLOCK_PARAM'
+    'DIVIDE_ASSIGN', 'MOD_ASSIGN', 'POWER_ASSIGN', 'FLOOR_DIVIDE','BITWISE_AND', 'PIPE'
 ])
 #=== Parte de Darwin ====
 
