@@ -3,10 +3,6 @@
 Este proyecto es un **analizador léxico** hecho en Python usando la librería [PLY](https://www.dabeaz.com/ply/).  
 Se encarga de leer código Ruby y detectar los tokens que lo componen: palabras clave, identificadores, operadores, números, cadenas, símbolos especiales y más.
 
-> 🔧 Esta herramienta forma parte de un proyecto más grande para construir un compilador básico de Ruby. Por ahora, solo realiza el análisis léxico, pero en el futuro se agregarán análisis sintáctico, semántico y generación de código.
-
----
-
 ## 🧠 ¿Qué hace?
 
 - Analiza fragmentos de código Ruby.
