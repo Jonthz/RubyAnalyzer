@@ -44,6 +44,39 @@ def p_local_var(p):
                  | IDENTIFIER EQUALS FLOAT'''
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
 
+# Parte de Giovanni 
+
+def p_instance_var(p):
+    '''statement : INSTANCE_VAR EQUALS INTEGER
+                 | INSTANCE_VAR EQUALS FLOAT'''
+    print(f"Instance variable {p[1]} assigned with value {p[3]}")
+
+def p_set(p):
+    '''expression : SETNEW LPAREN elements RPAREN'''
+    p[0] = set(p[3])
+    print(f"Set created with elements: {p[0]}")
+
+def p_while_statement(p):
+    '''statement : WHILE expression statement END'''
+    print(f"While loop: While {p[2]}, execute {p[3]}")
+
+def p_gets_statement(p):
+    '''statement : IDENTIFIER EQUALS GETS'''
+    print(f"User input stored in variable {p[1]}")
+
+# fin de parte de Giovanni
+
+def p_expression_term(p):
+    'expression : term'
+    p[0] = p[1]
+
+def p_term_div(p):
+    'term : term DIVIDE factor'
+    p[0] = p[1] / p[3]    
+
+def p_term_times(p):
+    'term : term TIMES factor'
+    p[0] = p[1] * p[3]
 
 def p_expression_plus(p):
     'expression : expression PLUS term'
@@ -52,18 +85,6 @@ def p_expression_plus(p):
 def p_expression_minus(p):
     'expression : expression MINUS term'
     p[0] = p[1] - p[3]
-
-def p_expression_term(p):
-    'expression : term'
-    p[0] = p[1]
-
-def p_term_times(p):
-    'term : term TIMES factor'
-    p[0] = p[1] * p[3]
-
-def p_term_div(p):
-    'term : term DIVIDE factor'
-    p[0] = p[1] / p[3]
 
 def p_term_factor(p):
     'term : factor'
@@ -126,3 +147,10 @@ def p_error(p):
 parser = yacc.yacc()
 
 #Fin Pacheco
+def test_parser(input_code):
+    print("Parsing Ruby code:")
+    print(input_code)
+    result = parser.parse(input_code)
+    print("Parse finished.")
+
+__all__ = ["parser", "test_parser"]

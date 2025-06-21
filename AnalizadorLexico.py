@@ -15,7 +15,7 @@ def get_github_username():
 # Definición de los tokens
 tokens = [
     'DEF', 'IDENTIFIER', 'LBRACKET', 'RBRACKET', 'ASSIGN',
-    'LPAREN', 'RPAREN', 'FOR', 'IN', 'DOT', 'RANGE', 'MINUS',
+    'LPAREN', 'RPAREN', 'FOR', 'IN', 'DOT', 'RANGE', 'MINUS', 'GETS', 'SETNEW',
     'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING', 'DOUBLE_DOT',
 #fin de GIOVANNI
     'LBRACE', 'RBRACE', 'PIPE', 'COMMA', 'SEMICOLON', 
@@ -58,6 +58,9 @@ t_SPACESHIP = r'<=>'
 t_AND = r'&&'
 t_OR = r'\|\|'
 t_NOT = r'!'
+t_SETNEW = r'Set\.new'
+t_GETS = r'gets'
+
 
 # Parte de GIOVANNI
 #=== Parte de Darwin ====

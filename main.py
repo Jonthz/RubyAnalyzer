@@ -1,11 +1,12 @@
 import sys
 import os
 from AnalizadorLexico import tokens, lex, test_lexical_analyzer
+from AnalizadorSintactico import yacc, test_parser
 
 # Cambia la manera en que cargas los algoritmos desde archivos
 def load_algorithm_from_file(file_name):
     try:
-        with open(file_name, 'r') as file:
+        with open(file_name, 'r', encoding='utf-8') as file:
             return file.read()  # Lee todo el contenido del archivo
     except FileNotFoundError:
         print(f"Error: El archivo {file_name} no se encuentra.")
@@ -13,8 +14,22 @@ def load_algorithm_from_file(file_name):
 
 def main():
     """Función principal que maneja la interfaz con el usuario"""
-    print("=== ANALIZADOR LÉXICO RUBY ===")
-    print("Seleccione una opción:")
+    print("=== SISTEMA DE ANÁLISIS DE CÓDIGO RUBY ===")
+    print("Seleccione el tipo de análisis:")
+    print("1. Análisis Léxico")
+    print("2. Análisis Sintáctico")
+    print("3. Salir")
+
+    tipo = input("\nOpción: ")
+
+    if tipo == "3":
+        print("¡Hasta luego!")
+        sys.exit(0)
+    elif tipo not in ("1", "2"):
+        print("Opción inválida. Intente de nuevo.")
+        return main()
+
+    print("\nSeleccione una opción:")
     print("1. Ingresar código Ruby manualmente")
     print("2. Usar algoritmo de prueba Insertion Sort")
     print("3. Usar algoritmo de prueba Quick Sort")
@@ -33,7 +48,12 @@ def main():
             lines.append(line)
         # Añadir las triples comillas al principio y final del código
         ruby_code = "\n".join(lines) 
-        test_lexical_analyzer(ruby_code)
+        
+        # Ejecutar análisis según selección
+        if tipo == "1":
+            test_lexical_analyzer(ruby_code)
+        else:
+            test_parser(ruby_code)
     
     elif option == "2":
         algorithm_code = load_algorithm_from_file('algorithms/insertion_sort.rb')
@@ -42,7 +62,12 @@ def main():
             print("=" * 40)
             print(algorithm_code)
             print("=" * 40)
-            test_lexical_analyzer(algorithm_code)
+
+            # Ejecutar análisis según selección
+            if tipo == "1":
+                test_lexical_analyzer(algorithm_code)
+            else:
+                test_parser(algorithm_code)
     
     elif option == "3":
         algorithm_code = load_algorithm_from_file('algorithms/quick_sort.rb')
@@ -51,7 +76,12 @@ def main():
             print("=" * 40)
             print(algorithm_code)
             print("=" * 40)
-            test_lexical_analyzer(algorithm_code)
+
+            # Ejecutar análisis según selección
+            if tipo == "1":
+                test_lexical_analyzer(algorithm_code)
+            else:
+                test_parser(algorithm_code)
     
     elif option == "4":
         algorithm_code = load_algorithm_from_file('algorithms/class_algorithm.rb')
@@ -60,7 +90,12 @@ def main():
             print("=" * 40)
             print(algorithm_code)
             print("=" * 40)
-            test_lexical_analyzer(algorithm_code)
+
+            # Ejecutar análisis según selección
+            if tipo == "1":
+                test_lexical_analyzer(algorithm_code)
+            else:
+                test_parser(algorithm_code)
     
     elif option == "5":
         print("¡Hasta luego!")
