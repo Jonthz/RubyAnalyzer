@@ -1,0 +1,1150 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    AND
+    ASSIGN
+    BEGIN
+    BITWISE_AND
+    BREAK
+    CASE
+    CLASS
+    CLASS_VAR
+    COMMENT
+    CONSTANT
+    DIVIDE_ASSIGN
+    DO
+    DOT
+    ELSE
+    ELSIF
+    ENSURE
+    FALSE
+    FLOOR_DIVIDE
+    GLOBAL_VAR
+    GREATER
+    GREATER_EQUAL
+    IF
+    INSTANCE_VAR
+    LAMBDA
+    LBRACE
+    LESS
+    LESS_EQUAL
+    MINUS_ASSIGN
+    MOD
+    MODULE
+    MOD_ASSIGN
+    NEXT
+    NIL
+    NOT
+    NOT_EQUALS
+    OR
+    PIPE
+    PLUS_ASSIGN
+    POWER
+    POWER_ASSIGN
+    PROC
+    QUESTION_MARK
+    RAISE
+    RANGE
+    RBRACE
+    REDO
+    REQUIRE
+    RESCUE
+    RETRY
+    RETURN
+    SELF
+    SEMICOLON
+    SPACESHIP
+    STRING
+    SUPER
+    TIMES_ASSIGN
+    TRUE
+    UNTIL
+    WHEN
+    WHILE
+    YIELD
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> statements END
+Rule 2     program -> statements
+Rule 3     params -> IDENTIFIER
+Rule 4     params -> params COMMA IDENTIFIER
+Rule 5     statements -> statement
+Rule 6     statements -> statements statement
+Rule 7     statement -> local_var
+Rule 8     statement -> expression
+Rule 9     local_var -> IDENTIFIER EQUALS INTEGER
+Rule 10    local_var -> IDENTIFIER EQUALS FLOAT
+Rule 11    expression -> expression PLUS term
+Rule 12    expression -> expression MINUS term
+Rule 13    expression -> term
+Rule 14    term -> term TIMES factor
+Rule 15    term -> term DIVIDE factor
+Rule 16    term -> factor
+Rule 17    factor -> INTEGER
+Rule 18    factor -> FLOAT
+Rule 19    factor -> LPAREN expression RPAREN
+Rule 20    expression -> LBRACKET elements RBRACKET
+Rule 21    elements -> expression
+Rule 22    elements -> elements COMMA expression
+Rule 23    statement -> DEF IDENTIFIER LPAREN params RPAREN statement END
+Rule 24    statement -> IDENTIFIER LPAREN params RPAREN
+Rule 25    statement -> FOR IDENTIFIER IN range statement
+Rule 26    range -> INTEGER DOUBLE_DOT INTEGER
+Rule 27    range -> FLOAT DOUBLE_DOT FLOAT
+Rule 28    statement -> PUTS expression
+
+Terminals, with rules where they appear
+
+AND                  : 
+ASSIGN               : 
+BEGIN                : 
+BITWISE_AND          : 
+BREAK                : 
+CASE                 : 
+CLASS                : 
+CLASS_VAR            : 
+COMMA                : 4 22
+COMMENT              : 
+CONSTANT             : 
+DEF                  : 23
+DIVIDE               : 15
+DIVIDE_ASSIGN        : 
+DO                   : 
+DOT                  : 
+DOUBLE_DOT           : 26 27
+ELSE                 : 
+ELSIF                : 
+END                  : 1 23
+ENSURE               : 
+EQUALS               : 9 10
+FALSE                : 
+FLOAT                : 10 18 27 27
+FLOOR_DIVIDE         : 
+FOR                  : 25
+GLOBAL_VAR           : 
+GREATER              : 
+GREATER_EQUAL        : 
+IDENTIFIER           : 3 4 9 10 23 24 25
+IF                   : 
+IN                   : 25
+INSTANCE_VAR         : 
+INTEGER              : 9 17 26 26
+LAMBDA               : 
+LBRACE               : 
+LBRACKET             : 20
+LESS                 : 
+LESS_EQUAL           : 
+LPAREN               : 19 23 24
+MINUS                : 12
+MINUS_ASSIGN         : 
+MOD                  : 
+MODULE               : 
+MOD_ASSIGN           : 
+NEXT                 : 
+NIL                  : 
+NOT                  : 
+NOT_EQUALS           : 
+OR                   : 
+PIPE                 : 
+PLUS                 : 11
+PLUS_ASSIGN          : 
+POWER                : 
+POWER_ASSIGN         : 
+PROC                 : 
+PUTS                 : 28
+QUESTION_MARK        : 
+RAISE                : 
+RANGE                : 
+RBRACE               : 
+RBRACKET             : 20
+REDO                 : 
+REQUIRE              : 
+RESCUE               : 
+RETRY                : 
+RETURN               : 
+RPAREN               : 19 23 24
+SELF                 : 
+SEMICOLON            : 
+SPACESHIP            : 
+STRING               : 
+SUPER                : 
+TIMES                : 14
+TIMES_ASSIGN         : 
+TRUE                 : 
+UNTIL                : 
+WHEN                 : 
+WHILE                : 
+YIELD                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+elements             : 20 22
+expression           : 8 11 12 19 21 22 28
+factor               : 14 15 16
+local_var            : 7
+params               : 4 23 24
+program              : 0
+range                : 25
+statement            : 5 6 23 25
+statements           : 1 2 6
+term                 : 11 12 13 14 15
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . statements END
+    (2) program -> . statements
+    (5) statements -> . statement
+    (6) statements -> . statements statement
+    (7) statement -> . local_var
+    (8) statement -> . expression
+    (23) statement -> . DEF IDENTIFIER LPAREN params RPAREN statement END
+    (24) statement -> . IDENTIFIER LPAREN params RPAREN
+    (25) statement -> . FOR IDENTIFIER IN range statement
+    (28) statement -> . PUTS expression
+    (9) local_var -> . IDENTIFIER EQUALS INTEGER
+    (10) local_var -> . IDENTIFIER EQUALS FLOAT
+    (11) expression -> . expression PLUS term
+    (12) expression -> . expression MINUS term
+    (13) expression -> . term
+    (20) expression -> . LBRACKET elements RBRACKET
+    (14) term -> . term TIMES factor
+    (15) term -> . term DIVIDE factor
+    (16) term -> . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    DEF             shift and go to state 6
+    IDENTIFIER      shift and go to state 7
+    FOR             shift and go to state 9
+    PUTS            shift and go to state 10
+    LBRACKET        shift and go to state 14
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    program                        shift and go to state 1
+    statements                     shift and go to state 2
+    statement                      shift and go to state 3
+    local_var                      shift and go to state 4
+    expression                     shift and go to state 5
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> statements . END
+    (2) program -> statements .
+    (6) statements -> statements . statement
+    (7) statement -> . local_var
+    (8) statement -> . expression
+    (23) statement -> . DEF IDENTIFIER LPAREN params RPAREN statement END
+    (24) statement -> . IDENTIFIER LPAREN params RPAREN
+    (25) statement -> . FOR IDENTIFIER IN range statement
+    (28) statement -> . PUTS expression
+    (9) local_var -> . IDENTIFIER EQUALS INTEGER
+    (10) local_var -> . IDENTIFIER EQUALS FLOAT
+    (11) expression -> . expression PLUS term
+    (12) expression -> . expression MINUS term
+    (13) expression -> . term
+    (20) expression -> . LBRACKET elements RBRACKET
+    (14) term -> . term TIMES factor
+    (15) term -> . term DIVIDE factor
+    (16) term -> . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    END             shift and go to state 16
+    $end            reduce using rule 2 (program -> statements .)
+    DEF             shift and go to state 6
+    IDENTIFIER      shift and go to state 7
+    FOR             shift and go to state 9
+    PUTS            shift and go to state 10
+    LBRACKET        shift and go to state 14
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    statement                      shift and go to state 17
+    local_var                      shift and go to state 4
+    expression                     shift and go to state 5
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
+
+state 3
+
+    (5) statements -> statement .
+
+    END             reduce using rule 5 (statements -> statement .)
+    DEF             reduce using rule 5 (statements -> statement .)
+    IDENTIFIER      reduce using rule 5 (statements -> statement .)
+    FOR             reduce using rule 5 (statements -> statement .)
+    PUTS            reduce using rule 5 (statements -> statement .)
+    LBRACKET        reduce using rule 5 (statements -> statement .)
+    INTEGER         reduce using rule 5 (statements -> statement .)
+    FLOAT           reduce using rule 5 (statements -> statement .)
+    LPAREN          reduce using rule 5 (statements -> statement .)
+    $end            reduce using rule 5 (statements -> statement .)
+
+
+state 4
+
+    (7) statement -> local_var .
+
+    END             reduce using rule 7 (statement -> local_var .)
+    DEF             reduce using rule 7 (statement -> local_var .)
+    IDENTIFIER      reduce using rule 7 (statement -> local_var .)
+    FOR             reduce using rule 7 (statement -> local_var .)
+    PUTS            reduce using rule 7 (statement -> local_var .)
+    LBRACKET        reduce using rule 7 (statement -> local_var .)
+    INTEGER         reduce using rule 7 (statement -> local_var .)
+    FLOAT           reduce using rule 7 (statement -> local_var .)
+    LPAREN          reduce using rule 7 (statement -> local_var .)
+    $end            reduce using rule 7 (statement -> local_var .)
+
+
+state 5
+
+    (8) statement -> expression .
+    (11) expression -> expression . PLUS term
+    (12) expression -> expression . MINUS term
+
+    END             reduce using rule 8 (statement -> expression .)
+    DEF             reduce using rule 8 (statement -> expression .)
+    IDENTIFIER      reduce using rule 8 (statement -> expression .)
+    FOR             reduce using rule 8 (statement -> expression .)
+    PUTS            reduce using rule 8 (statement -> expression .)
+    LBRACKET        reduce using rule 8 (statement -> expression .)
+    INTEGER         reduce using rule 8 (statement -> expression .)
+    FLOAT           reduce using rule 8 (statement -> expression .)
+    LPAREN          reduce using rule 8 (statement -> expression .)
+    $end            reduce using rule 8 (statement -> expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+
+
+state 6
+
+    (23) statement -> DEF . IDENTIFIER LPAREN params RPAREN statement END
+
+    IDENTIFIER      shift and go to state 20
+
+
+state 7
+
+    (24) statement -> IDENTIFIER . LPAREN params RPAREN
+    (9) local_var -> IDENTIFIER . EQUALS INTEGER
+    (10) local_var -> IDENTIFIER . EQUALS FLOAT
+
+    LPAREN          shift and go to state 21
+    EQUALS          shift and go to state 22
+
+
+state 8
+
+    (19) factor -> LPAREN . expression RPAREN
+    (11) expression -> . expression PLUS term
+    (12) expression -> . expression MINUS term
+    (13) expression -> . term
+    (20) expression -> . LBRACKET elements RBRACKET
+    (14) term -> . term TIMES factor
+    (15) term -> . term DIVIDE factor
+    (16) term -> . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    LBRACKET        shift and go to state 14
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    expression                     shift and go to state 23
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
+
+state 9
+
+    (25) statement -> FOR . IDENTIFIER IN range statement
+
+    IDENTIFIER      shift and go to state 24
+
+
+state 10
+
+    (28) statement -> PUTS . expression
+    (11) expression -> . expression PLUS term
+    (12) expression -> . expression MINUS term
+    (13) expression -> . term
+    (20) expression -> . LBRACKET elements RBRACKET
+    (14) term -> . term TIMES factor
+    (15) term -> . term DIVIDE factor
+    (16) term -> . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    LBRACKET        shift and go to state 14
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    expression                     shift and go to state 25
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
+
+state 11
+
+    (17) factor -> INTEGER .
+
+    TIMES           reduce using rule 17 (factor -> INTEGER .)
+    DIVIDE          reduce using rule 17 (factor -> INTEGER .)
+    PLUS            reduce using rule 17 (factor -> INTEGER .)
+    MINUS           reduce using rule 17 (factor -> INTEGER .)
+    END             reduce using rule 17 (factor -> INTEGER .)
+    DEF             reduce using rule 17 (factor -> INTEGER .)
+    IDENTIFIER      reduce using rule 17 (factor -> INTEGER .)
+    FOR             reduce using rule 17 (factor -> INTEGER .)
+    PUTS            reduce using rule 17 (factor -> INTEGER .)
+    LBRACKET        reduce using rule 17 (factor -> INTEGER .)
+    INTEGER         reduce using rule 17 (factor -> INTEGER .)
+    FLOAT           reduce using rule 17 (factor -> INTEGER .)
+    LPAREN          reduce using rule 17 (factor -> INTEGER .)
+    $end            reduce using rule 17 (factor -> INTEGER .)
+    RPAREN          reduce using rule 17 (factor -> INTEGER .)
+    RBRACKET        reduce using rule 17 (factor -> INTEGER .)
+    COMMA           reduce using rule 17 (factor -> INTEGER .)
+
+
+state 12
+
+    (18) factor -> FLOAT .
+
+    TIMES           reduce using rule 18 (factor -> FLOAT .)
+    DIVIDE          reduce using rule 18 (factor -> FLOAT .)
+    PLUS            reduce using rule 18 (factor -> FLOAT .)
+    MINUS           reduce using rule 18 (factor -> FLOAT .)
+    END             reduce using rule 18 (factor -> FLOAT .)
+    DEF             reduce using rule 18 (factor -> FLOAT .)
+    IDENTIFIER      reduce using rule 18 (factor -> FLOAT .)
+    FOR             reduce using rule 18 (factor -> FLOAT .)
+    PUTS            reduce using rule 18 (factor -> FLOAT .)
+    LBRACKET        reduce using rule 18 (factor -> FLOAT .)
+    INTEGER         reduce using rule 18 (factor -> FLOAT .)
+    FLOAT           reduce using rule 18 (factor -> FLOAT .)
+    LPAREN          reduce using rule 18 (factor -> FLOAT .)
+    $end            reduce using rule 18 (factor -> FLOAT .)
+    RPAREN          reduce using rule 18 (factor -> FLOAT .)
+    RBRACKET        reduce using rule 18 (factor -> FLOAT .)
+    COMMA           reduce using rule 18 (factor -> FLOAT .)
+
+
+state 13
+
+    (13) expression -> term .
+    (14) term -> term . TIMES factor
+    (15) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 13 (expression -> term .)
+    MINUS           reduce using rule 13 (expression -> term .)
+    END             reduce using rule 13 (expression -> term .)
+    DEF             reduce using rule 13 (expression -> term .)
+    IDENTIFIER      reduce using rule 13 (expression -> term .)
+    FOR             reduce using rule 13 (expression -> term .)
+    PUTS            reduce using rule 13 (expression -> term .)
+    LBRACKET        reduce using rule 13 (expression -> term .)
+    INTEGER         reduce using rule 13 (expression -> term .)
+    FLOAT           reduce using rule 13 (expression -> term .)
+    LPAREN          reduce using rule 13 (expression -> term .)
+    $end            reduce using rule 13 (expression -> term .)
+    RPAREN          reduce using rule 13 (expression -> term .)
+    RBRACKET        reduce using rule 13 (expression -> term .)
+    COMMA           reduce using rule 13 (expression -> term .)
+    TIMES           shift and go to state 26
+    DIVIDE          shift and go to state 27
+
+
+state 14
+
+    (20) expression -> LBRACKET . elements RBRACKET
+    (21) elements -> . expression
+    (22) elements -> . elements COMMA expression
+    (11) expression -> . expression PLUS term
+    (12) expression -> . expression MINUS term
+    (13) expression -> . term
+    (20) expression -> . LBRACKET elements RBRACKET
+    (14) term -> . term TIMES factor
+    (15) term -> . term DIVIDE factor
+    (16) term -> . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    LBRACKET        shift and go to state 14
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    elements                       shift and go to state 28
+    expression                     shift and go to state 29
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
+
+state 15
+
+    (16) term -> factor .
+
+    TIMES           reduce using rule 16 (term -> factor .)
+    DIVIDE          reduce using rule 16 (term -> factor .)
+    PLUS            reduce using rule 16 (term -> factor .)
+    MINUS           reduce using rule 16 (term -> factor .)
+    END             reduce using rule 16 (term -> factor .)
+    DEF             reduce using rule 16 (term -> factor .)
+    IDENTIFIER      reduce using rule 16 (term -> factor .)
+    FOR             reduce using rule 16 (term -> factor .)
+    PUTS            reduce using rule 16 (term -> factor .)
+    LBRACKET        reduce using rule 16 (term -> factor .)
+    INTEGER         reduce using rule 16 (term -> factor .)
+    FLOAT           reduce using rule 16 (term -> factor .)
+    LPAREN          reduce using rule 16 (term -> factor .)
+    $end            reduce using rule 16 (term -> factor .)
+    RPAREN          reduce using rule 16 (term -> factor .)
+    RBRACKET        reduce using rule 16 (term -> factor .)
+    COMMA           reduce using rule 16 (term -> factor .)
+
+
+state 16
+
+    (1) program -> statements END .
+
+    $end            reduce using rule 1 (program -> statements END .)
+
+
+state 17
+
+    (6) statements -> statements statement .
+
+    END             reduce using rule 6 (statements -> statements statement .)
+    DEF             reduce using rule 6 (statements -> statements statement .)
+    IDENTIFIER      reduce using rule 6 (statements -> statements statement .)
+    FOR             reduce using rule 6 (statements -> statements statement .)
+    PUTS            reduce using rule 6 (statements -> statements statement .)
+    LBRACKET        reduce using rule 6 (statements -> statements statement .)
+    INTEGER         reduce using rule 6 (statements -> statements statement .)
+    FLOAT           reduce using rule 6 (statements -> statements statement .)
+    LPAREN          reduce using rule 6 (statements -> statements statement .)
+    $end            reduce using rule 6 (statements -> statements statement .)
+
+
+state 18
+
+    (11) expression -> expression PLUS . term
+    (14) term -> . term TIMES factor
+    (15) term -> . term DIVIDE factor
+    (16) term -> . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    term                           shift and go to state 30
+    factor                         shift and go to state 15
+
+state 19
+
+    (12) expression -> expression MINUS . term
+    (14) term -> . term TIMES factor
+    (15) term -> . term DIVIDE factor
+    (16) term -> . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    term                           shift and go to state 31
+    factor                         shift and go to state 15
+
+state 20
+
+    (23) statement -> DEF IDENTIFIER . LPAREN params RPAREN statement END
+
+    LPAREN          shift and go to state 32
+
+
+state 21
+
+    (24) statement -> IDENTIFIER LPAREN . params RPAREN
+    (3) params -> . IDENTIFIER
+    (4) params -> . params COMMA IDENTIFIER
+
+    IDENTIFIER      shift and go to state 33
+
+    params                         shift and go to state 34
+
+state 22
+
+    (9) local_var -> IDENTIFIER EQUALS . INTEGER
+    (10) local_var -> IDENTIFIER EQUALS . FLOAT
+
+    INTEGER         shift and go to state 35
+    FLOAT           shift and go to state 36
+
+
+state 23
+
+    (19) factor -> LPAREN expression . RPAREN
+    (11) expression -> expression . PLUS term
+    (12) expression -> expression . MINUS term
+
+    RPAREN          shift and go to state 37
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+
+
+state 24
+
+    (25) statement -> FOR IDENTIFIER . IN range statement
+
+    IN              shift and go to state 38
+
+
+state 25
+
+    (28) statement -> PUTS expression .
+    (11) expression -> expression . PLUS term
+    (12) expression -> expression . MINUS term
+
+    END             reduce using rule 28 (statement -> PUTS expression .)
+    DEF             reduce using rule 28 (statement -> PUTS expression .)
+    IDENTIFIER      reduce using rule 28 (statement -> PUTS expression .)
+    FOR             reduce using rule 28 (statement -> PUTS expression .)
+    PUTS            reduce using rule 28 (statement -> PUTS expression .)
+    LBRACKET        reduce using rule 28 (statement -> PUTS expression .)
+    INTEGER         reduce using rule 28 (statement -> PUTS expression .)
+    FLOAT           reduce using rule 28 (statement -> PUTS expression .)
+    LPAREN          reduce using rule 28 (statement -> PUTS expression .)
+    $end            reduce using rule 28 (statement -> PUTS expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+
+
+state 26
+
+    (14) term -> term TIMES . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    factor                         shift and go to state 39
+
+state 27
+
+    (15) term -> term DIVIDE . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    factor                         shift and go to state 40
+
+state 28
+
+    (20) expression -> LBRACKET elements . RBRACKET
+    (22) elements -> elements . COMMA expression
+
+    RBRACKET        shift and go to state 41
+    COMMA           shift and go to state 42
+
+
+state 29
+
+    (21) elements -> expression .
+    (11) expression -> expression . PLUS term
+    (12) expression -> expression . MINUS term
+
+    RBRACKET        reduce using rule 21 (elements -> expression .)
+    COMMA           reduce using rule 21 (elements -> expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+
+
+state 30
+
+    (11) expression -> expression PLUS term .
+    (14) term -> term . TIMES factor
+    (15) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 11 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 11 (expression -> expression PLUS term .)
+    END             reduce using rule 11 (expression -> expression PLUS term .)
+    DEF             reduce using rule 11 (expression -> expression PLUS term .)
+    IDENTIFIER      reduce using rule 11 (expression -> expression PLUS term .)
+    FOR             reduce using rule 11 (expression -> expression PLUS term .)
+    PUTS            reduce using rule 11 (expression -> expression PLUS term .)
+    LBRACKET        reduce using rule 11 (expression -> expression PLUS term .)
+    INTEGER         reduce using rule 11 (expression -> expression PLUS term .)
+    FLOAT           reduce using rule 11 (expression -> expression PLUS term .)
+    LPAREN          reduce using rule 11 (expression -> expression PLUS term .)
+    $end            reduce using rule 11 (expression -> expression PLUS term .)
+    RPAREN          reduce using rule 11 (expression -> expression PLUS term .)
+    RBRACKET        reduce using rule 11 (expression -> expression PLUS term .)
+    COMMA           reduce using rule 11 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 26
+    DIVIDE          shift and go to state 27
+
+
+state 31
+
+    (12) expression -> expression MINUS term .
+    (14) term -> term . TIMES factor
+    (15) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 12 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 12 (expression -> expression MINUS term .)
+    END             reduce using rule 12 (expression -> expression MINUS term .)
+    DEF             reduce using rule 12 (expression -> expression MINUS term .)
+    IDENTIFIER      reduce using rule 12 (expression -> expression MINUS term .)
+    FOR             reduce using rule 12 (expression -> expression MINUS term .)
+    PUTS            reduce using rule 12 (expression -> expression MINUS term .)
+    LBRACKET        reduce using rule 12 (expression -> expression MINUS term .)
+    INTEGER         reduce using rule 12 (expression -> expression MINUS term .)
+    FLOAT           reduce using rule 12 (expression -> expression MINUS term .)
+    LPAREN          reduce using rule 12 (expression -> expression MINUS term .)
+    $end            reduce using rule 12 (expression -> expression MINUS term .)
+    RPAREN          reduce using rule 12 (expression -> expression MINUS term .)
+    RBRACKET        reduce using rule 12 (expression -> expression MINUS term .)
+    COMMA           reduce using rule 12 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 26
+    DIVIDE          shift and go to state 27
+
+
+state 32
+
+    (23) statement -> DEF IDENTIFIER LPAREN . params RPAREN statement END
+    (3) params -> . IDENTIFIER
+    (4) params -> . params COMMA IDENTIFIER
+
+    IDENTIFIER      shift and go to state 33
+
+    params                         shift and go to state 43
+
+state 33
+
+    (3) params -> IDENTIFIER .
+
+    RPAREN          reduce using rule 3 (params -> IDENTIFIER .)
+    COMMA           reduce using rule 3 (params -> IDENTIFIER .)
+
+
+state 34
+
+    (24) statement -> IDENTIFIER LPAREN params . RPAREN
+    (4) params -> params . COMMA IDENTIFIER
+
+    RPAREN          shift and go to state 44
+    COMMA           shift and go to state 45
+
+
+state 35
+
+    (9) local_var -> IDENTIFIER EQUALS INTEGER .
+
+    END             reduce using rule 9 (local_var -> IDENTIFIER EQUALS INTEGER .)
+    DEF             reduce using rule 9 (local_var -> IDENTIFIER EQUALS INTEGER .)
+    IDENTIFIER      reduce using rule 9 (local_var -> IDENTIFIER EQUALS INTEGER .)
+    FOR             reduce using rule 9 (local_var -> IDENTIFIER EQUALS INTEGER .)
+    PUTS            reduce using rule 9 (local_var -> IDENTIFIER EQUALS INTEGER .)
+    LBRACKET        reduce using rule 9 (local_var -> IDENTIFIER EQUALS INTEGER .)
+    INTEGER         reduce using rule 9 (local_var -> IDENTIFIER EQUALS INTEGER .)
+    FLOAT           reduce using rule 9 (local_var -> IDENTIFIER EQUALS INTEGER .)
+    LPAREN          reduce using rule 9 (local_var -> IDENTIFIER EQUALS INTEGER .)
+    $end            reduce using rule 9 (local_var -> IDENTIFIER EQUALS INTEGER .)
+
+
+state 36
+
+    (10) local_var -> IDENTIFIER EQUALS FLOAT .
+
+    END             reduce using rule 10 (local_var -> IDENTIFIER EQUALS FLOAT .)
+    DEF             reduce using rule 10 (local_var -> IDENTIFIER EQUALS FLOAT .)
+    IDENTIFIER      reduce using rule 10 (local_var -> IDENTIFIER EQUALS FLOAT .)
+    FOR             reduce using rule 10 (local_var -> IDENTIFIER EQUALS FLOAT .)
+    PUTS            reduce using rule 10 (local_var -> IDENTIFIER EQUALS FLOAT .)
+    LBRACKET        reduce using rule 10 (local_var -> IDENTIFIER EQUALS FLOAT .)
+    INTEGER         reduce using rule 10 (local_var -> IDENTIFIER EQUALS FLOAT .)
+    FLOAT           reduce using rule 10 (local_var -> IDENTIFIER EQUALS FLOAT .)
+    LPAREN          reduce using rule 10 (local_var -> IDENTIFIER EQUALS FLOAT .)
+    $end            reduce using rule 10 (local_var -> IDENTIFIER EQUALS FLOAT .)
+
+
+state 37
+
+    (19) factor -> LPAREN expression RPAREN .
+
+    TIMES           reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    END             reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    DEF             reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    IDENTIFIER      reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    FOR             reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    PUTS            reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    LBRACKET        reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    INTEGER         reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    FLOAT           reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    LPAREN          reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    $end            reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    RBRACKET        reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+    COMMA           reduce using rule 19 (factor -> LPAREN expression RPAREN .)
+
+
+state 38
+
+    (25) statement -> FOR IDENTIFIER IN . range statement
+    (26) range -> . INTEGER DOUBLE_DOT INTEGER
+    (27) range -> . FLOAT DOUBLE_DOT FLOAT
+
+    INTEGER         shift and go to state 47
+    FLOAT           shift and go to state 48
+
+    range                          shift and go to state 46
+
+state 39
+
+    (14) term -> term TIMES factor .
+
+    TIMES           reduce using rule 14 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 14 (term -> term TIMES factor .)
+    PLUS            reduce using rule 14 (term -> term TIMES factor .)
+    MINUS           reduce using rule 14 (term -> term TIMES factor .)
+    END             reduce using rule 14 (term -> term TIMES factor .)
+    DEF             reduce using rule 14 (term -> term TIMES factor .)
+    IDENTIFIER      reduce using rule 14 (term -> term TIMES factor .)
+    FOR             reduce using rule 14 (term -> term TIMES factor .)
+    PUTS            reduce using rule 14 (term -> term TIMES factor .)
+    LBRACKET        reduce using rule 14 (term -> term TIMES factor .)
+    INTEGER         reduce using rule 14 (term -> term TIMES factor .)
+    FLOAT           reduce using rule 14 (term -> term TIMES factor .)
+    LPAREN          reduce using rule 14 (term -> term TIMES factor .)
+    $end            reduce using rule 14 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 14 (term -> term TIMES factor .)
+    RBRACKET        reduce using rule 14 (term -> term TIMES factor .)
+    COMMA           reduce using rule 14 (term -> term TIMES factor .)
+
+
+state 40
+
+    (15) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 15 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 15 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 15 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 15 (term -> term DIVIDE factor .)
+    END             reduce using rule 15 (term -> term DIVIDE factor .)
+    DEF             reduce using rule 15 (term -> term DIVIDE factor .)
+    IDENTIFIER      reduce using rule 15 (term -> term DIVIDE factor .)
+    FOR             reduce using rule 15 (term -> term DIVIDE factor .)
+    PUTS            reduce using rule 15 (term -> term DIVIDE factor .)
+    LBRACKET        reduce using rule 15 (term -> term DIVIDE factor .)
+    INTEGER         reduce using rule 15 (term -> term DIVIDE factor .)
+    FLOAT           reduce using rule 15 (term -> term DIVIDE factor .)
+    LPAREN          reduce using rule 15 (term -> term DIVIDE factor .)
+    $end            reduce using rule 15 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 15 (term -> term DIVIDE factor .)
+    RBRACKET        reduce using rule 15 (term -> term DIVIDE factor .)
+    COMMA           reduce using rule 15 (term -> term DIVIDE factor .)
+
+
+state 41
+
+    (20) expression -> LBRACKET elements RBRACKET .
+
+    PLUS            reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    MINUS           reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    END             reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    DEF             reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    IDENTIFIER      reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    FOR             reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    PUTS            reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    LBRACKET        reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    INTEGER         reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    FLOAT           reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    LPAREN          reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    $end            reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    RPAREN          reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    RBRACKET        reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+    COMMA           reduce using rule 20 (expression -> LBRACKET elements RBRACKET .)
+
+
+state 42
+
+    (22) elements -> elements COMMA . expression
+    (11) expression -> . expression PLUS term
+    (12) expression -> . expression MINUS term
+    (13) expression -> . term
+    (20) expression -> . LBRACKET elements RBRACKET
+    (14) term -> . term TIMES factor
+    (15) term -> . term DIVIDE factor
+    (16) term -> . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    LBRACKET        shift and go to state 14
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    expression                     shift and go to state 49
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
+
+state 43
+
+    (23) statement -> DEF IDENTIFIER LPAREN params . RPAREN statement END
+    (4) params -> params . COMMA IDENTIFIER
+
+    RPAREN          shift and go to state 50
+    COMMA           shift and go to state 45
+
+
+state 44
+
+    (24) statement -> IDENTIFIER LPAREN params RPAREN .
+
+    END             reduce using rule 24 (statement -> IDENTIFIER LPAREN params RPAREN .)
+    DEF             reduce using rule 24 (statement -> IDENTIFIER LPAREN params RPAREN .)
+    IDENTIFIER      reduce using rule 24 (statement -> IDENTIFIER LPAREN params RPAREN .)
+    FOR             reduce using rule 24 (statement -> IDENTIFIER LPAREN params RPAREN .)
+    PUTS            reduce using rule 24 (statement -> IDENTIFIER LPAREN params RPAREN .)
+    LBRACKET        reduce using rule 24 (statement -> IDENTIFIER LPAREN params RPAREN .)
+    INTEGER         reduce using rule 24 (statement -> IDENTIFIER LPAREN params RPAREN .)
+    FLOAT           reduce using rule 24 (statement -> IDENTIFIER LPAREN params RPAREN .)
+    LPAREN          reduce using rule 24 (statement -> IDENTIFIER LPAREN params RPAREN .)
+    $end            reduce using rule 24 (statement -> IDENTIFIER LPAREN params RPAREN .)
+
+
+state 45
+
+    (4) params -> params COMMA . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 51
+
+
+state 46
+
+    (25) statement -> FOR IDENTIFIER IN range . statement
+    (7) statement -> . local_var
+    (8) statement -> . expression
+    (23) statement -> . DEF IDENTIFIER LPAREN params RPAREN statement END
+    (24) statement -> . IDENTIFIER LPAREN params RPAREN
+    (25) statement -> . FOR IDENTIFIER IN range statement
+    (28) statement -> . PUTS expression
+    (9) local_var -> . IDENTIFIER EQUALS INTEGER
+    (10) local_var -> . IDENTIFIER EQUALS FLOAT
+    (11) expression -> . expression PLUS term
+    (12) expression -> . expression MINUS term
+    (13) expression -> . term
+    (20) expression -> . LBRACKET elements RBRACKET
+    (14) term -> . term TIMES factor
+    (15) term -> . term DIVIDE factor
+    (16) term -> . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    DEF             shift and go to state 6
+    IDENTIFIER      shift and go to state 7
+    FOR             shift and go to state 9
+    PUTS            shift and go to state 10
+    LBRACKET        shift and go to state 14
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    statement                      shift and go to state 52
+    local_var                      shift and go to state 4
+    expression                     shift and go to state 5
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
+
+state 47
+
+    (26) range -> INTEGER . DOUBLE_DOT INTEGER
+
+    DOUBLE_DOT      shift and go to state 53
+
+
+state 48
+
+    (27) range -> FLOAT . DOUBLE_DOT FLOAT
+
+    DOUBLE_DOT      shift and go to state 54
+
+
+state 49
+
+    (22) elements -> elements COMMA expression .
+    (11) expression -> expression . PLUS term
+    (12) expression -> expression . MINUS term
+
+    RBRACKET        reduce using rule 22 (elements -> elements COMMA expression .)
+    COMMA           reduce using rule 22 (elements -> elements COMMA expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+
+
+state 50
+
+    (23) statement -> DEF IDENTIFIER LPAREN params RPAREN . statement END
+    (7) statement -> . local_var
+    (8) statement -> . expression
+    (23) statement -> . DEF IDENTIFIER LPAREN params RPAREN statement END
+    (24) statement -> . IDENTIFIER LPAREN params RPAREN
+    (25) statement -> . FOR IDENTIFIER IN range statement
+    (28) statement -> . PUTS expression
+    (9) local_var -> . IDENTIFIER EQUALS INTEGER
+    (10) local_var -> . IDENTIFIER EQUALS FLOAT
+    (11) expression -> . expression PLUS term
+    (12) expression -> . expression MINUS term
+    (13) expression -> . term
+    (20) expression -> . LBRACKET elements RBRACKET
+    (14) term -> . term TIMES factor
+    (15) term -> . term DIVIDE factor
+    (16) term -> . factor
+    (17) factor -> . INTEGER
+    (18) factor -> . FLOAT
+    (19) factor -> . LPAREN expression RPAREN
+
+    DEF             shift and go to state 6
+    IDENTIFIER      shift and go to state 7
+    FOR             shift and go to state 9
+    PUTS            shift and go to state 10
+    LBRACKET        shift and go to state 14
+    INTEGER         shift and go to state 11
+    FLOAT           shift and go to state 12
+    LPAREN          shift and go to state 8
+
+    statement                      shift and go to state 55
+    local_var                      shift and go to state 4
+    expression                     shift and go to state 5
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
+
+state 51
+
+    (4) params -> params COMMA IDENTIFIER .
+
+    RPAREN          reduce using rule 4 (params -> params COMMA IDENTIFIER .)
+    COMMA           reduce using rule 4 (params -> params COMMA IDENTIFIER .)
+
+
+state 52
+
+    (25) statement -> FOR IDENTIFIER IN range statement .
+
+    END             reduce using rule 25 (statement -> FOR IDENTIFIER IN range statement .)
+    DEF             reduce using rule 25 (statement -> FOR IDENTIFIER IN range statement .)
+    IDENTIFIER      reduce using rule 25 (statement -> FOR IDENTIFIER IN range statement .)
+    FOR             reduce using rule 25 (statement -> FOR IDENTIFIER IN range statement .)
+    PUTS            reduce using rule 25 (statement -> FOR IDENTIFIER IN range statement .)
+    LBRACKET        reduce using rule 25 (statement -> FOR IDENTIFIER IN range statement .)
+    INTEGER         reduce using rule 25 (statement -> FOR IDENTIFIER IN range statement .)
+    FLOAT           reduce using rule 25 (statement -> FOR IDENTIFIER IN range statement .)
+    LPAREN          reduce using rule 25 (statement -> FOR IDENTIFIER IN range statement .)
+    $end            reduce using rule 25 (statement -> FOR IDENTIFIER IN range statement .)
+
+
+state 53
+
+    (26) range -> INTEGER DOUBLE_DOT . INTEGER
+
+    INTEGER         shift and go to state 56
+
+
+state 54
+
+    (27) range -> FLOAT DOUBLE_DOT . FLOAT
+
+    FLOAT           shift and go to state 57
+
+
+state 55
+
+    (23) statement -> DEF IDENTIFIER LPAREN params RPAREN statement . END
+
+    END             shift and go to state 58
+
+
+state 56
+
+    (26) range -> INTEGER DOUBLE_DOT INTEGER .
+
+    DEF             reduce using rule 26 (range -> INTEGER DOUBLE_DOT INTEGER .)
+    IDENTIFIER      reduce using rule 26 (range -> INTEGER DOUBLE_DOT INTEGER .)
+    FOR             reduce using rule 26 (range -> INTEGER DOUBLE_DOT INTEGER .)
+    PUTS            reduce using rule 26 (range -> INTEGER DOUBLE_DOT INTEGER .)
+    LBRACKET        reduce using rule 26 (range -> INTEGER DOUBLE_DOT INTEGER .)
+    INTEGER         reduce using rule 26 (range -> INTEGER DOUBLE_DOT INTEGER .)
+    FLOAT           reduce using rule 26 (range -> INTEGER DOUBLE_DOT INTEGER .)
+    LPAREN          reduce using rule 26 (range -> INTEGER DOUBLE_DOT INTEGER .)
+
+
+state 57
+
+    (27) range -> FLOAT DOUBLE_DOT FLOAT .
+
+    DEF             reduce using rule 27 (range -> FLOAT DOUBLE_DOT FLOAT .)
+    IDENTIFIER      reduce using rule 27 (range -> FLOAT DOUBLE_DOT FLOAT .)
+    FOR             reduce using rule 27 (range -> FLOAT DOUBLE_DOT FLOAT .)
+    PUTS            reduce using rule 27 (range -> FLOAT DOUBLE_DOT FLOAT .)
+    LBRACKET        reduce using rule 27 (range -> FLOAT DOUBLE_DOT FLOAT .)
+    INTEGER         reduce using rule 27 (range -> FLOAT DOUBLE_DOT FLOAT .)
+    FLOAT           reduce using rule 27 (range -> FLOAT DOUBLE_DOT FLOAT .)
+    LPAREN          reduce using rule 27 (range -> FLOAT DOUBLE_DOT FLOAT .)
+
+
+state 58
+
+    (23) statement -> DEF IDENTIFIER LPAREN params RPAREN statement END .
+
+    END             reduce using rule 23 (statement -> DEF IDENTIFIER LPAREN params RPAREN statement END .)
+    DEF             reduce using rule 23 (statement -> DEF IDENTIFIER LPAREN params RPAREN statement END .)
+    IDENTIFIER      reduce using rule 23 (statement -> DEF IDENTIFIER LPAREN params RPAREN statement END .)
+    FOR             reduce using rule 23 (statement -> DEF IDENTIFIER LPAREN params RPAREN statement END .)
+    PUTS            reduce using rule 23 (statement -> DEF IDENTIFIER LPAREN params RPAREN statement END .)
+    LBRACKET        reduce using rule 23 (statement -> DEF IDENTIFIER LPAREN params RPAREN statement END .)
+    INTEGER         reduce using rule 23 (statement -> DEF IDENTIFIER LPAREN params RPAREN statement END .)
+    FLOAT           reduce using rule 23 (statement -> DEF IDENTIFIER LPAREN params RPAREN statement END .)
+    LPAREN          reduce using rule 23 (statement -> DEF IDENTIFIER LPAREN params RPAREN statement END .)
+    $end            reduce using rule 23 (statement -> DEF IDENTIFIER LPAREN params RPAREN statement END .)
+

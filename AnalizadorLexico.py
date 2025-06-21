@@ -16,7 +16,7 @@ def get_github_username():
 tokens = [
     'DEF', 'IDENTIFIER', 'LBRACKET', 'RBRACKET', 'ASSIGN',
     'LPAREN', 'RPAREN', 'FOR', 'IN', 'DOT', 'RANGE', 'MINUS',
-    'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING',
+    'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING', 'DOUBLE_DOT',
 #fin de GIOVANNI
     'LBRACE', 'RBRACE', 'PIPE', 'COMMA', 'SEMICOLON', 
     'EQUALS', 'LESS', 'TIMES', 'DIVIDE', 'MOD', 'POWER',
@@ -37,6 +37,7 @@ t_COMMA = r','
 t_SEMICOLON = r';'
 # Parte de GIOVANNI
 t_DOT = r'\.'
+t_DOUBLE_DOT = r'\.\.'
 t_RANGE = r'\.\.|\.{3}'
 t_MINUS = r'-'
 t_PLUS = r'\+'
@@ -68,11 +69,12 @@ t_MOD_ASSIGN = r'%='
 t_POWER_ASSIGN = r'\*\*='
 t_FLOOR_DIVIDE = r'//'
 t_BITWISE_AND = r'\&'
-t_BLOCK_PARAM = r'\|[a-zA-Z_][a-zA-Z0-9_]*\|'
-t_BITWISE_OR = r'\|'
+t_PIPE = r'\|'
+t_QUESTION_MARK = r'\?'  
+
 tokens.extend([
     'PLUS_ASSIGN', 'MINUS_ASSIGN', 'TIMES_ASSIGN',
-    'DIVIDE_ASSIGN', 'MOD_ASSIGN', 'POWER_ASSIGN', 'FLOOR_DIVIDE','BITWISE_AND', 'BITWISE_OR', 'BLOCK_PARAM'
+    'DIVIDE_ASSIGN', 'MOD_ASSIGN', 'POWER_ASSIGN', 'FLOOR_DIVIDE','BITWISE_AND', 'PUTS', 'QUESTION_MARK'
 ])
 #=== Parte de Darwin ====
 
@@ -83,7 +85,8 @@ keywords = {
     'in': 'IN',
     'while': 'WHILE',
     'end': 'END',
-    'return': 'RETURN'
+    'return': 'RETURN',
+    'puts': 'PUTS'
 }
 #fin de GIOVANNI
 
@@ -113,6 +116,7 @@ def t_FLOAT(t):
     r'\b\d+\.\d+\b'
     t.value = float(t.value)
     return t
+
 # Parte de GIOVANNI
 #=== Parte de Darwin ====
 

@@ -24,6 +24,9 @@ IDENTIFIER: length
 DIVIDE: /
 INTEGER: 2
 RPAREN: )
+CONSTANT: Add
+IDENTIFIER: commentMore
+IDENTIFIER: actions
 IDENTIFIER: left
 COMMA: ,
 IDENTIFIER: right
@@ -32,7 +35,9 @@ IDENTIFIER: arr
 DOT: .
 IDENTIFIER: partition
 LBRACE: {
-BLOCK_PARAM: |x|
+PIPE: |
+IDENTIFIER: x
+PIPE: |
 IDENTIFIER: x
 LESS: <
 IDENTIFIER: pivot
@@ -52,26 +57,3 @@ LPAREN: (
 IDENTIFIER: right
 RPAREN: )
 END: end
-IDENTIFIER: arr
-ASSIGN: =
-LBRACKET: [
-INTEGER: 12
-COMMA: ,
-INTEGER: 11
-COMMA: ,
-INTEGER: 13
-COMMA: ,
-INTEGER: 5
-COMMA: ,
-INTEGER: 6
-RBRACKET: ]
-IDENTIFIER: puts
-STRING: Arreglo original: #{arr}
-IDENTIFIER: sorted_arr
-ASSIGN: =
-IDENTIFIER: quick_sort
-LPAREN: (
-IDENTIFIER: arr
-RPAREN: )
-IDENTIFIER: puts
-STRING: Arreglo ordenado: #{sorted_arr}
