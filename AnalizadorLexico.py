@@ -16,7 +16,7 @@ def get_github_username():
 tokens = [
     'DEF', 'IDENTIFIER', 'LBRACKET', 'RBRACKET', 'ASSIGN',
     'LPAREN', 'RPAREN', 'FOR', 'IN', 'DOT', 'RANGE', 'MINUS',
-    'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING',
+    'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING', 'DOUBLE_DOT',
 #fin de GIOVANNI
     'LBRACE', 'RBRACE', 'PIPE', 'COMMA', 'SEMICOLON', 
     'EQUALS', 'LESS', 'TIMES', 'DIVIDE', 'MOD', 'POWER',
@@ -37,6 +37,7 @@ t_COMMA = r','
 t_SEMICOLON = r';'
 # Parte de GIOVANNI
 t_DOT = r'\.'
+t_DOUBLE_DOT = r'\.\.'
 t_RANGE = r'\.\.|\.{3}'
 t_MINUS = r'-'
 t_PLUS = r'\+'
