@@ -69,9 +69,11 @@ t_POWER_ASSIGN = r'\*\*='
 t_FLOOR_DIVIDE = r'//'
 t_BITWISE_AND = r'\&'
 t_PIPE = r'\|'
+t_QUESTION_MARK = r'\?'  
+
 tokens.extend([
     'PLUS_ASSIGN', 'MINUS_ASSIGN', 'TIMES_ASSIGN',
-    'DIVIDE_ASSIGN', 'MOD_ASSIGN', 'POWER_ASSIGN', 'FLOOR_DIVIDE','BITWISE_AND', 'PIPE'
+    'DIVIDE_ASSIGN', 'MOD_ASSIGN', 'POWER_ASSIGN', 'FLOOR_DIVIDE','BITWISE_AND', 'PUTS', 'QUESTION_MARK'
 ])
 #=== Parte de Darwin ====
 
@@ -82,7 +84,8 @@ keywords = {
     'in': 'IN',
     'while': 'WHILE',
     'end': 'END',
-    'return': 'RETURN'
+    'return': 'RETURN',
+    'puts': 'PUTS'
 }
 #fin de GIOVANNI
 
@@ -112,6 +115,7 @@ def t_FLOAT(t):
     r'\b\d+\.\d+\b'
     t.value = float(t.value)
     return t
+
 # Parte de GIOVANNI
 #=== Parte de Darwin ====
 
