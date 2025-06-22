@@ -65,7 +65,6 @@ def p_empty(p):
     'empty :'
     p[0] = []
 
-
 def p_while_statement(p):
     '''statement : WHILE expression statement END'''
     print(f"While loop: While {p[2]}, execute {p[3]}")
@@ -73,7 +72,7 @@ def p_while_statement(p):
 def p_gets_statement(p):
     '''statement : IDENTIFIER EQUALS GETS'''
     print(f"User input stored in variable {p[1]}")
-
+    
 def p_method_with_params_declaration(p):
     '''statement : DEF ID LPAREN params RPAREN statement END'''
     print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
