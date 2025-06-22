@@ -38,10 +38,15 @@ def p_statements(p):
 def p_statement(p):
     '''statement :  expression'''
 
-# Declaración de variables locales
+# Declaración de variables locales y asignación de objetos
 def p_local_var(p):
     '''statement : IDENTIFIER ASSIGN expression'''
-    print(f"Variable local {p[1]} asignada con el valor {p[3]}")
+    # Determinar si es una asignación de objeto o una variable local
+    if isinstance(p[3], str) and ".new" in p[3]:
+        print(f"Variable {p[1]} asignada con nueva instancia de objeto: {p[3]}")
+    else:
+        print(f"Variable local {p[1]} asignada con el valor {p[3]}")
+    p[0] = f"{p[1]} = {p[3]}"
 
 # Comienzo Jonathan
 def p_global_var(p):
@@ -161,14 +166,6 @@ def p_object_instantiation(p):
     p[0] = f"{p[1]}.new()"
     print(f"Instanciación de objeto de la clase {p[1]}")
 
-# Asignación de objetos
-def p_object_assignment(p):
-    '''statement : IDENTIFIER ASSIGN expression'''
-    if isinstance(p[3], str) and ".new" in p[3]:
-        print(f"Variable {p[1]} asignada con nueva instancia de objeto: {p[3]}")
-    else:
-        print(f"Variable {p[1]} asignada con el valor: {p[3]}")
-    p[0] = f"{p[1]} = {p[3]}"
 
 # Fin Jonathan
 
