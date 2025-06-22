@@ -1,0 +1,19 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:16:31
+Usuario: Jonthz
+
+--- Código Analizado ---
+class Person
+end
+
+class Car
+  puts "Inicializando clase Car"
+end
+
+person = Person.new
+car = Car.new()
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 1: Token inesperado 'Person'
+Error sintáctico en línea 9: Token inesperado 'Car'

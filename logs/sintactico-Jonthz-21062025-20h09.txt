@@ -1,0 +1,19 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:09:59
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Declaración de clase simple
+class Person
+end
+
+# Declaración de clase con cuerpo
+class Car
+  puts "Inicializando clase Car"
+end
+
+# Instanciación de objetos
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 38: Token inesperado 'Person'

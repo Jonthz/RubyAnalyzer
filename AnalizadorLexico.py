@@ -93,7 +93,7 @@ keywords = {
     'end': 'END',
     'return': 'RETURN',
     'puts': 'PUTS',
-    'gets': 'GETS'
+    'gets': 'GETS',
 }
 #fin de GIOVANNI
 
