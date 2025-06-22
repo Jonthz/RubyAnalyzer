@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 21:14:05
+Usuario: Darvier88
+
+--- Código Analizado ---
+{ "nombre" => "Juan", "edad" => 25, "ciudad" => "Guayaquil" }
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 1: Token inesperado '=>'

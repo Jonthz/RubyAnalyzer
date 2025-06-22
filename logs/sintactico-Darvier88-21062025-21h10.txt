@@ -1,0 +1,13 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 21:10:36
+Usuario: Darvier88
+
+--- Código Analizado ---
+mi_array = [1, 2, 3, 4, 5]
+[1, 2, 3, 4, 5]
+[1 , 2 , 3 , 4 , 5]
+['4', '5']
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 4: Token inesperado ','

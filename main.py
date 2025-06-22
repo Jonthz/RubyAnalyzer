@@ -38,7 +38,6 @@ def main():
     print("6. Salir")
     
     option = input("\nOpción: ")
-    
     if option == "1":
         print("\nIngrese código Ruby (escriba 'FIN' en una línea para terminar):")
         lines = []

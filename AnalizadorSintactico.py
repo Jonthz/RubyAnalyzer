@@ -41,14 +41,15 @@ def p_statement(p):
 # Declaración de variables locales y asignación de objetos
 def p_local_var(p):
     '''statement : IDENTIFIER ASSIGN STRING
-                | IDENTIFIER ASSIGN  expression'''
-    p[0] = f"{p[1]} = {p[3]}"
+                | IDENTIFIER ASSIGN  expression
+                | IDENTIFIER ASSIGN factor'''
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
 
 # Comienzo Jonathan
 def p_global_var(p):
     '''statement : GLOBAL_VAR ASSIGN STRING
-                 | GLOBAL_VAR ASSIGN expression'''
+                 | GLOBAL_VAR ASSIGN expression
+                 | GLOBAL_VAR ASSIGN factor'''
     print(f"Variable global {p[1]} asignada con el valor {p[3]}")
 
 def p_factor_power(p):
@@ -97,16 +98,11 @@ def p_statement_block(p):
     p[0] = f"{p[1]}; {p[2]}" if p[1] and p[2] else p[1] or p[2]
 
 def p_if_statement(p):
-    '''statement : IF expression THEN statement END
-                 | IF expression statement END
-                 | IF expression THEN statement ELSE statement END
-                 | IF expression statement ELSE statement END
-                 | IF expression THEN statement ELSIF expression THEN statement END
-                 | IF expression statement ELSIF expression statement END
-                 | IF expression THEN statement ELSIF expression THEN statement ELSE statement END
-                 | IF expression statement ELSIF expression statement ELSE statement END'''
-    # Determinar el caso basado en la longitud de p
-    if len(p) == 5:  # if ... statement end (sin then)
+    '''statement : IF expression statements END
+                 | IF expression statements ELSE statements END
+                 | IF expression statements ELSIF expression statements END
+                 | IF expression statements ELSIF expression statements ELSE statements END'''
+    if len(p) == 5:  # if ... end
         p[0] = f"if ({p[2]}) {{{p[3]}}}"
         print(f"Condición IF: Si {p[2]} entonces {p[3]}")
     elif len(p) == 6:  # if ... then statement end
@@ -124,12 +120,18 @@ def p_if_statement(p):
 
 # Para permitir expresiones de comparación
 def p_expression_comparison(p):
-    '''expression : expression GREATER expression
-                  | expression LESS expression
-                  | expression GREATER_EQUAL expression
-                  | expression LESS_EQUAL expression
-                  | expression EQUALS expression
-                  | expression NOT_EQUALS expression'''
+    '''expression : statement GREATER statement
+                  | statement LESS statement
+                  | statement GREATER_EQUAL statement
+                  | statement LESS_EQUAL statement
+                  | statement EQUALS statement
+                  | statement NOT_EQUALS statement
+                  | statement GREATER factor
+                  | statement LESS factor
+                  | statement GREATER_EQUAL factor
+                  | statement LESS_EQUAL factor
+                  | statement EQUALS factor
+                  | statement NOT_EQUALS factor'''
     operators = {
         '>': 'mayor que',
         '<': 'menor que',
@@ -189,7 +191,8 @@ def p_factor_nil(p):
 
 def p_instance_var(p):
     '''statement : INSTANCE_VAR ASSIGN expression
-                | INSTANCE_VAR ASSIGN STRING'''
+                | INSTANCE_VAR ASSIGN STRING
+                | INSTANCE_VAR ASSIGN factor'''
     print(f"Instance variable {p[1]} assigned with value {p[3]}")
 
 def p_set(p):
@@ -237,11 +240,11 @@ def p_term_times(p):
     p[0] = p[1] * p[3]
 
 def p_expression_plus(p):
-    'expression : factor PLUS factor'
+    'term : factor PLUS factor'
     p[0] = p[1] + p[3]
 
 def p_expression_minus(p):
-    'expression : factor MINUS factor'
+    'term : factor MINUS factor'
     p[0] = p[1] - p[3]
 
 
@@ -256,13 +259,15 @@ def p_factor_expr(p):
 
 # Arreglo (array)
 def p_array(p):
-    '''expression : LBRACKET elements RBRACKET'''
+    '''expression : LBRACKET optional_elements RBRACKET'''
     p[0] = p[2]  # Devuelve la lista de elementos dentro del arreglo
 
 # Elementos dentro del arreglo
 def p_elements(p):
     '''elements : expression
-                | elements COMMA expression'''
+                | elements COMMA  expression
+                | factor
+                | elements COMMA factor'''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo elemento
     else:

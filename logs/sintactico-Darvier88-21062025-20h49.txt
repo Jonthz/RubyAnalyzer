@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:49:51
+Usuario: Darvier88
+
+--- Código Analizado ---
+nombre = "Juan"
+edad = 25
+puts "Mi nombre es #{nombre} y tengo #{edad} años."
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 4: Token inesperado 'puts'

@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:51:31
+Usuario: Darvier88
+
+--- Código Analizado ---
+edad = 20
+edad = 1
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 2: Token inesperado 'edad'

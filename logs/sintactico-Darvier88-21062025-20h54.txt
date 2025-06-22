@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:54:57
+Usuario: Darvier88
+
+--- Código Analizado ---
+edad = 20
+nombre = "Juan"
+puts "Mi nombre es #{nombre} y tengo #{edad} años."
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos
