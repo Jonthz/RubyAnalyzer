@@ -3,9 +3,11 @@ from AnalizadorLexico import tokens
 
 # Inicio de Pacheco
 precedence = (
-    ('left', 'PLUS', 'MINUS'),  # Suma y resta tienen la menor precedencia
-    ('left', 'TIMES', 'DIVIDE'),  # Multiplicación y división tienen mayor precedencia
-    ('right', 'POWER'),  # Exponenciación tiene la mayor precedencia
+    ('nonassoc', 'LESS', 'GREATER', 'LESS_EQUAL', 'GREATER_EQUAL', 'EQUALS', 'NOT_EQUALS'),  # Comparaciones
+    ('left', 'PLUS', 'MINUS'),  # Suma y resta
+    ('left', 'TIMES', 'DIVIDE'),  # Multiplicación y división
+    ('right', 'POWER'),  # Exponenciación
+    ('right', 'HASH_ROCKET'),  # Para los hashes
 )
 
 
@@ -40,6 +42,110 @@ def p_statement(p):
 def p_local_var(p):
     '''statement : IDENTIFIER ASSIGN expression'''
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
+
+# Comienzo Jonathan
+def p_global_var(p):
+    '''statement : GLOBAL_VAR ASSIGN STRING
+                 | GLOBAL_VAR ASSIGN expression'''
+    print(f"Variable global {p[1]} asignada con el valor {p[3]}")
+
+def p_factor_power(p):
+    'factor : factor POWER factor'
+    p[0] = p[1] ** p[3]
+
+def p_factor_string(p):
+    'factor : STRING'
+    p[0] = p[1]
+
+def p_hash(p):
+    '''expression : LBRACE key_value_pairs RBRACE'''
+    p[0] = dict(p[2])  # Convierte la lista de pares clave-valor en un diccionario
+    print(f"Hash creado con {len(p[2])} pares clave-valor")
+
+def p_empty_hash(p):
+    '''expression : LBRACE RBRACE'''
+    p[0] = {}  # Hash vacío
+    print("Hash vacío creado")
+
+def p_key_value_pairs(p):
+    '''key_value_pairs : key_value
+                       | key_value_pairs COMMA key_value'''
+    if len(p) == 2:
+        p[0] = [p[1]]  # Un solo par clave-valor
+    else:
+        p[0] = p[1] + [p[3]]  # Varios pares clave-valor
+
+def p_key_value(p):
+    '''key_value : expression HASH_ROCKET expression'''
+    p[0] = (p[1], p[3])  # El par clave-valor es un tuple (clave, valor)
+    print(f"Par clave-valor: {p[1]} => {p[3]}")
+
+def p_expression_var(p):
+    '''expression : IDENTIFIER
+                  | GLOBAL_VAR
+                  | INSTANCE_VAR'''
+    p[0] = p[1]
+
+def p_statement_block(p):
+    '''statement : statement statement'''
+    p[0] = f"{p[1]}; {p[2]}" if p[1] and p[2] else p[1] or p[2]
+
+def p_if_statement(p):
+    '''statement : IF expression statement END
+                 | IF expression statement ELSE statement END
+                 | IF expression statement ELSIF expression statement END
+                 | IF expression statement ELSIF expression statement ELSE statement END'''
+    if len(p) == 5:  # if ... end
+        p[0] = f"if ({p[2]}) {{{p[3]}}}"
+        print(f"Condición IF: Si {p[2]} entonces {p[3]}")
+    elif len(p) == 7:  # if ... else ... end
+        p[0] = f"if ({p[2]}) {{{p[3]}}} else {{{p[5]}}}"
+        print(f"Condición IF-ELSE: Si {p[2]} entonces {p[3]} sino {p[5]}")
+    elif len(p) == 8:  # if ... elsif ... end
+        p[0] = f"if ({p[2]}) {{{p[3]}}} else if ({p[5]}) {{{p[6]}}}"
+        print(f"Condición IF-ELSIF: Si {p[2]} entonces {p[3]} sino si {p[5]} entonces {p[6]}")
+    else:  # if ... elsif ... else ... end
+        p[0] = f"if ({p[2]}) {{{p[3]}}} else if ({p[5]}) {{{p[6]}}} else {{{p[8]}}}"
+        print(f"Condición IF-ELSIF-ELSE: Si {p[2]} entonces {p[3]} sino si {p[5]} entonces {p[6]} sino {p[8]}")
+
+# Para permitir expresiones de comparación
+def p_expression_comparison(p):
+    '''expression : expression GREATER expression
+                  | expression LESS expression
+                  | expression GREATER_EQUAL expression
+                  | expression LESS_EQUAL expression
+                  | expression EQUALS expression
+                  | expression NOT_EQUALS expression'''
+    operators = {
+        '>': 'mayor que',
+        '<': 'menor que',
+        '>=': 'mayor o igual que',
+        '<=': 'menor o igual que',
+        '==': 'igual a',
+        '!=': 'diferente de'
+    }
+    op_text = operators.get(p[2], p[2])
+    p[0] = f"{p[1]} {op_text} {p[3]}"
+
+# Declaración de método sin parámetros
+def p_method_without_params_declaration(p):
+    '''statement : DEF IDENTIFIER statement END'''
+    p[0] = f"def {p[2]} {p[3]}"
+    print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
+
+# Llamada a métodos sin parámetros
+def p_method_call_without_params(p):
+    '''statement : IDENTIFIER'''  # Elimina la línea | expression
+    if isinstance(p[1], str) and p[1] not in ['puts', 'gets', 'print']:
+        # Solo identificadores que no sean palabras reservadas
+        p[0] = p[1]
+        print(f"Llamada al método sin parámetros: {p[1]}")
+    else:
+        p[0] = p[1]
+
+
+
+# Fin Jonathan
 
 # Parte de Giovanni 
 
@@ -140,6 +246,19 @@ def p_puts_statement(p):
     '''statement : PUTS statement'''
     print(f"Imprimiendo con puts: {p[2]}")
 
+def p_method_with_return(p):
+    '''method : DEF IDENTIFIER LPAREN params RPAREN return_statement END'''
+    # La acción semántica aquí se encarga de capturar el nombre del método, los parámetros
+    # y la declaración 'return' junto con su valor
+    p[0] = f"Method {p[2]} with parameters {p[4]} returns {p[6]}"
+
+def p_return_statement(p):
+    '''return_statement : RETURN statement
+                        | RETURN expression'''
+    # Esta regla maneja el caso en que el método contiene 'return'
+    p[0] = f"Return statement with value {p[2]}"
+
+
 # Manejo de errores
 def p_error(p):
     if p:
@@ -150,15 +269,83 @@ def p_error(p):
 # Crear el analizador sintáctico
 parser = yacc.yacc()
 
-#Fin Pacheco
 def test_parser(input_code):
+    import os
+    import datetime
+    from AnalizadorLexico import get_github_username
+    
     print("Parsing Ruby code:")
     print(input_code)
+    
+    # Crear directorio de logs si no existe
+    log_dir = "logs"
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    
+    # Obtener nombre de usuario de GitHub
+    username = get_github_username()
+    
+    # Obtener fecha y hora actual
+    now = datetime.datetime.now()
+    date_str = now.strftime("%d%m%Y")
+    time_str = now.strftime("%Hh%M")
+    
+    # Nombre del archivo de log
+    log_filename = f"{log_dir}/sintactico-{username}-{date_str}-{time_str}.txt"
+    
+    # Lista para almacenar errores
+    syntax_errors = []
+    
+    # Crear una variable para saber si hubo errores
+    had_errors = [False]
+    
+    # Función personalizada para manejar errores
+    def custom_error_handler(p):
+        had_errors[0] = True
+        if p:
+            error_msg = f"Error sintáctico en línea {p.lineno if hasattr(p, 'lineno') else 'desconocida'}: Token inesperado '{p.value}'"
+            syntax_errors.append(error_msg)
+            print(error_msg)
+        else:
+            error_msg = "Error sintáctico: Fin de archivo inesperado"
+            syntax_errors.append(error_msg)
+            print(error_msg)
+        return p
+    
+    # Guardar referencia al analizador original
+    global parser
+    original_parser = parser
+    
+    # Crear un nuevo analizador con nuestra función de error
+    parser = yacc.yacc(errorlog=yacc.NullLogger())
+    parser.errorfunc = custom_error_handler
+    
+    # Realizar el análisis
     try:
-        parser.parse(input_code)
-        return True
+        result = parser.parse(input_code)
+        if not had_errors[0]:
+            syntax_errors.append("No se encontraron errores sintácticos")
     except Exception as e:
-        print("Error de sintaxis en la entrada.")
-        return False
+        syntax_errors.append(f"Error durante el análisis: {str(e)}")
+    
+    # Restaurar el analizador original
+    parser = original_parser
+    
+    # Escribir el log
+    with open(log_filename, 'w', encoding='utf-8') as log_file:
+        log_file.write(f"=== Análisis Sintáctico de Código Ruby ===\n")
+        log_file.write(f"Fecha: {now.strftime('%d/%m/%Y')}\n")
+        log_file.write(f"Hora: {now.strftime('%H:%M:%S')}\n")
+        log_file.write(f"Usuario: {username}\n\n")
+        
+        log_file.write("--- Código Analizado ---\n")
+        log_file.write(input_code)
+        log_file.write("\n\n--- Resultados del Análisis ---\n")
+        
+        for error in syntax_errors:
+            log_file.write(f"{error}\n")
+    
+    print(f"Análisis sintáctico completado. Logs guardados en: {os.path.abspath(log_filename)}")
+    print("Parse finished.")
 
 __all__ = ["parser", "test_parser"]
