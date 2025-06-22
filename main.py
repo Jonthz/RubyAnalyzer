@@ -4,7 +4,7 @@ from AnalizadorLexico import tokens, lex, test_lexical_analyzer
 from AnalizadorSintactico import yacc, test_parser
 
 # Cambia la manera en que cargas los algoritmos desde archivos
-def load_algorithm_from_fil2e(file_name):
+def load_algorithm_from_file(file_name):
     try:
         with open(file_name, 'r', encoding='utf-8') as file:
             return file.read()  # Lee todo el contenido del archivo
