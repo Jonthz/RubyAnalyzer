@@ -1,0 +1,6 @@
+Tokens reconocidos:
+LBRACE: {
+STRING: nombre
+HASH_ROCKET: =>
+STRING: Juan
+RBRACE: }

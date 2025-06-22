@@ -1,0 +1,9 @@
+Tokens reconocidos:
+LBRACE: {
+STRING: ciudad
+HASH_ROCKET: =>
+STRING: Guayaquil
+RBRACE: }
+
+Errores léxicos:
+Error léxico:   en la línea 1

@@ -1,0 +1,14 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:22:58
+Usuario: Darvier88
+
+--- Código Analizado ---
+puts x
+puts 5
+put "Hola"
+puts "Hola"
+
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 9: Token inesperado 'put'

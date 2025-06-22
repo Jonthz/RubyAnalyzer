@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 21:36:54
+Usuario: Jonthz
+
+--- Código Analizado ---
+{"ciudad" => "Guayaquil" }
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

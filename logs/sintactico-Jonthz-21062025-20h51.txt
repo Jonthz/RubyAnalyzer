@@ -1,0 +1,70 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:51:36
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Declaración de clases y objetos
+class Person
+  @@count = 0  # Variable de clase
+  
+  def initialize(name)
+    @name = name  # Variable de instancia
+    @@count += 1
+  end
+  
+  def say_hello
+    puts "Hello, I'm #{@name}"
+  end
+  
+  def self.count
+    puts "Total people: #{@@count}"
+  end
+end
+
+# Constantes
+MAX_PEOPLE = 10
+
+# Variables locales con diferentes tipos
+name = "John"
+age = 30
+height = 1.75
+is_student = true
+grades = nil
+
+# Variables globales
+$app_name = "Ruby Analyzer Demo"
+
+# Instanciación de objetos
+person1 = Person.new("John")
+person2 = Person.new("Alice")
+
+# Uso de estructuras de datos
+people = ["John", "Alice", "Bob"]
+user_info = {"name" => "John", "age" => 30}
+unique_numbers = Set.new([1, 2, 3, 3, 4])
+
+# Estructuras de control
+if age > 18 && is_student == true
+  puts "Adult student"
+elsif age > 18
+  puts "Adult"
+else
+  puts "Minor"
+end
+
+# Bucles
+for i in 1..5
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 1227: Token inesperado 'class'
+Error sintáctico en línea 1232: Token inesperado '+='
+Error sintáctico en línea 1239: Token inesperado 'self'
+Error sintáctico en línea 1242: Token inesperado 'end'
+Error sintáctico en línea 1248: Token inesperado 'name'
+Error sintáctico en línea 1262: Token inesperado ','
+Error sintáctico en línea 1263: Token inesperado '=>'
+Error sintáctico en línea 1267: Token inesperado '&&'
+Error sintáctico en línea 1268: Token inesperado 'puts'
+Error sintáctico en línea 1270: Token inesperado 'puts'
+Error sintáctico en línea 1276: Token inesperado 'for'
