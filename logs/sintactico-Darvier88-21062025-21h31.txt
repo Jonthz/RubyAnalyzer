@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 21:31:48
+Usuario: Darvier88
+
+--- Código Analizado ---
+[2,3,3
+[2,3,3]
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 2: Token inesperado '['

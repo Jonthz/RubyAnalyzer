@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 21:52:56
+Usuario: Darvier88
+
+--- Código Analizado ---
+if x<10 x=5 end
+if x<10 and x>5  puts "Hola" end
+x = 10
+
+--- Resultados del Análisis ---
+Error durante el análisis: LRParser.parse() got an unexpected keyword argument 'start'
