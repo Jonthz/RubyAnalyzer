@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 21:45:20
+Usuario: Jonthz
+
+--- Código Analizado ---
+if x < 10 then x = 5 end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 1: Token inesperado 'then'
+Error sintáctico en línea 1: Token inesperado 'end'

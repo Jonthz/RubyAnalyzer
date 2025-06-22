@@ -42,6 +42,7 @@ def p_statement(p):
 def p_local_var(p):
     '''statement : IDENTIFIER ASSIGN STRING
                 | IDENTIFIER ASSIGN  expression'''
+    p[0] = f"{p[1]} = {p[3]}"
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
 
 # Comienzo Jonathan
@@ -96,13 +97,21 @@ def p_statement_block(p):
     p[0] = f"{p[1]}; {p[2]}" if p[1] and p[2] else p[1] or p[2]
 
 def p_if_statement(p):
-    '''statement : IF expression statement END
+    '''statement : IF expression THEN statement END
+                 | IF expression statement END
+                 | IF expression THEN statement ELSE statement END
                  | IF expression statement ELSE statement END
+                 | IF expression THEN statement ELSIF expression THEN statement END
                  | IF expression statement ELSIF expression statement END
+                 | IF expression THEN statement ELSIF expression THEN statement ELSE statement END
                  | IF expression statement ELSIF expression statement ELSE statement END'''
-    if len(p) == 5:  # if ... end
+    # Determinar el caso basado en la longitud de p
+    if len(p) == 5:  # if ... statement end (sin then)
         p[0] = f"if ({p[2]}) {{{p[3]}}}"
         print(f"Condición IF: Si {p[2]} entonces {p[3]}")
+    elif len(p) == 6:  # if ... then statement end
+        p[0] = f"if ({p[2]}) {{{p[4]}}}"
+        print(f"Condición IF con THEN: Si {p[2]} entonces {p[4]}")
     elif len(p) == 7:  # if ... else ... end
         p[0] = f"if ({p[2]}) {{{p[3]}}} else {{{p[5]}}}"
         print(f"Condición IF-ELSE: Si {p[2]} entonces {p[3]} sino {p[5]}")

@@ -163,7 +163,7 @@ def t_error(t):
 #fin de GIOVANNI
 #=== Parte de Jonathan ====
 tokens.extend([
-    'INTEGER', 'TRUE', 'FALSE',
+    'THEN','INTEGER', 'TRUE', 'FALSE',
     'IF', 'ELSIF', 'ELSE', 'UNTIL', 'NEXT', 'BREAK', 'REDO', 'RETRY', 'CASE', 'WHEN',
     'CLASS', 'MODULE',
     'BEGIN', 'RESCUE', 'ENSURE', 'RAISE', 'NIL',
@@ -174,6 +174,7 @@ tokens.extend([
 
 # Add boolean values to the keywords dictionary
 keywords.update({
+    'then': 'THEN',
     'true': 'TRUE',
     'false': 'FALSE',
     'if': 'IF',
