@@ -270,28 +270,4 @@ def test_lexical_analyzer(input_data):
 
 #=== Parte de Darwin ====
 
-# Prueba con un fragmento de código de Ruby
-input_data = """
-# Algoritmo de Ordenamiento por Insercion 
-def insertion_sort(arr) 
-for i in 1..arr.length - 1 
-key = arr[i] 
-j = i - 1 
-# Mueve los elementos de arr[0..i-1] que son mayores que 
-# key, una posicion hacia adelante 
-while j >= 0 && arr[j] > key 
-arr[j + 1] = arr[j] 
-j -= 1 
-end 
-arr[j + 1] = key 
-end 
-return arr 
-end 
-# Prueba de Ordenamiento por Insercion 
-arr = [12, 11, 13, 5, 6] 
-puts "Arreglo original: #{arr}" 
-sorted_arr = insertion_sort(arr) 
-puts "Arreglo ordenado: #{sorted_arr}" 
-"""
 
-test_lexical_analyzer(input_data)

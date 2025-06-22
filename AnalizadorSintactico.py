@@ -34,25 +34,23 @@ def p_statements(p):
 
 # Definición de una declaración
 def p_statement(p):
-    '''statement :  local_var
-                 | expression'''
-    print("Declaración de variable válida o expresión válida.")
+    '''statement :  expression'''
 
 # Declaración de variables locales
 def p_local_var(p):
-    '''local_var : IDENTIFIER EQUALS INTEGER
-                 | IDENTIFIER EQUALS FLOAT'''
+    '''statement : IDENTIFIER ASSIGN INTEGER
+                 | IDENTIFIER ASSIGN FLOAT'''
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
 
 # Parte de Giovanni 
 
 def p_instance_var(p):
-    '''statement : INSTANCE_VAR EQUALS INTEGER
-                 | INSTANCE_VAR EQUALS FLOAT'''
+    '''statement : INSTANCE_VAR ASSIGN INTEGER
+                 | INSTANCE_VAR ASSIGN FLOAT'''
     print(f"Instance variable {p[1]} assigned with value {p[3]}")
 
 def p_set(p):
-    '''expression : SETNEW LPAREN optional_elements RPAREN'''
+    '''statement : SETNEW LPAREN optional_elements RPAREN'''
     p[0] = set(p[3]) if p[3] else set()
     print(f"Set created with elements: {p[0]}")
 
@@ -70,7 +68,7 @@ def p_while_statement(p):
     print(f"While loop: While {p[2]}, execute {p[3]}")
 
 def p_gets_statement(p):
-    '''statement : IDENTIFIER EQUALS GETS'''
+    '''statement : IDENTIFIER ASSIGN GETS'''
     print(f"User input stored in variable {p[1]}")
     
 def p_method_with_params_declaration(p):
@@ -88,24 +86,21 @@ def p_expression_term(p):
     p[0] = p[1]
 
 def p_term_div(p):
-    'term : term DIVIDE factor'
+    'term : factor DIVIDE factor'
     p[0] = p[1] / p[3]    
 
 def p_term_times(p):
-    'term : term TIMES factor'
+    'term : factor TIMES factor'
     p[0] = p[1] * p[3]
 
 def p_expression_plus(p):
-    'expression : expression PLUS term'
+    'expression : expression PLUS factor'
     p[0] = p[1] + p[3]
 
 def p_expression_minus(p):
-    'expression : expression MINUS term'
+    'expression : expression MINUS factor'
     p[0] = p[1] - p[3]
 
-def p_term_factor(p):
-    'term : factor'
-    p[0] = p[1]
 
 def p_factor_num(p):
     '''factor : INTEGER
@@ -153,12 +148,15 @@ def p_range(p):
 
 # Impresión con puts
 def p_puts_statement(p):
-    '''statement : PUTS expression'''
+    '''statement : PUTS statement'''
     print(f"Imprimiendo con puts: {p[2]}")
 
 # Manejo de errores
 def p_error(p):
-    print("Error de sintaxis en la entrada.")
+    if p:
+        print(f"Error de sintaxis en la línea {p.lineno}: Token inesperado '{p.value}'")
+    else:
+        print("Error de sintaxis: Fin de archivo inesperado.")
 
 # Crear el analizador sintáctico
 parser = yacc.yacc()
@@ -167,7 +165,11 @@ parser = yacc.yacc()
 def test_parser(input_code):
     print("Parsing Ruby code:")
     print(input_code)
-    result = parser.parse(input_code)
-    print("Parse finished.")
+    try:
+        parser.parse(input_code)
+        return True
+    except Exception as e:
+        print("Error de sintaxis en la entrada.")
+        return False
 
 __all__ = ["parser", "test_parser"]
