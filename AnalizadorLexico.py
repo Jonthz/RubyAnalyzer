@@ -15,8 +15,8 @@ def get_github_username():
 # Definición de los tokens
 tokens = [
     'DEF', 'IDENTIFIER', 'LBRACKET', 'RBRACKET', 'ASSIGN',
-    'LPAREN', 'RPAREN', 'HASH_ROCKET' ,'FOR', 'IN', 'DOT', 'RANGE', 'MINUS', 'GETS', 'SETNEW',
-    'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING', 'DOUBLE_DOT',
+    'LPAREN', 'RPAREN', 'HASH_ROCKET' ,'FOR', 'IN', 'DOT', 'RANGE', 'MINUS', 'GETS', 'SET',
+    'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING',
 #fin de GIOVANNI
     'LBRACE', 'RBRACE', 'PIPE', 'COMMA', 'SEMICOLON', 
     'EQUALS', 'LESS', 'TIMES', 'DIVIDE', 'MOD', 'POWER',
@@ -38,7 +38,7 @@ t_COMMA = r','
 t_SEMICOLON = r';'
 # Parte de GIOVANNI
 t_DOT = r'\.'
-t_DOUBLE_DOT = r'\.\.'
+
 t_RANGE = r'\.\.|\.{3}'
 t_MINUS = r'-'
 t_PLUS = r'\+'
@@ -59,7 +59,7 @@ t_SPACESHIP = r'<=>'
 t_AND = r'&&'
 t_OR = r'\|\|'
 t_NOT = r'!'
-t_SETNEW = r'Set\.new'
+t_SET = r'Set'
 t_GETS = r'gets'
 
 
@@ -94,6 +94,8 @@ keywords = {
     'return': 'RETURN',
     'puts': 'PUTS',
     'gets': 'GETS',
+    'Set': 'SET',
+    'new': 'NEW'
 }
 #fin de GIOVANNI
 
@@ -105,7 +107,7 @@ for keyword in keywords:
 
 
 def t_IDENTIFIER(t):
-    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    r'[a-zA-Z_][a-zA-Z0-9_]*\??'
     # Primero verificar si es una palabra clave
     t.type = keywords.get(t.value, None)
     if t.type is None:

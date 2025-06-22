@@ -1,0 +1,26 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:27:06
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+def greet(name)
+  puts "Hello, #{name}"
+end
+
+user_input = gets
+@counter = 0
+numbers = Set.new([1, 2, 2, 3])
+
+while @counter < 3
+  greet(user_input)
+  @counter = @counter + 1
+end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 58: Token inesperado 'end'
+Error sintáctico en línea 62: Token inesperado 'Set'
+Error sintáctico en línea 62: Token inesperado ','
+Error sintáctico en línea 65: Token inesperado 'greet'
+Error sintáctico en línea 66: Token inesperado '@counter'
+Error durante el análisis: can only concatenate str (not "int") to str

@@ -19,12 +19,16 @@ def p_program(p):
 
 # Definición de los parámetros de un método
 def p_params(p):
+    '''params : expression
+              | params COMMA expression'''
+    if len(p) == 2:
+        p[0] = [p[1]]  # Un solo argumento
+    else:
+        p[0] = p[1] + [p[3]]  # Varios argumentos
+
+def p_params_declaration(p):
     '''params : IDENTIFIER
               | params COMMA IDENTIFIER'''
-    if len(p) == 2:
-        p[0] = [p[1]]  # Un solo parámetro
-    else:
-        p[0] = p[1] + [p[3]]  # Varios parámetros, agregamos el nuevo
 
 def p_statements(p):
     '''statements : statement
@@ -142,7 +146,7 @@ def p_expression_comparison(p):
 # Declaración de método sin parámetros
 def p_method_without_params_declaration(p):
     '''statement : DEF IDENTIFIER statements END'''
-    p[0] = f"def {p[2]} {p[3]}"
+    p[0] = f"def {p[2]} con cuerpo {p[3]}"
     print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
 
 # Llamada a métodos sin parámetros
@@ -192,9 +196,11 @@ def p_instance_var(p):
     print(f"Instance variable {p[1]} assigned with value {p[3]}")
 
 def p_set(p):
-    '''statement : SETNEW LPAREN optional_elements RPAREN'''
-    p[0] = set(p[3]) if p[3] else set()
+    '''expression : SET DOT NEW LPAREN elements RPAREN
+                  | SET DOT NEW'''
+    p[0] = set(p[5]) if p[5] else set()
     print(f"Set created with elements: {p[0]}")
+
 
 def p_optional_elements(p):
     '''optional_elements : elements
@@ -202,7 +208,7 @@ def p_optional_elements(p):
     p[0] = p[1]
 
 def p_empty(p):
-    'empty :'
+    '''empty :'''
     p[0] = []
 
 def p_while_statement(p):
@@ -217,14 +223,37 @@ def p_method_with_params_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
     print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
 
-def p_method_call_with_params(p):
-    '''statement : IDENTIFIER LPAREN params RPAREN'''
-    print(f"Method call: {p[1]} with arguments {p[3]}")
+def p_while_statement(p):
+    '''statement : WHILE expression statements END'''
+    print(f"While loop: While {p[2]}, execute {p[3]}")
+
+def p_raise_statement(p):
+    '''statement : RAISE expression
+                 | RAISE STRING'''
+    print(f"Raise lanzado con mensaje: {p[2]}")
+
+def p_begin_rescue_ensure(p):
+    '''statement : BEGIN statements RESCUE statements ENSURE statements END'''
+    print("Bloque begin-rescue-ensure ejecutado")
+
+
+def p_range_expr(p):
+    '''range : expression RANGE expression'''
+    p[0] = f"{p[1]}..{p[3]}"
+
+def p_expression_and(p):
+    '''expression : expression AND expression'''
+    p[0] = f"({p[1]} && {p[3]})"
+
+def p_expression_or(p):
+    '''expression : expression OR expression'''
+    p[0] = f"({p[1]} || {p[3]})"
+
 
 # fin de parte de Giovanni
 
 def p_expression_term(p):
-    'expression : term'
+    '''expression : term'''
     p[0] = p[1]
 
 def p_term_div(p):
@@ -256,6 +285,7 @@ def p_expression_minus(p):
     p[0] = p[1] - p[3]
 
 
+
 def p_factor_num(p):
     '''factor : INTEGER
               | FLOAT '''
@@ -272,9 +302,9 @@ def p_array(p):
 
 # Elementos dentro del arreglo
 def p_elements(p):
-    '''elements : expression
+    '''elements : statement
                 | elements COMMA  expression
-                | factor
+                | factor COMMA factor
                 | elements COMMA factor'''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo elemento

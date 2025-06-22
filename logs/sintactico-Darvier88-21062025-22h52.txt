@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 22:52:28
+Usuario: Darvier88
+
+--- Código Analizado ---
+v = x + y
+def sum(x,y) v = x + y return v
+& C:/Python312/python.exe "c:/Users/ASUS VIVOBOOK PRO/RubyAnalyzer/main.py"
+
+--- Resultados del Análisis ---
+Error durante el análisis: unsupported operand type(s) for +: 'NoneType' and 'NoneType'
