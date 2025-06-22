@@ -81,8 +81,7 @@ def p_key_value_pairs(p):
 def p_key_value(p):
     '''key_value : STRING HASH_ROCKET expression
                  | STRING HASH_ROCKET STRING
-                 | STRING HASH_ROCKET INTEGER
-                 | STRING HASH_ROCKET FLOAT
+                 | STRING HASH_ROCKET factor
                  | expression HASH_ROCKET expression'''
     p[0] = (p[1], p[3])  # El par clave-valor es un tuple (clave, valor)
     print(f"Par clave-valor: {p[1]} => {p[3]}")
@@ -272,13 +271,12 @@ def p_elements(p):
 
 # Declaración de la estructura `for`
 def p_for_statement(p):
-    '''statement : FOR IDENTIFIER IN range statement'''
+    '''statement : FOR IDENTIFIER IN range statements END'''
     print(f"Estructura For: Iterando de {p[3]} con la variable {p[2]} ejecutando {p[5]}")
 
 # Definición del rango (de número a número)
 def p_range(p):
-    '''range : INTEGER DOUBLE_DOT INTEGER
-             | FLOAT DOUBLE_DOT FLOAT'''
+    '''range : factor RANGE factor'''
     p[0] = f"{p[1]}..{p[3]}"  # Rango de 1..5
 
 # Impresión con puts

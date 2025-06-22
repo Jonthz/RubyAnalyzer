@@ -46,16 +46,14 @@ def main():
             if line == "FIN":
                 break
             lines.append(line)
-        
-        ruby_code = "\n".join(lines)
-        print("\nCódigo Ruby ingresado:")
-        print(ruby_code)
-            
-        # Ejecutar análisis según selección
-        if tipo == "1":
-            test_lexical_analyzer(ruby_code)
-        else:
-            test_parser(ruby_code)
+            ruby_code = "\n".join(lines)
+            print("\nCódigo Ruby ingresado:")
+            print(ruby_code)
+            # Ejecutar análisis según selección
+            if tipo == "1":
+                test_lexical_analyzer(ruby_code)
+            else:
+                test_parser(ruby_code)
 
     elif option == "2":
         algorithm_code = load_algorithm_from_file('algorithms/insertion_sort.rb')
