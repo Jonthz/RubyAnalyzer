@@ -193,12 +193,12 @@ def p_instance_var(p):
     '''statement : INSTANCE_VAR ASSIGN expression
                 | INSTANCE_VAR ASSIGN STRING
                 | INSTANCE_VAR ASSIGN factor'''
-    print(f"Instance variable {p[1]} assigned with value {p[3]}")
+    print(f"Variable de instancia {p[1]} asignada con el valor {p[3]}")
 
 def p_set(p):
     '''expression : SETNEW LPAREN optional_elements RPAREN'''
     p[0] = set(p[3]) if p[3] else set()
-    print(f"Set created with elements: {p[0]}")
+    print(f"Conjunto creado con los elementos: {p[0]}")
 
 
 def p_optional_elements(p):
@@ -211,20 +211,18 @@ def p_empty(p):
     p[0] = []
 
 def p_while_statement(p):
-    '''statement : WHILE expression statement END'''
-    print(f"While loop: While {p[2]}, execute {p[3]}")
+    '''statement : WHILE expression statement END
+                 | WHILE expression statements END'''
+    print(f"Bucle while: Mientras {p[2]}, ejecutar {p[3]}")
+
 
 def p_gets_statement(p):
     '''statement : IDENTIFIER ASSIGN GETS'''
-    print(f"User input stored in variable {p[1]}")
+    print(f"Entrada del usuario almacenada en la variable {p[1]}")
     
 def p_method_with_params_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
-    print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
-
-def p_while_statement(p):
-    '''statement : WHILE expression statements END'''
-    print(f"While loop: While {p[2]}, execute {p[3]}")
+    print(f"Método con parámetros declarado: {p[2]} con parámetros {p[4]} y cuerpo {p[6]}")
 
 def p_raise_statement(p):
     '''statement : RAISE expression
