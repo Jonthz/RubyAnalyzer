@@ -231,16 +231,6 @@ def p_elements(p):
     else:
         p[0] = p[1] + [p[3]]  # Lista con más elementos
 
-# Declaración de método con retorno
-def p_method_with_return_declaration(p):
-    '''statement : DEF IDENTIFIER LPAREN params RPAREN statement END'''
-    print(f"Método con retorno declarado: {p[2]} con los parámetros {p[4]} y cuerpo {p[6]}")
-
-# Llamada a métodos con retorno
-def p_method_call_with_return(p):
-    '''statement : IDENTIFIER LPAREN params RPAREN'''
-    print(f"Llamada al método con retorno {p[1]} con los parámetros {p[3]}")
-
 # Declaración de la estructura `for`
 def p_for_statement(p):
     '''statement : FOR IDENTIFIER IN range statement'''
