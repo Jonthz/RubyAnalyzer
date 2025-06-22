@@ -162,14 +162,14 @@ def p_method_call_without_params(p):
 # Soporte para variables de clase
 def p_class_var(p):
     '''statement : CLASS_VAR ASSIGN expression
-                 | CLASS_VAR ASSIGN STRING'''
+                 | CLASS_VAR ASSIGN factor'''
     print(f"Variable de clase {p[1]} asignada con el valor {p[3]}")
     p[0] = f"{p[1]} = {p[3]}"
 
 # Soporte para constantes
 def p_constant_var(p):
     '''statement : CONSTANT ASSIGN expression
-                 | CONSTANT ASSIGN STRING'''
+                 | CONSTANT ASSIGN factor'''
     print(f"Constante {p[1]} asignada con el valor {p[3]}")
     p[0] = f"{p[1]} = {p[3]}"
 
