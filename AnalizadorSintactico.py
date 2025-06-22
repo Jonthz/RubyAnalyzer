@@ -40,8 +40,7 @@ def p_statement(p):
 
 # Declaración de variables locales
 def p_local_var(p):
-    '''statement : IDENTIFIER ASSIGN INTEGER
-                 | IDENTIFIER ASSIGN FLOAT'''
+    '''statement : IDENTIFIER ASSIGN expression'''
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
 
 # Comienzo Jonathan
@@ -176,8 +175,7 @@ def p_object_assignment(p):
 # Parte de Giovanni 
 
 def p_instance_var(p):
-    '''statement : INSTANCE_VAR ASSIGN INTEGER
-                 | INSTANCE_VAR ASSIGN FLOAT'''
+    '''statement : INSTANCE_VAR ASSIGN expression'''
     print(f"Instance variable {p[1]} assigned with value {p[3]}")
 
 def p_set(p):
@@ -225,11 +223,11 @@ def p_term_times(p):
     p[0] = p[1] * p[3]
 
 def p_expression_plus(p):
-    'expression : expression PLUS factor'
+    'expression : factor PLUS factor'
     p[0] = p[1] + p[3]
 
 def p_expression_minus(p):
-    'expression : expression MINUS factor'
+    'expression : factor MINUS factor'
     p[0] = p[1] - p[3]
 
 
@@ -271,6 +269,19 @@ def p_range(p):
 def p_puts_statement(p):
     '''statement : PUTS statement'''
     print(f"Imprimiendo con puts: {p[2]}")
+
+def p_method_with_return(p):
+    '''method : DEF IDENTIFIER LPAREN params RPAREN return_statement END'''
+    # La acción semántica aquí se encarga de capturar el nombre del método, los parámetros
+    # y la declaración 'return' junto con su valor
+    p[0] = f"Method {p[2]} with parameters {p[4]} returns {p[6]}"
+
+def p_return_statement(p):
+    '''return_statement : RETURN statement
+                        | RETURN expression'''
+    # Esta regla maneja el caso en que el método contiene 'return'
+    p[0] = f"Return statement with value {p[2]}"
+
 
 # Manejo de errores
 def p_error(p):
