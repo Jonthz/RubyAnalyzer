@@ -196,9 +196,10 @@ def p_instance_var(p):
     print(f"Variable de instancia {p[1]} asignada con el valor {p[3]}")
 
 def p_set(p):
-    '''expression : SETNEW LPAREN optional_elements RPAREN'''
-    p[0] = set(p[3]) if p[3] else set()
-    print(f"Conjunto creado con los elementos: {p[0]}")
+    '''expression : SET DOT NEW LPAREN elements RPAREN
+                  | SET DOT NEW'''
+    p[0] = set(p[5]) if p[5] else set()
+    print(f"Set created with elements: {p[0]}")
 
 
 def p_optional_elements(p):
@@ -235,7 +236,7 @@ def p_begin_rescue_ensure(p):
 
 
 def p_range_expr(p):
-    '''range : expression DOUBLE_DOT expression'''
+    '''range : expression RANGE expression'''
     p[0] = f"{p[1]}..{p[3]}"
 
 def p_expression_and(p):
@@ -254,19 +255,31 @@ def p_expression_term(p):
     p[0] = p[1]
 
 def p_term_div(p):
-    '''term : factor DIVIDE factor'''
+    '''term : factor DIVIDE factor
+            | statement DIVIDE statement
+            | factor DIVIDE statement
+            | statement DIVIDE factor'''
     p[0] = p[1] / p[3]    
 
 def p_term_times(p):
-    '''term : factor TIMES factor'''
+    '''term : factor TIMES factor
+            | statement TIMES statement
+            | factor TIMES statement
+            | statement TIMES factor'''
     p[0] = p[1] * p[3]
 
 def p_expression_plus(p):
-    'term : factor PLUS factor'
+    '''term : factor PLUS factor
+            | statement PLUS statement
+            | factor PLUS statement
+            | statement PLUS factor'''
     p[0] = p[1] + p[3]
 
 def p_expression_minus(p):
-    'term : factor MINUS factor'
+    '''term : factor MINUS factor
+            | statement MINUS statement
+            | factor MINUS statement
+            | statement MINUS factor'''
     p[0] = p[1] - p[3]
 
 
@@ -287,9 +300,9 @@ def p_array(p):
 
 # Elementos dentro del arreglo
 def p_elements(p):
-    '''elements : expression
+    '''elements : statement
                 | elements COMMA  expression
-                | factor
+                | factor COMMA factor
                 | elements COMMA factor'''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo elemento
@@ -312,6 +325,11 @@ def p_puts_statement(p):
                 | PUTS STRING
                 | PUTS factor'''
     print(f"Imprimiendo con puts: {p[2]}")
+
+def p_method_with_return_declaration(p):
+    '''statement : DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
+                |  DEF IDENTIFIER statements RETURN statements END '''
+    print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
 
 
 
