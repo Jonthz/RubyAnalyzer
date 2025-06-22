@@ -194,7 +194,6 @@ def p_empty(p):
     'empty :'
     p[0] = []
 
-
 def p_while_statement(p):
     '''statement : WHILE expression statement END'''
     print(f"While loop: While {p[2]}, execute {p[3]}")
@@ -202,13 +201,13 @@ def p_while_statement(p):
 def p_gets_statement(p):
     '''statement : IDENTIFIER ASSIGN GETS'''
     print(f"User input stored in variable {p[1]}")
-
+    
 def p_method_with_params_declaration(p):
-    '''statement : DEF ID LPAREN params RPAREN statement END'''
+    '''statement : DEF IDENTIFIER LPAREN params RPAREN statement END'''
     print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
 
 def p_method_call_with_params(p):
-    '''statement : ID LPAREN params RPAREN'''
+    '''statement : IDENTIFIER LPAREN params RPAREN'''
     print(f"Method call: {p[1]} with arguments {p[3]}")
 
 # fin de parte de Giovanni
@@ -256,16 +255,6 @@ def p_elements(p):
         p[0] = [p[1]]  # Un solo elemento
     else:
         p[0] = p[1] + [p[3]]  # Lista con más elementos
-
-# Declaración de método con retorno
-def p_method_with_return_declaration(p):
-    '''statement : DEF IDENTIFIER LPAREN params RPAREN statement END'''
-    print(f"Método con retorno declarado: {p[2]} con los parámetros {p[4]} y cuerpo {p[6]}")
-
-# Llamada a métodos con retorno
-def p_method_call_with_return(p):
-    '''statement : IDENTIFIER LPAREN params RPAREN'''
-    print(f"Llamada al método con retorno {p[1]} con los parámetros {p[3]}")
 
 # Declaración de la estructura `for`
 def p_for_statement(p):
