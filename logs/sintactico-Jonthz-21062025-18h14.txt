@@ -1,0 +1,31 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 18:14:48
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Ejemplos simples de if
+$edad = 18
+if $edad >= 18
+  puts "Es mayor de edad"
+end
+
+# If con else
+if $edad < 18
+  puts "Es menor de edad"
+else
+  puts "Es mayor de edad"
+end
+
+# If con elsif
+$puntuacion = 85
+if $puntuacion >= 90
+  puts "Excelente"
+elsif $puntuacion >= 80
+  puts "Muy bien"
+else
+  puts "Bien"
+end
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos
