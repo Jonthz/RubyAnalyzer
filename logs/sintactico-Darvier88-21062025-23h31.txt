@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 23:31:53
+Usuario: Darvier88
+
+--- Código Analizado ---
+x = 10
+y = 5
+x - y
+
+--- Resultados del Análisis ---
+Error durante el análisis: unsupported operand type(s) for -: 'NoneType' and 'NoneType'
