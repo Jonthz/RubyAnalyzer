@@ -1,0 +1,223 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    AND
+    BEGIN
+    BITWISE_AND
+    BREAK
+    CASE
+    CLASS_VAR
+    COMMENT
+    CONSTANT
+    DIVIDE_ASSIGN
+    DO
+    ENSURE
+    FALSE
+    FLOOR_DIVIDE
+    LAMBDA
+    MINUS_ASSIGN
+    MOD
+    MODULE
+    MOD_ASSIGN
+    NEXT
+    NIL
+    NOT
+    OR
+    PIPE
+    PLUS_ASSIGN
+    POWER_ASSIGN
+    PROC
+    QUESTION_MARK
+    RAISE
+    RANGE
+    REDO
+    REQUIRE
+    RESCUE
+    RETRY
+    RETURN
+    SELF
+    SEMICOLON
+    SPACESHIP
+    SUPER
+    TIMES_ASSIGN
+    TRUE
+    UNTIL
+    WHEN
+    YIELD
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> statements END
+Rule 2     program -> statements
+Rule 3     params -> IDENTIFIER
+Rule 4     params -> params COMMA IDENTIFIER
+Rule 5     statements -> statement
+Rule 6     statements -> statements statement
+Rule 7     statement -> expression
+Rule 8     statement -> IDENTIFIER ASSIGN INTEGER
+Rule 9     statement -> IDENTIFIER ASSIGN FLOAT
+Rule 10    statement -> GLOBAL_VAR ASSIGN STRING
+Rule 11    statement -> GLOBAL_VAR ASSIGN expression
+Rule 12    factor -> factor POWER factor
+Rule 13    factor -> STRING
+Rule 14    expression -> LBRACE key_value_pairs RBRACE
+Rule 15    expression -> LBRACE RBRACE
+Rule 16    key_value_pairs -> key_value
+Rule 17    key_value_pairs -> key_value_pairs COMMA key_value
+Rule 18    key_value -> expression HASH_ROCKET expression
+Rule 19    expression -> IDENTIFIER
+Rule 20    expression -> GLOBAL_VAR
+Rule 21    expression -> INSTANCE_VAR
+Rule 22    statement -> statement statement
+Rule 23    statement -> IF expression statement END
+Rule 24    statement -> IF expression statement ELSE statement END
+Rule 25    statement -> IF expression statement ELSIF expression statement END
+Rule 26    statement -> IF expression statement ELSIF expression statement ELSE statement END
+Rule 27    expression -> expression GREATER expression
+Rule 28    expression -> expression LESS expression
+Rule 29    expression -> expression GREATER_EQUAL expression
+Rule 30    expression -> expression LESS_EQUAL expression
+Rule 31    expression -> expression EQUALS expression
+Rule 32    expression -> expression NOT_EQUALS expression
+Rule 33    statement -> DEF IDENTIFIER statement END
+Rule 34    statement -> IDENTIFIER
+Rule 35    statement -> CLASS IDENTIFIER statement END
+Rule 36    statement -> CLASS IDENTIFIER END
+Rule 37    expression -> IDENTIFIER DOT NEW
+Rule 38    expression -> IDENTIFIER DOT NEW LPAREN RPAREN
+Rule 39    statement -> IDENTIFIER ASSIGN expression
+Rule 40    statement -> INSTANCE_VAR ASSIGN INTEGER
+Rule 41    statement -> INSTANCE_VAR ASSIGN FLOAT
+Rule 42    statement -> SETNEW LPAREN optional_elements RPAREN
+Rule 43    optional_elements -> elements
+Rule 44    optional_elements -> empty
+Rule 45    empty -> <empty>
+Rule 46    statement -> WHILE expression statement END
+Rule 47    statement -> IDENTIFIER ASSIGN GETS
+Rule 48    statement -> DEF ID LPAREN params RPAREN statement END
+Rule 49    statement -> ID LPAREN params RPAREN
+Rule 50    expression -> term
+Rule 51    term -> factor DIVIDE factor
+Rule 52    term -> factor TIMES factor
+Rule 53    expression -> expression PLUS factor
+Rule 54    expression -> expression MINUS factor
+Rule 55    factor -> INTEGER
+Rule 56    factor -> FLOAT
+Rule 57    factor -> LPAREN expression RPAREN
+Rule 58    expression -> LBRACKET elements RBRACKET
+Rule 59    elements -> expression
+Rule 60    elements -> elements COMMA expression
+Rule 61    statement -> DEF IDENTIFIER LPAREN params RPAREN statement END
+Rule 62    statement -> IDENTIFIER LPAREN params RPAREN
+Rule 63    statement -> FOR IDENTIFIER IN range statement
+Rule 64    range -> INTEGER DOUBLE_DOT INTEGER
+Rule 65    range -> FLOAT DOUBLE_DOT FLOAT
+Rule 66    statement -> PUTS statement
+
+Terminals, with rules where they appear
+
+AND                  : 
+ASSIGN               : 8 9 10 11 39 40 41 47
+BEGIN                : 
+BITWISE_AND          : 
+BREAK                : 
+CASE                 : 
+CLASS                : 35 36
+CLASS_VAR            : 
+COMMA                : 4 17 60
+COMMENT              : 
+CONSTANT             : 
+DEF                  : 33 48 61
+DIVIDE               : 51
+DIVIDE_ASSIGN        : 
+DO                   : 
+DOT                  : 37 38
+DOUBLE_DOT           : 64 65
+ELSE                 : 24 26
+ELSIF                : 25 26
+END                  : 1 23 24 25 26 33 35 36 46 48 61
+ENSURE               : 
+EQUALS               : 31
+FALSE                : 
+FLOAT                : 9 41 56 65 65
+FLOOR_DIVIDE         : 
+FOR                  : 63
+GETS                 : 47
+GLOBAL_VAR           : 10 11 20
+GREATER              : 27
+GREATER_EQUAL        : 29
+HASH_ROCKET          : 18
+IDENTIFIER           : 3 4 8 9 19 33 34 35 36 37 38 39 47 61 62 63
+IF                   : 23 24 25 26
+IN                   : 63
+INSTANCE_VAR         : 21 40 41
+INTEGER              : 8 40 55 64 64
+LAMBDA               : 
+LBRACE               : 14 15
+LBRACKET             : 58
+LESS                 : 28
+LESS_EQUAL           : 30
+LPAREN               : 38 42 48 49 57 61 62
+MINUS                : 54
+MINUS_ASSIGN         : 
+MOD                  : 
+MODULE               : 
+MOD_ASSIGN           : 
+NEW                  : 37 38
+NEXT                 : 
+NIL                  : 
+NOT                  : 
+NOT_EQUALS           : 32
+OR                   : 
+PIPE                 : 
+PLUS                 : 53
+PLUS_ASSIGN          : 
+POWER                : 12
+POWER_ASSIGN         : 
+PROC                 : 
+PUTS                 : 66
+QUESTION_MARK        : 
+RAISE                : 
+RANGE                : 
+RBRACE               : 14 15
+RBRACKET             : 58
+REDO                 : 
+REQUIRE              : 
+RESCUE               : 
+RETRY                : 
+RETURN               : 
+RPAREN               : 38 42 48 49 57 61 62
+SELF                 : 
+SEMICOLON            : 
+SETNEW               : 42
+SPACESHIP            : 
+STRING               : 10 13
+SUPER                : 
+TIMES                : 52
+TIMES_ASSIGN         : 
+TRUE                 : 
+UNTIL                : 
+WHEN                 : 
+WHILE                : 46
+YIELD                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+ID                   : 48 49
+elements             : 43 58 60
+empty                : 44
+expression           : 7 11 18 18 23 24 25 25 26 26 27 27 28 28 29 29 30 30 31 31 32 32 39 46 53 54 57 59 60
+factor               : 12 12 51 51 52 52 53 54
+key_value            : 16 17
+key_value_pairs      : 14 17
+optional_elements    : 42
+params               : 4 48 49 61 62
+program              : 0
+range                : 63
+statement            : 5 6 22 22 23 24 24 25 25 26 26 26 33 35 46 48 61 63 66
+statements           : 1 2 6
+term                 : 50
+
