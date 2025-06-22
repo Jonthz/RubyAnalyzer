@@ -38,15 +38,13 @@ def p_statement(p):
 
 # Declaración de variables locales
 def p_local_var(p):
-    '''statement : IDENTIFIER ASSIGN INTEGER
-                 | IDENTIFIER ASSIGN FLOAT'''
+    '''statement : IDENTIFIER ASSIGN expression'''
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
 
 # Parte de Giovanni 
 
 def p_instance_var(p):
-    '''statement : INSTANCE_VAR ASSIGN INTEGER
-                 | INSTANCE_VAR ASSIGN FLOAT'''
+    '''statement : INSTANCE_VAR ASSIGN expression'''
     print(f"Instance variable {p[1]} assigned with value {p[3]}")
 
 def p_set(p):
@@ -73,11 +71,11 @@ def p_gets_statement(p):
     print(f"User input stored in variable {p[1]}")
 
 def p_method_with_params_declaration(p):
-    '''statement : DEF ID LPAREN params RPAREN statement END'''
+    '''statement : DEF IDENTIFIER LPAREN params RPAREN statement END'''
     print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
 
 def p_method_call_with_params(p):
-    '''statement : ID LPAREN params RPAREN'''
+    '''statement : IDENTIFIER LPAREN params RPAREN'''
     print(f"Method call: {p[1]} with arguments {p[3]}")
 
 # fin de parte de Giovanni
@@ -95,11 +93,11 @@ def p_term_times(p):
     p[0] = p[1] * p[3]
 
 def p_expression_plus(p):
-    'expression : expression PLUS factor'
+    'expression : factor PLUS factor'
     p[0] = p[1] + p[3]
 
 def p_expression_minus(p):
-    'expression : expression MINUS factor'
+    'expression : factor MINUS factor'
     p[0] = p[1] - p[3]
 
 
@@ -125,16 +123,6 @@ def p_elements(p):
         p[0] = [p[1]]  # Un solo elemento
     else:
         p[0] = p[1] + [p[3]]  # Lista con más elementos
-
-# Declaración de método con retorno
-def p_method_with_return_declaration(p):
-    '''statement : DEF IDENTIFIER LPAREN params RPAREN statement END'''
-    print(f"Método con retorno declarado: {p[2]} con los parámetros {p[4]} y cuerpo {p[6]}")
-
-# Llamada a métodos con retorno
-def p_method_call_with_return(p):
-    '''statement : IDENTIFIER LPAREN params RPAREN'''
-    print(f"Llamada al método con retorno {p[1]} con los parámetros {p[3]}")
 
 # Declaración de la estructura `for`
 def p_for_statement(p):

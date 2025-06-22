@@ -49,7 +49,8 @@ def main():
                 break
             lines.append(line)  # Añadir la línea al arreglo
             print(f"Procesando línea: {line}")  # Mostrar el procesamiento de la línea
-            # Añadir las triples comillas al principio y final del código
+            # Añadir las triples comillas al principio y final2
+            #  del código
             ruby_code = "\n".join(lines) 
             print("\nCódigo Ruby ingresado:")
             # Ejecutar análisis según selección
