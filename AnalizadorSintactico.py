@@ -141,7 +141,7 @@ def p_expression_comparison(p):
 
 # Declaración de método sin parámetros
 def p_method_without_params_declaration(p):
-    '''statement : DEF IDENTIFIER statement END'''
+    '''statement : DEF IDENTIFIER statements END'''
     p[0] = f"def {p[2]} {p[3]}"
     print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
 
@@ -214,7 +214,7 @@ def p_gets_statement(p):
     print(f"User input stored in variable {p[1]}")
     
 def p_method_with_params_declaration(p):
-    '''statement : DEF IDENTIFIER LPAREN params RPAREN statement END'''
+    '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
     print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
 
 def p_method_call_with_params(p):
@@ -228,19 +228,31 @@ def p_expression_term(p):
     p[0] = p[1]
 
 def p_term_div(p):
-    'term : factor DIVIDE factor'
+    '''term : factor DIVIDE factor
+            | statement DIVIDE statement
+            | factor DIVIDE statement
+            | statement DIVIDE factor'''
     p[0] = p[1] / p[3]    
 
 def p_term_times(p):
-    'term : factor TIMES factor'
+    '''term : factor TIMES factor
+            | statement TIMES statement
+            | factor TIMES statement
+            | statement TIMES factor'''
     p[0] = p[1] * p[3]
 
 def p_expression_plus(p):
-    'term : factor PLUS factor'
+    '''term : factor PLUS factor
+            | statement PLUS statement
+            | factor PLUS statement
+            | statement PLUS factor'''
     p[0] = p[1] + p[3]
 
 def p_expression_minus(p):
-    'term : factor MINUS factor'
+    '''term : factor MINUS factor
+            | statement MINUS statement
+            | factor MINUS statement
+            | statement MINUS factor'''
     p[0] = p[1] - p[3]
 
 
@@ -285,6 +297,11 @@ def p_puts_statement(p):
                 | PUTS STRING
                 | PUTS factor'''
     print(f"Imprimiendo con puts: {p[2]}")
+
+def p_method_with_return_declaration(p):
+    '''statement : DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
+                |  DEF IDENTIFIER statements RETURN statements END '''
+    print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
 
 
 
