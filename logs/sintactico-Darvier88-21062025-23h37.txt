@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 23:37:31
+Usuario: Darvier88
+
+--- Código Analizado ---
+CONSTANT ventas 10000
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 1: Token inesperado 'ventas'

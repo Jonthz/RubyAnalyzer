@@ -1,0 +1,15 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 22:54:54
+Usuario: Darvier88
+
+--- Código Analizado ---
+x = 5 + 5
+x = y + z
+{ "nombre" => "Juan", "edad" => 25, "ciudad" => "Guayaquil" }
+Set.new(1,2,4)
+Set.new()
+[10,20,30
+
+--- Resultados del Análisis ---
+Error durante el análisis: unsupported operand type(s) for +: 'NoneType' and 'NoneType'

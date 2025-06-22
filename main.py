@@ -36,26 +36,42 @@ def main():
     print("4. Usar algoritmo de prueba Class")
     print("5. Usar algoritmo de prueba temp")
     print("6. Salir")
-    
+
     option = input("\nOpción: ")
+
     if option == "1":
         print("\nIngrese código Ruby (escriba 'FIN' en una línea para terminar):")
+        
+        # Crear una lista para almacenar las líneas del código
         lines = []
+        
         while True:
+            # Leer la entrada del usuario
             line = input()
+            
+            # Salir del bucle si se ingresa 'FIN'
             if line == "FIN":
                 break
+            
+            # Agregar la línea a la lista de líneas
             lines.append(line)
         
+        # Unir todas las líneas en un solo bloque de código
         ruby_code = "\n".join(lines)
-        print("\nCódigo Ruby ingresado:")
-        print(ruby_code)
-            
-        # Ejecutar análisis según selección
-        if tipo == "1":
-            test_lexical_analyzer(ruby_code)
+        
+        # Verificar si el código está vacío después de ingresar 'FIN'
+        if ruby_code.strip() == "":  # Si ruby_code está vacío (sin código), no hacer análisis
+            print("No se ingresó código Ruby. Análisis cancelado.")
         else:
-            test_parser(ruby_code)
+            print("\nCódigo Ruby ingresado:")
+            print(ruby_code)
+            
+            # Ejecutar análisis según la selección
+            if tipo == "1":
+                test_lexical_analyzer(ruby_code)
+            else:
+                test_parser(ruby_code)
+
 
     elif option == "2":
         algorithm_code = load_algorithm_from_file('algorithms/insertion_sort.rb')

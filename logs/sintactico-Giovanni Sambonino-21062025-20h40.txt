@@ -1,0 +1,25 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:40:39
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+def greet(name)
+  puts "Hello, #{name}"
+end
+
+user_input = gets
+@counter = 0
+numbers = Set.new([1, 2, 2, 3])
+
+while @counter < 3
+  greet(user_input)
+  @counter = @counter + 1
+end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 3: Token inesperado 'end'
+Error sintáctico en línea 7: Token inesperado 'numbers'
+Error sintáctico en línea 7: Token inesperado ','
+Error sintáctico en línea 10: Token inesperado 'greet'
+Error sintáctico en línea 11: Token inesperado '@counter'

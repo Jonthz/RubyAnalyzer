@@ -19,6 +19,14 @@ def p_program(p):
 
 # Definición de los parámetros de un método
 def p_params(p):
+    '''params : expression
+              | params COMMA expression'''
+    if len(p) == 2:
+        p[0] = [p[1]]  # Un solo argumento
+    else:
+        p[0] = p[1] + [p[3]]  # Varios argumentos
+
+def p_params_declaration(p):
     '''params : IDENTIFIER
               | params COMMA IDENTIFIER
               | params COMMA STRING'''
@@ -86,8 +94,7 @@ def p_key_value_pairs(p):
 def p_key_value(p):
     '''key_value : STRING HASH_ROCKET expression
                  | STRING HASH_ROCKET STRING
-                 | STRING HASH_ROCKET INTEGER
-                 | STRING HASH_ROCKET FLOAT
+                 | STRING HASH_ROCKET factor
                  | expression HASH_ROCKET expression'''
     p[0] = (p[1], p[3])  # El par clave-valor es un tuple (clave, valor)
     print(f"Par clave-valor: {p[1]} => {p[3]}")
@@ -153,8 +160,8 @@ def p_expression_comparison(p):
 
 # Declaración de método sin parámetros
 def p_method_without_params_declaration(p):
-    '''statement : DEF IDENTIFIER statement END'''
-    p[0] = f"def {p[2]} {p[3]}"
+    '''statement : DEF IDENTIFIER statements END'''
+    p[0] = f"def {p[2]} con cuerpo {p[3]}"
     print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
 
 # Llamada a métodos sin parámetros
@@ -170,14 +177,14 @@ def p_method_call_without_params(p):
 # Soporte para variables de clase
 def p_class_var(p):
     '''statement : CLASS_VAR ASSIGN expression
-                 | CLASS_VAR ASSIGN STRING'''
+                 | CLASS_VAR ASSIGN factor'''
     print(f"Variable de clase {p[1]} asignada con el valor {p[3]}")
     p[0] = f"{p[1]} = {p[3]}"
 
 # Soporte para constantes
 def p_constant_var(p):
     '''statement : CONSTANT ASSIGN expression
-                 | CONSTANT ASSIGN STRING'''
+                 | CONSTANT ASSIGN factor'''
     print(f"Constante {p[1]} asignada con el valor {p[3]}")
     p[0] = f"{p[1]} = {p[3]}"
 
@@ -257,9 +264,11 @@ def p_instance_var(p):
     p[0] = f"{p[1]} = {p[3]}"
 
 def p_set(p):
-    '''statement : SETNEW LPAREN optional_elements RPAREN'''
-    p[0] = set(p[3]) if p[3] else set()
+    '''expression : SET DOT NEW LPAREN elements RPAREN
+                  | SET DOT NEW'''
+    p[0] = set(p[5]) if p[5] else set()
     print(f"Set created with elements: {p[0]}")
+
 
 def p_optional_elements(p):
     '''optional_elements : elements
@@ -267,31 +276,57 @@ def p_optional_elements(p):
     p[0] = p[1]
 
 def p_empty(p):
-    'empty :'
+    '''empty :'''
     p[0] = []
 
 def p_while_statement(p):
-    '''statement : WHILE expression statement END'''
-    print(f"While loop: While {p[2]}, execute {p[3]}")
+    '''statement : WHILE expression statement END
+                 | WHILE expression statements END'''
     p[0] = f"while ({p[2]}) {{{p[3]}}}"
+    print(f"Bucle while: Mientras {p[2]}, ejecutar {p[3]}")
+
 
 def p_gets_statement(p):
     '''statement : IDENTIFIER ASSIGN GETS'''
-    print(f"User input stored in variable {p[1]}")
     p[0] = f"{p[1]} = gets"
-
+    print(f"Entrada del usuario almacenada en la variable {p[1]}")
+    
 def p_method_with_params_declaration(p):
-    '''statement : DEF IDENTIFIER LPAREN params RPAREN statement END'''
-    print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
+    '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
+    print(f"Método con parámetros declarado: {p[2]} con parámetros {p[4]} y cuerpo {p[6]}")
 
-def p_method_call_with_params(p):
-    '''statement : IDENTIFIER LPAREN params RPAREN'''
-    print(f"Method call: {p[1]} with arguments {p[3]}")
+def p_raise_statement(p):
+    '''statement : RAISE expression
+                 | RAISE STRING'''
+    print(f"Raise lanzado con mensaje: {p[2]}")
+
+def p_begin_rescue_ensure(p):
+    '''statement : BEGIN statements RESCUE statements ENSURE statements END'''
+    print("Bloque begin-rescue-ensure ejecutado")
+
+
+def p_range_expr(p):
+    '''range : expression RANGE expression'''
+    p[0] = f"{p[1]}..{p[3]}"
+
+def p_expression_and(p):
+    '''expression : expression AND expression'''
+    p[0] = f"({p[1]} && {p[3]})"
+
+def p_expression_or(p):
+    '''expression : expression OR expression'''
+    p[0] = f"({p[1]} || {p[3]})"
+
 
 # fin de parte de Giovanni
 
 def p_expression_term(p):
-    'expression : term'
+    '''expression : term'''
+    p[0] = p[1]
+    print(f"Expresión: {p[1]}")
+
+def p_term_single(p):
+    'term : factor'
     p[0] = p[1]
     print(f"Expresión: {p[1]}")
 
@@ -300,20 +335,33 @@ def p_term_single(p):
     p[0] = p[1]
 
 def p_term_div(p):
-    'term : factor DIVIDE factor'
+    '''term : factor DIVIDE factor
+            | statement DIVIDE statement
+            | factor DIVIDE statement
+            | statement DIVIDE factor'''
     p[0] = p[1] / p[3]    
 
 def p_term_times(p):
-    'term : factor TIMES factor'
+    '''term : factor TIMES factor
+            | statement TIMES statement
+            | factor TIMES statement
+            | statement TIMES factor'''
     p[0] = p[1] * p[3]
 
 def p_expression_plus(p):
-    'term : factor PLUS factor'
+    '''term : factor PLUS factor
+            | statement PLUS statement
+            | factor PLUS statement
+            | statement PLUS factor'''
     p[0] = p[1] + p[3]
 
 def p_expression_minus(p):
-    'term : factor MINUS factor'
+    '''term : factor MINUS factor
+            | statement MINUS statement
+            | factor MINUS statement
+            | statement MINUS factor'''
     p[0] = p[1] - p[3]
+
 
 
 def p_factor_num(p):
@@ -332,9 +380,9 @@ def p_array(p):
 
 # Elementos dentro del arreglo
 def p_elements(p):
-    '''elements : expression
+    '''elements : statement
                 | elements COMMA  expression
-                | factor
+                | factor COMMA factor
                 | elements COMMA factor'''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo elemento
@@ -343,13 +391,12 @@ def p_elements(p):
 
 # Declaración de la estructura `for`
 def p_for_statement(p):
-    '''statement : FOR IDENTIFIER IN range statement'''
+    '''statement : FOR IDENTIFIER IN range statements END'''
     print(f"Estructura For: Iterando de {p[3]} con la variable {p[2]} ejecutando {p[5]}")
 
 # Definición del rango (de número a número)
 def p_range(p):
-    '''range : INTEGER DOUBLE_DOT INTEGER
-             | FLOAT DOUBLE_DOT FLOAT'''
+    '''range : factor RANGE factor'''
     p[0] = f"{p[1]}..{p[3]}"  # Rango de 1..5
 
 # Impresión con puts
@@ -358,6 +405,11 @@ def p_puts_statement(p):
                 | PUTS STRING
                 | PUTS factor'''
     print(f"Imprimiendo con puts: {p[2]}")
+
+def p_method_with_return_declaration(p):
+    '''statement : DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
+                |  DEF IDENTIFIER statements RETURN statements END '''
+    print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
 
 
 

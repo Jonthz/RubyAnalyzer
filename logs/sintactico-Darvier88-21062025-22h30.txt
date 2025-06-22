@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 22:30:01
+Usuario: Darvier88
+
+--- Código Analizado ---
+sum
+hola
+puts
+
+--- Resultados del Análisis ---
+Error sintáctico: Fin de archivo inesperado
