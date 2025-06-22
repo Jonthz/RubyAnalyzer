@@ -40,7 +40,8 @@ def p_statement(p):
 
 # Declaración de variables locales
 def p_local_var(p):
-    '''statement : IDENTIFIER ASSIGN expression'''
+    '''statement : IDENTIFIER ASSIGN STRING
+                | IDENTIFIER ASSIGN  expression'''
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
 
 # Comienzo Jonathan
@@ -161,21 +162,15 @@ def p_object_instantiation(p):
     p[0] = f"{p[1]}.new()"
     print(f"Instanciación de objeto de la clase {p[1]}")
 
-# Asignación de objetos
-def p_object_assignment(p):
-    '''statement : IDENTIFIER ASSIGN expression'''
-    if isinstance(p[3], str) and ".new" in p[3]:
-        print(f"Variable {p[1]} asignada con nueva instancia de objeto: {p[3]}")
-    else:
-        print(f"Variable {p[1]} asignada con el valor: {p[3]}")
-    p[0] = f"{p[1]} = {p[3]}"
+
 
 # Fin Jonathan
 
 # Parte de Giovanni 
 
 def p_instance_var(p):
-    '''statement : INSTANCE_VAR ASSIGN expression'''
+    '''statement : INSTANCE_VAR ASSIGN expression
+                | INSTANCE_VAR ASSIGN STRING'''
     print(f"Instance variable {p[1]} assigned with value {p[3]}")
 
 def p_set(p):
@@ -267,7 +262,9 @@ def p_range(p):
 
 # Impresión con puts
 def p_puts_statement(p):
-    '''statement : PUTS statement'''
+    '''statement : PUTS statement
+                | PUTS STRING
+                | PUTS factor'''
     print(f"Imprimiendo con puts: {p[2]}")
 
 def p_method_with_return(p):

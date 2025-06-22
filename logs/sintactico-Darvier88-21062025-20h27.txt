@@ -1,0 +1,19 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:27:37
+Usuario: Darvier88
+
+--- Código Analizado ---
+x = 10
+y = 20
+
+if x > 5 and y < 30
+  puts "x es mayor que 5 y y es menor que 30"
+else
+  puts "Condición no cumplida"
+end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 23: Token inesperado 'y'
+Error sintáctico en línea 25: Token inesperado 'and'
+Error sintáctico en línea 26: Token inesperado 'puts'
