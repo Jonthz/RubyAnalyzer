@@ -20,7 +20,8 @@ def p_program(p):
 # Definición de los parámetros de un método
 def p_params(p):
     '''params : IDENTIFIER
-              | params COMMA IDENTIFIER'''
+              | params COMMA IDENTIFIER
+              | params COMMA STRING'''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo parámetro
     else:
@@ -37,12 +38,15 @@ def p_statements(p):
 # Definición de una declaración
 def p_statement(p):
     '''statement :  expression'''
+    print(f"Declaración: {p[1]}")
+    p[0] = p[1]  # Retorna la expresión como declaración
 
 # Declaración de variables locales y asignación de objetos
 def p_local_var(p):
     '''statement : IDENTIFIER ASSIGN STRING
                 | IDENTIFIER ASSIGN  expression
                 | IDENTIFIER ASSIGN factor'''
+    p[0] = f"{p[1]} = {p[3]}" 
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
 
 # Comienzo Jonathan
@@ -51,6 +55,7 @@ def p_global_var(p):
                  | GLOBAL_VAR ASSIGN expression
                  | GLOBAL_VAR ASSIGN factor'''
     print(f"Variable global {p[1]} asignada con el valor {p[3]}")
+    p[0] = f"{p[1]} = {p[3]}"
 
 def p_factor_power(p):
     'factor : factor POWER factor'
@@ -92,6 +97,7 @@ def p_expression_var(p):
                   | GLOBAL_VAR
                   | INSTANCE_VAR'''
     p[0] = p[1]
+    print(f"Expresión de variable: {p[1]}")
 
 def p_statement_block(p):
     '''statement : statement statement'''
@@ -102,6 +108,7 @@ def p_if_statement(p):
                  | IF expression statements ELSE statements END
                  | IF expression statements ELSIF expression statements END
                  | IF expression statements ELSIF expression statements ELSE statements END'''
+    print(f"Condición IF: {p[1]}  {p[2]}  {p[3]} con cuerpo {p[3]}")
     if len(p) == 5:  # if ... end
         p[0] = f"if ({p[2]}) {{{p[3]}}}"
         print(f"Condición IF: Si {p[2]} entonces {p[3]}")
@@ -141,7 +148,8 @@ def p_expression_comparison(p):
         '!=': 'diferente de'
     }
     op_text = operators.get(p[2], p[2])
-    p[0] = f"{p[1]} {op_text} {p[3]}"
+    p[0] = f"{p[1]} {p[2]} {p[3]}"
+    print(f"Expresión de comparación: {p[1]} {op_text} {p[3]}")
 
 # Declaración de método sin parámetros
 def p_method_without_params_declaration(p):
@@ -185,6 +193,58 @@ def p_factor_nil(p):
     '''factor : NIL'''
     p[0] = 'nil'
     print("Valor nil")
+
+def p_class_definition(p):
+    '''statement : CLASS CONSTANT statements END
+                 | CLASS CONSTANT LESS CONSTANT statements END
+                 | CLASS CONSTANT SEMICOLON END'''
+    if len(p) == 5 and p[3] == ';':  # Clase vacía con punto y coma
+        p[0] = f"class {p[2]}; end"
+        print(f"Definición de clase vacía: {p[2]}")
+    elif len(p) == 5:  # Clase normal
+        p[0] = f"class {p[2]} {{{p[3]}}}"
+        print(f"Definición de clase: {p[2]} con contenido {p[3]}")
+    else:  # Clase con herencia
+        p[0] = f"class {p[2]} < {p[4]} {{{p[5]}}}"
+        print(f"Definición de clase con herencia: {p[2]} hereda de {p[4]} con contenido {p[5]}")
+
+def p_class_method(p):
+    '''statement : DEF SELF DOT IDENTIFIER statement END
+                 | DEF SELF DOT IDENTIFIER LPAREN params RPAREN statement END'''
+    if len(p) == 7:  # Sin parámetros
+        p[0] = f"def self.{p[4]} {{{p[5]}}}"
+        print(f"Método de clase declarado: {p[4]} con cuerpo {p[5]}")
+    else:  # Con parámetros
+        p[0] = f"def self.{p[4]}({', '.join(p[6])}) {{{p[8]}}}"
+        print(f"Método de clase con parámetros declarado: {p[4]} con parámetros {p[6]} y cuerpo {p[8]}")
+
+# Inicializador (constructor) para clases
+def p_initialize_method(p):
+    '''statement : DEF INITIALIZE statement END
+                 | DEF INITIALIZE LPAREN params RPAREN statement END'''
+    if len(p) == 5:  # Sin parámetros
+        p[0] = f"def initialize {{{p[3]}}}"
+        print(f"Constructor sin parámetros declarado con cuerpo {p[3]}")
+    else:  # Con parámetros
+        p[0] = f"def initialize({', '.join(p[4])}) {{{p[6]}}}"
+        print(f"Constructor con parámetros declarado con parámetros {p[4]} y cuerpo {p[6]}")
+# Añadir después de las reglas de clase existentes
+
+# Instanciación de objetos
+def p_object_instantiation(p):
+    '''expression : CONSTANT DOT NEW
+                  | CONSTANT DOT NEW LPAREN RPAREN
+                  | CONSTANT DOT NEW LPAREN params RPAREN'''
+    if len(p) == 4:  # MyClass.new
+        p[0] = f"{p[1]}.new"
+        print(f"Instanciación del objeto de clase {p[1]} sin parámetros")
+    elif len(p) == 6:  # MyClass.new()
+        p[0] = f"{p[1]}.new()"
+        print(f"Instanciación del objeto de clase {p[1]} sin parámetros")
+    else:  # MyClass.new(param1, param2)
+        params_str = ', '.join(p[5])
+        p[0] = f"{p[1]}.new({params_str})"
+        print(f"Instanciación del objeto de clase {p[1]} con parámetros: {params_str}")
 # Fin Jonathan
 
 # Parte de Giovanni 
@@ -194,6 +254,7 @@ def p_instance_var(p):
                 | INSTANCE_VAR ASSIGN STRING
                 | INSTANCE_VAR ASSIGN factor'''
     print(f"Instance variable {p[1]} assigned with value {p[3]}")
+    p[0] = f"{p[1]} = {p[3]}"
 
 def p_set(p):
     '''statement : SETNEW LPAREN optional_elements RPAREN'''
@@ -212,11 +273,13 @@ def p_empty(p):
 def p_while_statement(p):
     '''statement : WHILE expression statement END'''
     print(f"While loop: While {p[2]}, execute {p[3]}")
+    p[0] = f"while ({p[2]}) {{{p[3]}}}"
 
 def p_gets_statement(p):
     '''statement : IDENTIFIER ASSIGN GETS'''
     print(f"User input stored in variable {p[1]}")
-    
+    p[0] = f"{p[1]} = gets"
+
 def p_method_with_params_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statement END'''
     print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
@@ -229,6 +292,11 @@ def p_method_call_with_params(p):
 
 def p_expression_term(p):
     'expression : term'
+    p[0] = p[1]
+    print(f"Expresión: {p[1]}")
+
+def p_term_single(p):
+    'term : factor'
     p[0] = p[1]
 
 def p_term_div(p):
