@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:28:58
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+def greet(name)
+
+--- Resultados del Análisis ---
+Error sintáctico: Fin de archivo inesperado

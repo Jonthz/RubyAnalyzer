@@ -92,7 +92,8 @@ keywords = {
     'while': 'WHILE',
     'end': 'END',
     'return': 'RETURN',
-    'puts': 'PUTS'
+    'puts': 'PUTS',
+    'gets': 'GETS'
 }
 #fin de GIOVANNI
 

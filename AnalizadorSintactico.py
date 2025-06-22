@@ -19,12 +19,16 @@ def p_program(p):
 
 # Definición de los parámetros de un método
 def p_params(p):
+    '''params : expression
+              | params COMMA expression'''
+    if len(p) == 2:
+        p[0] = [p[1]]  # Un solo argumento
+    else:
+        p[0] = p[1] + [p[3]]  # Varios argumentos
+
+def p_params_declaration(p):
     '''params : IDENTIFIER
               | params COMMA IDENTIFIER'''
-    if len(p) == 2:
-        p[0] = [p[1]]  # Un solo parámetro
-    else:
-        p[0] = p[1] + [p[3]]  # Varios parámetros, agregamos el nuevo
 
 def p_statements(p):
     '''statements : statement
@@ -156,9 +160,10 @@ def p_instance_var(p):
     print(f"Instance variable {p[1]} assigned with value {p[3]}")
 
 def p_set(p):
-    '''statement : SETNEW LPAREN optional_elements RPAREN'''
+    '''expression : SETNEW LPAREN optional_elements RPAREN'''
     p[0] = set(p[3]) if p[3] else set()
     print(f"Set created with elements: {p[0]}")
+
 
 def p_optional_elements(p):
     '''optional_elements : elements
@@ -178,12 +183,13 @@ def p_gets_statement(p):
     print(f"User input stored in variable {p[1]}")
     
 def p_method_with_params_declaration(p):
-    '''statement : DEF IDENTIFIER LPAREN params RPAREN statement END'''
+    '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
     print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
 
-def p_method_call_with_params(p):
-    '''statement : IDENTIFIER LPAREN params RPAREN'''
-    print(f"Method call: {p[1]} with arguments {p[3]}")
+def p_while_statement(p):
+    '''statement : WHILE expression statements END'''
+    print(f"While loop: While {p[2]}, execute {p[3]}")
+
 
 # fin de parte de Giovanni
 
