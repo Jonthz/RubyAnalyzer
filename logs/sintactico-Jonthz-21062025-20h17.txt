@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:17:58
+Usuario: Jonthz
+
+--- Código Analizado ---
+class Person end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 9: Token inesperado 'Person'

@@ -56,3 +56,6 @@ build/
 *~
 .DS_Store
 Thumbs.db
+
+parser_cache/
+parser.out
