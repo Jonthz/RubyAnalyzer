@@ -1,0 +1,13 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 22:03:00
+Usuario: Jonthz
+
+--- Código Analizado ---
+if x < 10
+  x = 5
+end
+fin
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

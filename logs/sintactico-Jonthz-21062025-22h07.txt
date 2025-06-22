@@ -1,0 +1,86 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 22:07:36
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Algoritmo de Ordenamiento por Inserción Mejorado
+def insertion_sort(arr)
+  # Verificar si el parámetro es un arreglo
+  raise 'El parámetro debe ser un arreglo' unless arr.is_a?(Array)
+  raise 'El arreglo no puede estar vacío' if arr.empty?
+
+  for i in 1..arr.length - 1
+    key = arr[i]
+    j = i - 1
+
+  # Mover los elementos de arr[0..i-1] que son mayores que key, una posición hacia adelante
+    while j >= 0 && arr[j] > key
+      arr[j + 1] = arr[j]
+      j -= 1
+    end
+    arr[j + 1] = key
+  end
+  return arr
+rescue => e
+  puts "Error: #{e.message}"
+  return []
+end
+
+# Función para imprimir el arreglo de manera más visual
+def print_array(arr)
+  puts "Arreglo: [#{arr.join(", ")}]"
+end
+
+# Prueba de Insertion Sort con múltiples escenarios
+begin
+  arr1 = [12, 11, 13, 5, 6]
+  puts "Arreglo original: #{arr1}"
+  sorted_arr1 = insertion_sort(arr1)
+  puts "Arreglo ordenado: #{sorted_arr1}"
+
+  # Caso con arreglo vacío
+  arr2 = []
+  puts "\nArreglo vacío:"
+  sorted_arr2 = insertion_sort(arr2)
+  print_array(sorted_arr2)
+
+  # Caso con un solo elemento
+  arr3 = [8]
+  puts "\nArreglo con un solo elemento:"
+  sorted_arr3 = insertion_sort(arr3)
+  print_array(sorted_arr3)
+  
+  # Caso con arreglo de números negativos
+  arr4 = [-5, -9, -1, -4, -7]
+  puts "\nArreglo con números negativos:"
+  sorted_arr4 = insertion_sort(arr4)
+  print_array(sorted_arr4)
+  
+  # Caso con una mezcla de números positivos y negativos
+  arr5 = [15, -2, 9, -8, 6, 7]
+  puts "\nArreglo mixto (positivos y negativos):"
+  sorted_arr5 = insertion_sort(arr5)
+  print_array(sorted_arr5)
+rescue => e
+  puts "Excepción capturada: #{e.message}"
+ensure
+  puts "\nFin de la ejecución de Insertion Sort."
+end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 7: Token inesperado 'raise'
+Error sintáctico en línea 7: Token inesperado '.'
+Error sintáctico en línea 8: Token inesperado '.'
+Error sintáctico en línea 10: Token inesperado '..'
+Error sintáctico en línea 15: Token inesperado '&&'
+Error sintáctico en línea 16: Token inesperado '='
+Error sintáctico en línea 17: Token inesperado '-='
+Error sintáctico en línea 19: Token inesperado '='
+Error sintáctico en línea 24: Token inesperado 'return'
+Error sintáctico en línea 28: Token inesperado 'def'
+Error sintáctico en línea 29: Token inesperado ','
+Error sintáctico en línea 52: Token inesperado '-'
+Error sintáctico en línea 58: Token inesperado '-'
+Error sintáctico en línea 62: Token inesperado 'rescue'
+Error sintáctico en línea 64: Token inesperado 'ensure'
