@@ -72,11 +72,11 @@ def p_gets_statement(p):
     print(f"User input stored in variable {p[1]}")
     
 def p_method_with_params_declaration(p):
-    '''statement : DEF ID LPAREN params RPAREN statement END'''
+    '''statement : DEF IDENTIFIER LPAREN params RPAREN statement END'''
     print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
 
 def p_method_call_with_params(p):
-    '''statement : ID LPAREN params RPAREN'''
+    '''statement : IDENTIFIER LPAREN params RPAREN'''
     print(f"Method call: {p[1]} with arguments {p[3]}")
 
 # fin de parte de Giovanni
