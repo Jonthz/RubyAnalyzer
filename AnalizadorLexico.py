@@ -105,7 +105,7 @@ for keyword in keywords:
 
 
 def t_IDENTIFIER(t):
-    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    r'[a-zA-Z_][a-zA-Z0-9_]*\??'
     # Primero verificar si es una palabra clave
     t.type = keywords.get(t.value, None)
     if t.type is None:

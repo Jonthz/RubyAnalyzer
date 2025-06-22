@@ -133,8 +133,8 @@ def p_expression_comparison(p):
 
 # Declaración de método sin parámetros
 def p_method_without_params_declaration(p):
-    '''statement : DEF IDENTIFIER statement END'''
-    p[0] = f"def {p[2]} {p[3]}"
+    '''statement : DEF IDENTIFIER statements END'''
+    p[0] = f"def {p[2]} con cuerpo {p[3]}"
     print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
 
 # Llamada a métodos sin parámetros
@@ -148,31 +148,6 @@ def p_method_call_without_params(p):
         p[0] = p[1]
 
 # Declaración de clase
-def p_class_declaration(p):
-    '''statement : CLASS IDENTIFIER statement END
-                 | CLASS IDENTIFIER END'''
-    if len(p) == 5:
-        p[0] = f"class {p[2]} {{{p[3]}}}"
-        print(f"Clase declarada: {p[2]} con cuerpo {p[3] if p[3] else 'vacío'}")
-    else:
-        p[0] = f"class {p[2]} {{}}"
-        print(f"Clase declarada: {p[2]} con cuerpo vacío")
-
-# Instanciación de objetos
-def p_object_instantiation(p):
-    '''expression : IDENTIFIER DOT NEW
-                  | IDENTIFIER DOT NEW LPAREN RPAREN'''
-    p[0] = f"{p[1]}.new()"
-    print(f"Instanciación de objeto de la clase {p[1]}")
-
-# Asignación de objetos
-def p_object_assignment(p):
-    '''statement : IDENTIFIER ASSIGN expression'''
-    if isinstance(p[3], str) and ".new" in p[3]:
-        print(f"Variable {p[1]} asignada con nueva instancia de objeto: {p[3]}")
-    else:
-        print(f"Variable {p[1]} asignada con el valor: {p[3]}")
-    p[0] = f"{p[1]} = {p[3]}"
 
 # Fin Jonathan
 
@@ -194,7 +169,7 @@ def p_optional_elements(p):
     p[0] = p[1]
 
 def p_empty(p):
-    'empty :'
+    '''empty :'''
     p[0] = []
 
 def p_while_statement(p):
@@ -213,28 +188,51 @@ def p_while_statement(p):
     '''statement : WHILE expression statements END'''
     print(f"While loop: While {p[2]}, execute {p[3]}")
 
+def p_raise_statement(p):
+    '''statement : RAISE expression
+                 | RAISE STRING'''
+    print(f"Raise lanzado con mensaje: {p[2]}")
+
+def p_begin_rescue_ensure(p):
+    '''statement : BEGIN statements RESCUE statements ENSURE statements END'''
+    print("Bloque begin-rescue-ensure ejecutado")
+
+
+def p_range_expr(p):
+    '''range : expression DOUBLE_DOT expression'''
+    p[0] = f"{p[1]}..{p[3]}"
+
+def p_expression_and(p):
+    '''expression : expression AND expression'''
+    p[0] = f"({p[1]} && {p[3]})"
+
+def p_expression_or(p):
+    '''expression : expression OR expression'''
+    p[0] = f"({p[1]} || {p[3]})"
+
 
 # fin de parte de Giovanni
 
 def p_expression_term(p):
-    'expression : term'
+    '''expression : term'''
     p[0] = p[1]
 
 def p_term_div(p):
-    'term : factor DIVIDE factor'
+    '''term : factor DIVIDE factor'''
     p[0] = p[1] / p[3]    
 
 def p_term_times(p):
-    'term : factor TIMES factor'
+    '''term : factor TIMES factor'''
     p[0] = p[1] * p[3]
 
 def p_expression_plus(p):
-    'expression : factor PLUS factor'
+    '''expression : expression PLUS expression'''
     p[0] = p[1] + p[3]
 
 def p_expression_minus(p):
-    'expression : factor MINUS factor'
+    '''expression : expression MINUS expression'''
     p[0] = p[1] - p[3]
+
 
 
 def p_factor_num(p):
@@ -273,7 +271,8 @@ def p_range(p):
 
 # Impresión con puts
 def p_puts_statement(p):
-    '''statement : PUTS statement'''
+    '''statement : PUTS expression
+                 | PUTS STRING'''
     print(f"Imprimiendo con puts: {p[2]}")
 
 def p_method_with_return(p):
