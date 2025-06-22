@@ -7,7 +7,7 @@ precedence = (
     ('left', 'PLUS', 'MINUS'),  # Suma y resta
     ('left', 'TIMES', 'DIVIDE'),  # Multiplicación y división
     ('right', 'POWER'),  # Exponenciación
-    ('right', 'HASH_ROCKET'),  # Para los hashes
+    ('nonassoc', 'HASH_ROCKET'),  # Para los hashes
 )
 
 
@@ -77,7 +77,11 @@ def p_key_value_pairs(p):
         p[0] = p[1] + [p[3]]  # Varios pares clave-valor
 
 def p_key_value(p):
-    '''key_value : expression HASH_ROCKET expression'''
+    '''key_value : STRING HASH_ROCKET expression
+                 | STRING HASH_ROCKET STRING
+                 | STRING HASH_ROCKET INTEGER
+                 | STRING HASH_ROCKET FLOAT
+                 | expression HASH_ROCKET expression'''
     p[0] = (p[1], p[3])  # El par clave-valor es un tuple (clave, valor)
     print(f"Par clave-valor: {p[1]} => {p[3]}")
 
@@ -273,17 +277,6 @@ def p_puts_statement(p):
                 | PUTS factor'''
     print(f"Imprimiendo con puts: {p[2]}")
 
-def p_method_with_return(p):
-    '''method : DEF IDENTIFIER LPAREN params RPAREN return_statement END'''
-    # La acción semántica aquí se encarga de capturar el nombre del método, los parámetros
-    # y la declaración 'return' junto con su valor
-    p[0] = f"Method {p[2]} with parameters {p[4]} returns {p[6]}"
-
-def p_return_statement(p):
-    '''return_statement : RETURN statement
-                        | RETURN expression'''
-    # Esta regla maneja el caso en que el método contiene 'return'
-    p[0] = f"Return statement with value {p[2]}"
 
 
 # Manejo de errores
@@ -337,7 +330,9 @@ def test_parser(input_code):
             error_msg = "Error sintáctico: Fin de archivo inesperado"
             syntax_errors.append(error_msg)
             print(error_msg)
-        return p
+        
+        # No devolver el token - permite que el parser intente recuperarse
+        return None
     
     # Guardar referencia al analizador original
     global parser

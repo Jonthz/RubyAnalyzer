@@ -1,0 +1,84 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 20:53:33
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Declaración de clases y objetos
+class Person
+  @@count = 0  # Variable de clase
+  
+  def initialize(name)
+    @name = name  # Variable de instancia
+    @@count += 1
+  end
+  
+  def say_hello
+    puts "Hello, I'm #{@name}"
+  end
+  
+  def self.count
+    puts "Total people: #{@@count}"
+  end
+end
+
+# Constantes
+MAX_PEOPLE = 10
+
+# Variables locales con diferentes tipos
+name = "John"
+age = 30
+height = 1.75
+is_student = true
+grades = nil
+
+# Variables globales
+$app_name = "Ruby Analyzer Demo"
+
+# Instanciación de objetos
+person1 = Person.new("John")
+person2 = Person.new("Alice")
+
+# Uso de estructuras de datos
+people = ["John", "Alice", "Bob"]
+user_info = {"name" => "John", "age" => 30}
+unique_numbers = Set.new([1, 2, 3, 3, 4])
+
+# Estructuras de control
+if age > 18 && is_student == true
+  puts "Adult student"
+elsif age > 18
+  puts "Adult"
+else
+  puts "Minor"
+end
+
+# Bucles
+for i in 1..5
+  puts i
+end
+
+count = 0
+while count < 3
+  puts "Count: #{count}"
+  count += 1
+end
+
+# Entrada/salida
+puts "Enter your name:"
+user_name = gets
+puts "Hello, #{user_name}"
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 2: Token inesperado 'class'
+Error sintáctico en línea 7: Token inesperado '+='
+Error sintáctico en línea 14: Token inesperado 'self'
+Error sintáctico en línea 17: Token inesperado 'end'
+Error sintáctico en línea 23: Token inesperado 'name'
+Error sintáctico en línea 37: Token inesperado ','
+Error sintáctico en línea 38: Token inesperado '=>'
+Error sintáctico en línea 42: Token inesperado '&&'
+Error sintáctico en línea 43: Token inesperado 'puts'
+Error sintáctico en línea 45: Token inesperado 'puts'
+Error sintáctico en línea 51: Token inesperado 'for'
+Error sintáctico en línea 57: Token inesperado 'puts'

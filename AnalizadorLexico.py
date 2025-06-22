@@ -15,7 +15,7 @@ def get_github_username():
 # Definición de los tokens
 tokens = [
     'DEF', 'IDENTIFIER', 'LBRACKET', 'RBRACKET', 'ASSIGN',
-    'LPAREN', 'RPAREN', 'FOR', 'IN', 'DOT', 'RANGE', 'MINUS', 'GETS', 'SETNEW',
+    'LPAREN', 'RPAREN', 'HASH_ROCKET' ,'FOR', 'IN', 'DOT', 'RANGE', 'MINUS', 'GETS', 'SETNEW',
     'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING', 'DOUBLE_DOT',
 #fin de GIOVANNI
     'LBRACE', 'RBRACE', 'PIPE', 'COMMA', 'SEMICOLON', 
@@ -30,6 +30,7 @@ t_RBRACKET = r'\]'
 t_ASSIGN = r'='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
+t_HASH_ROCKET = r'=>'
 #fin de GIOVANNI
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
@@ -75,7 +76,6 @@ t_BITWISE_AND = r'\&'
 t_PIPE = r'\|'
 t_QUESTION_MARK = r'\?'  
 #=== Parte de Jonathan ====
-t_HASH_ROCKET = r'=>'
 t_NEW = r'new'
 
 tokens.extend([
@@ -168,7 +168,7 @@ tokens.extend([
     'CLASS', 'MODULE',
     'BEGIN', 'RESCUE', 'ENSURE', 'RAISE', 'NIL',
     'DO', 'LAMBDA', 'PROC', 'YIELD', 'SELF', 'SUPER', 'REQUIRE',
-    'CONSTANT', 'HASH_ROCKET', 'NEW'
+    'CONSTANT', 'NEW'
 ])
 
 

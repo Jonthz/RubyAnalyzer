@@ -34,7 +34,8 @@ def main():
     print("2. Usar algoritmo de prueba Insertion Sort")
     print("3. Usar algoritmo de prueba Quick Sort")
     print("4. Usar algoritmo de prueba Class")
-    print("5. Salir")
+    print("5. Usar algoritmo de prueba temp")
+    print("6. Salir")
     
     option = input("\nOpción: ")
     
@@ -47,17 +48,16 @@ def main():
                 break
             lines.append(line)
         
-            # Analizar el código completo de una sola vez
-            ruby_code = "\n".join(lines)
-            print("\nCódigo Ruby ingresado:")
-            print(ruby_code)
+        ruby_code = "\n".join(lines)
+        print("\nCódigo Ruby ingresado:")
+        print(ruby_code)
             
-            # Ejecutar análisis según selección
-            if tipo == "1":
-                test_lexical_analyzer(ruby_code)
-            else:
-                test_parser(ruby_code)
-    
+        # Ejecutar análisis según selección
+        if tipo == "1":
+            test_lexical_analyzer(ruby_code)
+        else:
+            test_parser(ruby_code)
+
     elif option == "2":
         algorithm_code = load_algorithm_from_file('algorithms/insertion_sort.rb')
         if algorithm_code:
@@ -101,6 +101,20 @@ def main():
                 test_parser(algorithm_code)
     
     elif option == "5":
+        algorithm_code = load_algorithm_from_file('algorithms/temp.rb')
+        if algorithm_code:
+            print(f"\nAnalizando algoritmo de prueba temp:")
+            print("=" * 40)
+            print(algorithm_code)
+            print("=" * 40)
+
+            # Ejecutar análisis según selección
+            if tipo == "1":
+                test_lexical_analyzer(algorithm_code)
+            else:
+                test_parser(algorithm_code)
+    
+    elif option == "6":
         print("¡Hasta luego!")
         sys.exit(0)
     
