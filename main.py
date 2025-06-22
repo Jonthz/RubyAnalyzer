@@ -47,16 +47,16 @@ def main():
                 break
             lines.append(line)
         
-        # Analizar el código completo de una sola vez
-        ruby_code = "\n".join(lines)
-        print("\nCódigo Ruby ingresado:")
-        print(ruby_code)
-        
-        # Ejecutar análisis según selección
-        if tipo == "1":
-            test_lexical_analyzer(ruby_code)
-        else:
-            test_parser(ruby_code)
+            # Analizar el código completo de una sola vez
+            ruby_code = "\n".join(lines)
+            print("\nCódigo Ruby ingresado:")
+            print(ruby_code)
+            
+            # Ejecutar análisis según selección
+            if tipo == "1":
+                test_lexical_analyzer(ruby_code)
+            else:
+                test_parser(ruby_code)
     
     elif option == "2":
         algorithm_code = load_algorithm_from_file('algorithms/insertion_sort.rb')
