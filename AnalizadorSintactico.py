@@ -7,7 +7,7 @@ precedence = (
     ('left', 'PLUS', 'MINUS'),  # Suma y resta
     ('left', 'TIMES', 'DIVIDE'),  # Multiplicación y división
     ('right', 'POWER'),  # Exponenciación
-    ('right', 'HASH_ROCKET'),  # Para los hashes
+    ('nonassoc', 'HASH_ROCKET'),  # Para los hashes
 )
 
 
@@ -38,7 +38,7 @@ def p_statements(p):
 def p_statement(p):
     '''statement :  expression'''
 
-# Declaración de variables locales
+# Declaración de variables locales y asignación de objetos
 def p_local_var(p):
     '''statement : IDENTIFIER ASSIGN STRING
                 | IDENTIFIER ASSIGN  expression
@@ -79,7 +79,11 @@ def p_key_value_pairs(p):
         p[0] = p[1] + [p[3]]  # Varios pares clave-valor
 
 def p_key_value(p):
-    '''key_value : expression HASH_ROCKET expression'''
+    '''key_value : STRING HASH_ROCKET expression
+                 | STRING HASH_ROCKET STRING
+                 | STRING HASH_ROCKET INTEGER
+                 | STRING HASH_ROCKET FLOAT
+                 | expression HASH_ROCKET expression'''
     p[0] = (p[1], p[3])  # El par clave-valor es un tuple (clave, valor)
     print(f"Par clave-valor: {p[1]} => {p[3]}")
 
@@ -152,26 +156,32 @@ def p_method_call_without_params(p):
     else:
         p[0] = p[1]
 
-# Declaración de clase
-def p_class_declaration(p):
-    '''statement : CLASS IDENTIFIER statement END
-                 | CLASS IDENTIFIER END'''
-    if len(p) == 5:
-        p[0] = f"class {p[2]} {{{p[3]}}}"
-        print(f"Clase declarada: {p[2]} con cuerpo {p[3] if p[3] else 'vacío'}")
-    else:
-        p[0] = f"class {p[2]} {{}}"
-        print(f"Clase declarada: {p[2]} con cuerpo vacío")
+# Soporte para variables de clase
+def p_class_var(p):
+    '''statement : CLASS_VAR ASSIGN expression
+                 | CLASS_VAR ASSIGN STRING'''
+    print(f"Variable de clase {p[1]} asignada con el valor {p[3]}")
+    p[0] = f"{p[1]} = {p[3]}"
 
-# Instanciación de objetos
-def p_object_instantiation(p):
-    '''expression : IDENTIFIER DOT NEW
-                  | IDENTIFIER DOT NEW LPAREN RPAREN'''
-    p[0] = f"{p[1]}.new()"
-    print(f"Instanciación de objeto de la clase {p[1]}")
+# Soporte para constantes
+def p_constant_var(p):
+    '''statement : CONSTANT ASSIGN expression
+                 | CONSTANT ASSIGN STRING'''
+    print(f"Constante {p[1]} asignada con el valor {p[3]}")
+    p[0] = f"{p[1]} = {p[3]}"
 
+# Soporte para valores booleanos
+def p_factor_boolean(p):
+    '''factor : TRUE
+              | FALSE'''
+    p[0] = p[1]
+    print(f"Valor booleano: {p[1]}")
 
-
+# Soporte para nil
+def p_factor_nil(p):
+    '''factor : NIL'''
+    p[0] = 'nil'
+    print("Valor nil")
 # Fin Jonathan
 
 # Parte de Giovanni 
@@ -278,17 +288,6 @@ def p_puts_statement(p):
                 | PUTS factor'''
     print(f"Imprimiendo con puts: {p[2]}")
 
-def p_method_with_return(p):
-    '''method : DEF IDENTIFIER LPAREN params RPAREN return_statement END'''
-    # La acción semántica aquí se encarga de capturar el nombre del método, los parámetros
-    # y la declaración 'return' junto con su valor
-    p[0] = f"Method {p[2]} with parameters {p[4]} returns {p[6]}"
-
-def p_return_statement(p):
-    '''return_statement : RETURN statement
-                        | RETURN expression'''
-    # Esta regla maneja el caso en que el método contiene 'return'
-    p[0] = f"Return statement with value {p[2]}"
 
 
 # Manejo de errores
@@ -342,7 +341,9 @@ def test_parser(input_code):
             error_msg = "Error sintáctico: Fin de archivo inesperado"
             syntax_errors.append(error_msg)
             print(error_msg)
-        return p
+        
+        # No devolver el token - permite que el parser intente recuperarse
+        return None
     
     # Guardar referencia al analizador original
     global parser

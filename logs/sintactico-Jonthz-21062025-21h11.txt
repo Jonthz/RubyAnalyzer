@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 21:11:21
+Usuario: Jonthz
+
+--- Código Analizado ---
+$variable = 23
+
+--- Resultados del Análisis ---
+Error sintáctico: Fin de archivo inesperado
