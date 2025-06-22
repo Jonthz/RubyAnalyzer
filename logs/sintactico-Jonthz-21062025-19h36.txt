@@ -1,0 +1,15 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 19:36:43
+Usuario: Jonthz
+
+--- Código Analizado ---
+def saludar
+  puts "¡Hola, Mundo!"
+end
+
+# Llamada al método
+saludar
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

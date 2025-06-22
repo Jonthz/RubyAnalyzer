@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 17:34:57
+Usuario: Jonthz
+
+--- Código Analizado ---
+$hash_vacio = {}
+$hash_simple = {"nombre" => "Juan", "edad" => 30}
+$hash_anidado = {"datos" => {"ciudad" => "Lima", "pais" => "Perú"}}
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos
