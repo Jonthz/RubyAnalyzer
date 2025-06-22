@@ -325,15 +325,6 @@ def p_expression_term(p):
     p[0] = p[1]
     print(f"Expresión: {p[1]}")
 
-def p_term_single(p):
-    'term : factor'
-    p[0] = p[1]
-    print(f"Expresión: {p[1]}")
-
-def p_term_single(p):
-    'term : factor'
-    p[0] = p[1]
-
 def p_term_div(p):
     '''term : factor DIVIDE factor
             | statement DIVIDE statement
