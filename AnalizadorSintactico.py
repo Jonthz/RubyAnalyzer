@@ -50,9 +50,19 @@ def p_instance_var(p):
     print(f"Instance variable {p[1]} assigned with value {p[3]}")
 
 def p_set(p):
-    '''expression : SETNEW LPAREN elements RPAREN'''
-    p[0] = set(p[3])
+    '''statement : SETNEW LPAREN optional_elements RPAREN'''
+    p[0] = set(p[3]) if p[3] else set()
     print(f"Set created with elements: {p[0]}")
+
+def p_optional_elements(p):
+    '''optional_elements : elements
+                         | empty'''
+    p[0] = p[1]
+
+def p_empty(p):
+    'empty :'
+    p[0] = []
+
 
 def p_while_statement(p):
     '''statement : WHILE expression statement END'''
@@ -61,6 +71,14 @@ def p_while_statement(p):
 def p_gets_statement(p):
     '''statement : IDENTIFIER ASSIGN GETS'''
     print(f"User input stored in variable {p[1]}")
+
+def p_method_with_params_declaration(p):
+    '''statement : DEF ID LPAREN params RPAREN statement END'''
+    print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
+
+def p_method_call_with_params(p):
+    '''statement : ID LPAREN params RPAREN'''
+    print(f"Method call: {p[1]} with arguments {p[3]}")
 
 # fin de parte de Giovanni
 
