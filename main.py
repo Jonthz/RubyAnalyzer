@@ -43,17 +43,20 @@ def main():
         lines = []
         while True:
             line = input()
+            print(f"Entrada: {line}")  # Mostrar la línea ingresada
             if line == "FIN":
+                print("Fin de entrada de código.")
                 break
-            lines.append(line)
-        # Añadir las triples comillas al principio y final del código
-        ruby_code = "\n".join(lines) 
-        
-        # Ejecutar análisis según selección
-        if tipo == "1":
-            test_lexical_analyzer(ruby_code)
-        else:
-            test_parser(ruby_code)
+            lines.append(line)  # Añadir la línea al arreglo
+            print(f"Procesando línea: {line}")  # Mostrar el procesamiento de la línea
+            # Añadir las triples comillas al principio y final del código
+            ruby_code = "\n".join(lines) 
+            print("\nCódigo Ruby ingresado:")
+            # Ejecutar análisis según selección
+            if tipo == "1":
+                test_lexical_analyzer(ruby_code)
+            else:
+                test_parser(ruby_code)
     
     elif option == "2":
         algorithm_code = load_algorithm_from_file('algorithms/insertion_sort.rb')
