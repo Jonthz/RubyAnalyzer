@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 26/06/2025
+Hora: 13:34:55
+Usuario: Jonthz
+
+--- Código Analizado ---
+a + 1
+
+--- Resultados del Análisis ---
+Error durante el análisis: can only concatenate str (not "int") to str

@@ -1,7 +1,7 @@
 import sys
 import os
 from AnalizadorLexico import tokens, lex, test_lexical_analyzer
-from AnalizadorSintactico import yacc, test_parser
+from AnalizadorSintacticoCopy import yacc, test_parser
 
 # Cambia la manera en que cargas los algoritmos desde archivos
 def load_algorithm_from_file(file_name):

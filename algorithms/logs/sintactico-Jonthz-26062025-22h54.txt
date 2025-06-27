@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 26/06/2025
+Hora: 22:54:07
+Usuario: Jonthz
+
+--- Código Analizado ---
+(5 + 5) + 5
+(5 + 5) + a
+
+--- Resultados del Análisis ---
+Error durante el análisis: unsupported operand type(s) for +: 'int' and 'str'

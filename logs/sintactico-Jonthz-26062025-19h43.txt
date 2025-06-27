@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 26/06/2025
+Hora: 19:43:28
+Usuario: Jonthz
+
+--- Código Analizado ---
+(5 + 5) + 5
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 1: Token inesperado '('
+Error sintáctico en línea 1: Token inesperado ')'
