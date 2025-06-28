@@ -66,10 +66,8 @@ def p_optional_elements(p):
     p[0] = p[1]
 
 def p_elements(p):
-    '''elements : statement
-                | elements COMMA expression
-                | factor COMMA factor
-                | elements COMMA factor'''
+    '''elements : expression
+                | elements COMMA expression'''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo elemento
     else:
@@ -90,7 +88,9 @@ def p_expression_term(p):
 def p_expression_var(p):
     '''expression : IDENTIFIER
                   | GLOBAL_VAR
-                  | INSTANCE_VAR'''
+                  | INSTANCE_VAR
+                  | CLASS_VAR
+                  | CONSTANT'''
     p[0] = p[1]
     print(f"Expresión de variable: {p[1]}")
 
@@ -154,19 +154,27 @@ def p_expression_or(p):
     '''expression : expression OR expression'''
     p[0] = f"({p[1]} || {p[3]})"
 
+
+# Revisar si se necesita una regla para NOT
+def p_expression_not(p):
+    '''expression : NOT expression'''
+    p[0] = f"(!{p[2]})"
+    print(f"Expresión lógica NOT: {p[2]} negada a {p[0]}")
+# Revisar si factor comparacion factor es necesario o podriamos reducirlo a statement comparacion statement
+
+def p_expression_simbols(p):
+    '''comparisonSimbol: GREATER
+                     | LESS
+                     | GREATER_EQUAL
+                     | LESS_EQUAL
+                     | EQUALS
+                     | NOT_EQUALS'''
+
 def p_expression_comparison(p):
-    '''expression : statement GREATER statement
-                  | statement LESS statement
-                  | statement GREATER_EQUAL statement
-                  | statement LESS_EQUAL statement
-                  | statement EQUALS statement
-                  | statement NOT_EQUALS statement
-                  | statement GREATER factor
-                  | statement LESS factor
-                  | statement GREATER_EQUAL factor
-                  | statement LESS_EQUAL factor
-                  | statement EQUALS factor
-                  | statement NOT_EQUALS factor'''
+    '''expression : expression comparisonSimbol expression
+                  | LPAREN structureControlIf RPAREN comparisonSimbol LPAREN structureControl RPAREN
+                  | p_vars comparisonSimbol p_vars'''
+                
     operators = {
         '>': 'mayor que',
         '<': 'menor que',
@@ -182,53 +190,68 @@ def p_expression_comparison(p):
 # ==========================================================================
 # VARIABLES Y ASIGNACIONES
 # ==========================================================================
+def p_vars_statement(p):
+    '''statement : p_vars
+                 | p_gets_statement'''
+    p[0] = p[1]  # Retorna la variable o la asignación
+
+
+def p_vars(p):
+    '''p_vars : p_local_var
+    | p_global_var
+    | p_instance_var
+    | p_class_var
+    | p_constant_var'''
+
 def p_local_var(p):
-    '''statement : IDENTIFIER ASSIGN STRING
-                | IDENTIFIER ASSIGN expression
-                | IDENTIFIER ASSIGN factor'''
+    '''p_local_var : IDENTIFIER ASSIGN statement'''
     p[0] = f"{p[1]} = {p[3]}" 
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
 
 def p_global_var(p):
-    '''statement : GLOBAL_VAR ASSIGN STRING
-                 | GLOBAL_VAR ASSIGN expression
-                 | GLOBAL_VAR ASSIGN factor'''
+    '''p_global_var : GLOBAL_VAR ASSIGN statement'''
     print(f"Variable global {p[1]} asignada con el valor {p[3]}")
     p[0] = f"{p[1]} = {p[3]}"
 
 def p_instance_var(p):
-    '''statement : INSTANCE_VAR ASSIGN expression
-                | INSTANCE_VAR ASSIGN STRING
-                | INSTANCE_VAR ASSIGN factor'''
+    '''p_instance_var : INSTANCE_VAR ASSIGN statement'''
     print(f"Instance variable {p[1]} assigned with value {p[3]}")
     p[0] = f"{p[1]} = {p[3]}"
 
 def p_class_var(p):
-    '''statement : CLASS_VAR ASSIGN expression
-                 | CLASS_VAR ASSIGN factor'''
+    '''p_class_var : CLASS_VAR ASSIGN statement'''
     print(f"Variable de clase {p[1]} asignada con el valor {p[3]}")
     p[0] = f"{p[1]} = {p[3]}"
 
 def p_constant_var(p):
-    '''statement : CONSTANT ASSIGN expression
-                 | CONSTANT ASSIGN factor'''
+    '''p_constant_var : CONSTANT ASSIGN statement'''
     print(f"Constante {p[1]} asignada con el valor {p[3]}")
     p[0] = f"{p[1]} = {p[3]}"
 
 def p_gets_statement(p):
-    '''statement : IDENTIFIER ASSIGN GETS'''
+    '''p_gets_statement : IDENTIFIER ASSIGN GETS'''
     p[0] = f"{p[1]} = gets"
     print(f"Entrada del usuario almacenada en la variable {p[1]}")
 
 # ==========================================================================
 # ESTRUCTURAS DE CONTROL
 # ==========================================================================
+def p_structure_control(p):
+    '''statement : structureControl'''
+    p[0] = p[1]  # Retorna la estructura de control
+
+def p_structure_control_expression(p):
+    '''structureControl: structureControlIf
+    | structureControlWhile
+    | structureControlFor'''
+
 def p_if_statement(p):
-    '''statement : IF expression statements END
+    '''structureControlIf : IF expression statements END
                  | IF expression statements ELSE statements END
                  | IF expression statements ELSIF expression statements END
                  | IF expression statements ELSIF expression statements ELSE statements END'''
     print(f"Condición IF: {p[1]}  {p[2]}  {p[3]} con cuerpo {p[3]}")
+    #semantico
     if len(p) == 5:  # if ... end
         p[0] = f"if ({p[2]}) {{{p[3]}}}"
         print(f"Condición IF: Si {p[2]} entonces {p[3]}")
@@ -246,13 +269,13 @@ def p_if_statement(p):
         print(f"Condición IF-ELSIF-ELSE: Si {p[2]} entonces {p[3]} sino si {p[5]} entonces {p[6]} sino {p[8]}")
 
 def p_while_statement(p):
-    '''statement : WHILE expression statement END
+    '''structureControlWhile : WHILE expression statement END
                  | WHILE expression statements END'''
     p[0] = f"while ({p[2]}) {{{p[3]}}}"
     print(f"Bucle while: Mientras {p[2]}, ejecutar {p[3]}")
 
 def p_for_statement(p):
-    '''statement : FOR IDENTIFIER IN range statements END'''
+    '''structureControlFor : FOR IDENTIFIER IN range statements END'''
     print(f"Estructura For: Iterando de {p[3]} con la variable {p[2]} ejecutando {p[5]}")
 
 def p_range(p):
@@ -262,6 +285,8 @@ def p_range(p):
 def p_range_expr(p):
     '''range : expression RANGE expression'''
     p[0] = f"{p[1]}..{p[3]}"
+
+# ver si nos ponemos a hacer los en linea
 
 # ==========================================================================
 # COLECCIONES (ARRAYS, HASHES, SETS)

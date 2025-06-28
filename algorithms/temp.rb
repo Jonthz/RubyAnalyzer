@@ -1,2 +1,4 @@
-a = [1, 2] + [3, 4]
-puts a.inspect
+$var2 = 2
+$var1 = $var2 = 1
+
+puts $var1
