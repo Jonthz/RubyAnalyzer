@@ -3,7 +3,6 @@ from AnalizadorLexico import tokens
 import os
 import datetime
 from AnalizadorLexico import get_github_username
-import AnalizadorSemantico as sa
 # ==========================================================================
 # CONFIGURACIÓN DE PRECEDENCIA
 # ==========================================================================
@@ -241,7 +240,11 @@ def p_vars(p):
     | p_constant_var'''
 
 def p_local_var(p):
-    '''p_local_var : IDENTIFIER ASSIGN statement'''
+    '''p_local_var : IDENTIFIER ASSIGN statement
+                 | IDENTIFIER PLUS_ASSIGN expression
+                 | IDENTIFIER MINUS_ASSIGN expression
+                 | IDENTIFIER TIMES_ASSIGN expression
+                 | IDENTIFIER DIVIDE_ASSIGN expression'''
     p[0] = f"{p[1]} = {p[3]}" 
     p[0] = {
         "tipo": "asignacion",
@@ -372,7 +375,7 @@ def p_break_statement(p):
 
 # ver si nos ponemos a hacer los en linea
 def p_if_inline_statement(p):
-    '''structureControlIfLine : IF expression SEMICOLON statements END
+    '''structureControlIfLine : IF expression SEMICOLON statements SEMICOLON END
                               | IF expression SEMICOLON statements ELSE statements END
                               | IF expression SEMICOLON statements ELSIF expression SEMICOLON statements END
                               | IF expression SEMICOLON statements ELSIF expression SEMICOLON statements ELSE statements END'''
