@@ -1,0 +1,13 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 29/06/2025
+Hora: 12:46:49
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+if x > 10 
+puts "Mayor"
+end
+
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

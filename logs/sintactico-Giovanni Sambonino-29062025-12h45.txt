@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 29/06/2025
+Hora: 12:45:48
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+if x > 10; puts "Mayor"; end
+
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 3: Token inesperado 'end'

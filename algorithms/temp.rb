@@ -1,1 +1,1 @@
-puts $var1 == $var2
+if x > 10 ; puts "Mayor" ; end
