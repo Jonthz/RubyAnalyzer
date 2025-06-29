@@ -3,7 +3,7 @@ from AnalizadorLexico import tokens
 import os
 import datetime
 from AnalizadorLexico import get_github_username
-
+import AnalizadorSemantico as sa
 # ==========================================================================
 # CONFIGURACIÓN DE PRECEDENCIA
 # ==========================================================================
@@ -102,7 +102,8 @@ def p_term_single_factor(p):
 
 def p_term_div(p):
     '''term : expression DIVIDE expression'''
-    p[0] = p[1] / p[3]    
+    p[0] = p[1] / p[3]
+    sa.infer_type(p[0])
 
 def p_term_times(p):
     '''term : expression TIMES expression'''
@@ -244,7 +245,8 @@ def p_structure_control(p):
 def p_structure_control_expression(p):
     '''structureControl : structureControlIf
     | structureControlWhile
-    | structureControlFor'''
+    | structureControlFor
+    | structureControlIfLine'''
 
 def p_if_statement(p):
     '''structureControlIf : IF expression statements END
@@ -327,7 +329,9 @@ def p_break_statement(p):
 
 
 # ver si nos ponemos a hacer los en linea
-
+def p_if_inline_statement(p):
+    '''structureControlIfLine : IF expression THEN statements END'''
+    
 # ==========================================================================
 # COLECCIONES (ARRAYS, HASHES, SETS)
 # ==========================================================================
@@ -354,8 +358,7 @@ def p_key_value_pairs(p):
         p[0] = p[1] + [p[3]]  # Varios pares clave-valor
 
 def p_key_value(p):
-    '''key_value : factor HASH_ROCKET statement
-                 | IDENTIFIER HASH_ROCKET statement'''
+    '''key_value : expression HASH_ROCKET statement'''
     p[0] = (p[1], p[3])  # El par clave-valor es un tuple (clave, valor)
     print(f"Par clave-valor: {p[1]} => {p[3]}")
 

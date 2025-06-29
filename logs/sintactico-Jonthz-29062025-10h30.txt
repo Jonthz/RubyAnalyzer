@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 29/06/2025
+Hora: 10:30:25
+Usuario: Jonthz
+
+--- Código Analizado ---
+puts $var1 == $var2
+
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos
