@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 28/06/2025
+Hora: 21:53:45
+Usuario: Darvier88
+
+--- Código Analizado ---
+(5+5)*2
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

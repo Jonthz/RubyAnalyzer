@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 29/06/2025
+Hora: 01:18:12
+Usuario: Darvier88
+
+--- Código Analizado ---
+for x in 1..5 puts "Hola" end
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

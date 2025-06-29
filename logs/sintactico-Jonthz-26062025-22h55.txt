@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 26/06/2025
+Hora: 22:55:31
+Usuario: Jonthz
+
+--- Código Analizado ---
+[1 + 2]*3
+5 + 3 * 2 + 2
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

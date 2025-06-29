@@ -1,5 +1,1 @@
-# Variable de clase
-class Temp
-  @@celsius = 0
-
- 
+puts $var1 == $var2

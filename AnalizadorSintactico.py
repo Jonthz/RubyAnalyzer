@@ -3,11 +3,17 @@ from AnalizadorLexico import tokens
 
 # Inicio de Pacheco
 precedence = (
-    ('nonassoc', 'LESS', 'GREATER', 'LESS_EQUAL', 'GREATER_EQUAL', 'EQUALS', 'NOT_EQUALS'),  # Comparaciones
-    ('left', 'PLUS', 'MINUS'),  # Suma y resta
-    ('left', 'TIMES', 'DIVIDE'),  # Multiplicación y división
-    ('right', 'POWER'),  # Exponenciación
-    ('nonassoc', 'HASH_ROCKET'),  # Para los hashes
+    ('right', 'RETURN'),           # Dar prioridad adecuada a return
+    ('nonassoc', 'THEN', 'ELSE', 'ELSIF'),  # Resolver el dangling else
+    ('left', 'OR'),                # Operadores lógicos
+    ('left', 'AND'),
+    ('nonassoc', 'LESS', 'GREATER', 'LESS_EQUAL', 'GREATER_EQUAL', 'EQUALS', 'NOT_EQUALS'),
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE'),
+    ('right', 'POWER'),
+    ('right', 'NOT'),              # Negación lógica
+    ('nonassoc', 'HASH_ROCKET'),
+    ('nonassoc', 'RANGE'),         # Para expresiones de rango
 )
 
 
@@ -105,10 +111,6 @@ def p_expression_var(p):
                   | INSTANCE_VAR'''
     p[0] = p[1]
     print(f"Expresión de variable: {p[1]}")
-
-def p_statement_block(p):
-    '''statement : statement statement'''
-    p[0] = f"{p[1]}; {p[2]}" if p[1] and p[2] else p[1] or p[2]
 
 def p_if_statement(p):
     '''statement : IF expression statements END
@@ -359,9 +361,6 @@ def p_factor_num(p):
               | FLOAT '''
     p[0] = p[1]
 
-def p_factor_expr(p):
-    'factor : LPAREN expression RPAREN'
-    p[0] = p[2]
 
 # Arreglo (array)
 def p_array(p):
