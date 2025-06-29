@@ -10,15 +10,16 @@ from AnalizadorLexico import get_github_username
 precedence = (
     ('right', 'RETURN'),           # Dar prioridad adecuada a return
     ('nonassoc', 'THEN', 'ELSE', 'ELSIF'),  # Resolver el dangling else
-    ('left', 'OR'),                # Operadores lógicos
-    ('left', 'AND'),
+     ('left', 'OR', 'AND'),         # Lógica, OR y AND tienen la misma precedencia
+    ('left', 'PLUS', 'MINUS'),     # Aritmética, PLUS y MINUS tienen la misma precedencia
+    ('left', 'TIMES', 'DIVIDE'),   # Aritmética, TIMES y DIVIDE tienen la misma precedencia,
     ('nonassoc', 'LESS', 'GREATER', 'LESS_EQUAL', 'GREATER_EQUAL', 'EQUALS', 'NOT_EQUALS'),
-    ('left', 'PLUS', 'MINUS'),
-    ('left', 'TIMES', 'DIVIDE'),
     ('right', 'POWER'),
     ('right', 'NOT'),              # Negación lógica
     ('nonassoc', 'HASH_ROCKET'),
-    ('nonassoc', 'RANGE'),         # Para expresiones de rango
+    ('nonassoc', 'RANGE'), 
+    ('left', 'DOT'),  # El DOT tiene mayor precedencia
+    ('left', 'LPAREN')        # Para expresiones de rango
 )
 
 # ==========================================================================
@@ -163,7 +164,7 @@ def p_expression_not(p):
 # Revisar si factor comparacion factor es necesario o podriamos reducirlo a statement comparacion statement
 
 def p_expression_simbols(p):
-    '''comparisonSimbol: GREATER
+    '''comparisonSimbol : GREATER
                      | LESS
                      | GREATER_EQUAL
                      | LESS_EQUAL
@@ -172,7 +173,7 @@ def p_expression_simbols(p):
 
 def p_expression_comparison(p):
     '''expression : expression comparisonSimbol expression
-                  | LPAREN structureControlIf RPAREN comparisonSimbol LPAREN structureControl RPAREN
+                  | LPAREN structureControl RPAREN comparisonSimbol LPAREN structureControl RPAREN
                   | p_vars comparisonSimbol p_vars'''
                 
     operators = {
@@ -241,7 +242,7 @@ def p_structure_control(p):
     p[0] = p[1]  # Retorna la estructura de control
 
 def p_structure_control_expression(p):
-    '''structureControl: structureControlIf
+    '''structureControl : structureControlIf
     | structureControlWhile
     | structureControlFor'''
 
@@ -269,8 +270,7 @@ def p_if_statement(p):
         print(f"Condición IF-ELSIF-ELSE: Si {p[2]} entonces {p[3]} sino si {p[5]} entonces {p[6]} sino {p[8]}")
 
 def p_while_statement(p):
-    '''structureControlWhile : WHILE expression statement END
-                 | WHILE expression statements END'''
+    '''structureControlWhile : WHILE expression statements END'''
     p[0] = f"while ({p[2]}) {{{p[3]}}}"
     print(f"Bucle while: Mientras {p[2]}, ejecutar {p[3]}")
 
@@ -314,18 +314,22 @@ def p_key_value_pairs(p):
         p[0] = p[1] + [p[3]]  # Varios pares clave-valor
 
 def p_key_value(p):
-    '''key_value : STRING HASH_ROCKET expression
-                 | STRING HASH_ROCKET STRING
-                 | STRING HASH_ROCKET factor
-                 | expression HASH_ROCKET expression'''
+    '''key_value : factor HASH_ROCKET statement
+                 | IDENTIFIER HASH_ROCKET statement'''
     p[0] = (p[1], p[3])  # El par clave-valor es un tuple (clave, valor)
     print(f"Par clave-valor: {p[1]} => {p[3]}")
 
-def p_set(p):
-    '''expression : SET DOT NEW LPAREN elements RPAREN
-                  | SET DOT NEW'''
-    p[0] = set(p[5]) if len(p) > 4 else set()
+def p_set_empty(p):
+    '''expression : SET DOT NEW'''
+    p[0] = set()  # Set vacío
+    print("Empty set created")
+
+def p_set_elements(p):
+    '''expression : SET DOT NEW LPAREN elements RPAREN'''
+    p[0] = set(p[5])  # Set con elementos
     print(f"Set created with elements: {p[0]}")
+
+
 
 # ==========================================================================
 # MÉTODOS Y CLASES

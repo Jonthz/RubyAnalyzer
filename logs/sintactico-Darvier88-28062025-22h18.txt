@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 28/06/2025
+Hora: 22:18:59
+Usuario: Darvier88
+
+--- Código Analizado ---
+5+5*2
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 1: Token inesperado '+'

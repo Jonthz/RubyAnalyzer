@@ -1,0 +1,14 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 28/06/2025
+Hora: 22:26:44
+Usuario: Darvier88
+
+--- Código Analizado ---
+a = 5
+b = 2
+c = 4
+a + b * c
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 2: Token inesperado 'b'
+Error durante el análisis: can't multiply sequence by non-int of type 'str'

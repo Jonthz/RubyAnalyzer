@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 28/06/2025
+Hora: 21:18:30
+Usuario: Darvier88
+
+--- Código Analizado ---
+person = { "name" => "John", "age" => 30, "city" => "New York" }
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos
