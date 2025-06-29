@@ -3,6 +3,7 @@ from AnalizadorLexico import tokens
 import os
 import datetime
 from AnalizadorLexico import get_github_username
+#import AnalizadorSemantico as sa
 # ==========================================================================
 # CONFIGURACIÓN DE PRECEDENCIA
 # ==========================================================================
@@ -376,9 +377,9 @@ def p_break_statement(p):
 # ver si nos ponemos a hacer los en linea
 def p_if_inline_statement(p):
     '''structureControlIfLine : IF expression SEMICOLON statements SEMICOLON END
-                              | IF expression SEMICOLON statements ELSE statements END
-                              | IF expression SEMICOLON statements ELSIF expression SEMICOLON statements END
-                              | IF expression SEMICOLON statements ELSIF expression SEMICOLON statements ELSE statements END'''
+                              | IF expression SEMICOLON statements SEMICOLON ELSE statements SEMICOLON END
+                              | IF expression SEMICOLON statements SEMICOLON ELSIF expression SEMICOLON statements SEMICOLON END
+                              | IF expression SEMICOLON statements SEMICOLON ELSIF expression SEMICOLON statements SEMICOLON ELSE statements SEMICOLON END'''
     print(f"Condición IF: {p[1]}  {p[2]}  {p[4]} con cuerpo {p[4]}")
     if len(p) == 6:
         p[0] = {
@@ -413,7 +414,7 @@ def p_if_inline_statement(p):
     print(f"AST generado para estructura IFLine: {p[0]}")
     
 def p_while_inline_statement(p):
-    '''structureControlWhileLine : WHILE expression SEMICOLON statements END'''
+    '''structureControlWhileLine : WHILE expression SEMICOLON statements SEMICOLON END'''
     p[0] = f"while ({p[2]}) {{{p[4]}}}"
     p[0] = {
         "tipo": "while_inline",
@@ -423,7 +424,7 @@ def p_while_inline_statement(p):
     print(f"AST generado para estructura WHILEINLINE: {p[0]}")
 
 def p_for_inline_statement(p):
-    '''structureControlForLine : FOR IDENTIFIER IN range SEMICOLON statement END'''
+    '''structureControlForLine : FOR IDENTIFIER IN range SEMICOLON statement SEMICOLON END'''
     print(f"Estructura For: Iterando de {p[3]} con la variable {p[2]} ejecutando {p[6]}")
     p[0] = {
         "tipo": "for_inline",
