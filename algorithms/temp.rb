@@ -1,1 +1,5 @@
-{ "nombre" => "Juan", "edad" => 25, "ciudad" => "Guayaquil" }
+# Variable de clase
+class Temp
+  @@celsius = 0
+
+ 

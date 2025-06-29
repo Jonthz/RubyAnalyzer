@@ -1,0 +1,19 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 23:19:05
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Definición de clase con contenido
+class Person
+  def initialize(name)
+    @name = name
+  end
+  
+  def greet
+    puts "Hello, I'm #{@name}"
+  end
+end
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

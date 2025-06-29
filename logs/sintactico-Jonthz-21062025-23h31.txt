@@ -1,0 +1,14 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 23:31:28
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Variable de clase
+class Temp
+  @@celsius = 0
+
+ 
+
+--- Resultados del Análisis ---
+Error sintáctico: Fin de archivo inesperado

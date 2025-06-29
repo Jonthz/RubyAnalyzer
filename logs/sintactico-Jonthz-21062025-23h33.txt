@@ -1,0 +1,27 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 23:33:36
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Definición de clase vacía
+class MyClass; end
+
+# Definición de clase con contenido
+class Person
+  def initialize(name)
+    @name = name
+  end
+  
+  def greet
+    puts "Hello, I'm #{@name}"
+  end
+end
+
+# Instanciación de objetos
+obj1 = MyClass.new
+obj2 = Person.new("John")
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 20: Token inesperado 'new'
+Error sintáctico en línea 21: Token inesperado 'new'

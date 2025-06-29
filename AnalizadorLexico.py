@@ -76,7 +76,6 @@ t_BITWISE_AND = r'\&'
 t_PIPE = r'\|'
 t_QUESTION_MARK = r'\?'  
 #=== Parte de Jonathan ====
-t_NEW = r'new'
 
 tokens.extend([
     'PLUS_ASSIGN', 'MINUS_ASSIGN', 'TIMES_ASSIGN',
@@ -149,6 +148,7 @@ def t_INSTANCE_VAR(t):
 
 def t_CLASS_VAR(t):
     r'@@[a-zA-Z_][a-zA-Z0-9_]*'
+    t.type = 'CLASS_VAR'  # Asegúrate de asignar un tipo para que PLY lo reconozca
     return t
 # Parte de GIOVANNI
 def t_newline(t):
@@ -165,17 +165,18 @@ def t_error(t):
 #fin de GIOVANNI
 #=== Parte de Jonathan ====
 tokens.extend([
-    'INTEGER', 'TRUE', 'FALSE',
+    'THEN','INTEGER', 'TRUE', 'FALSE',
     'IF', 'ELSIF', 'ELSE', 'UNTIL', 'NEXT', 'BREAK', 'REDO', 'RETRY', 'CASE', 'WHEN',
     'CLASS', 'MODULE',
     'BEGIN', 'RESCUE', 'ENSURE', 'RAISE', 'NIL',
     'DO', 'LAMBDA', 'PROC', 'YIELD', 'SELF', 'SUPER', 'REQUIRE',
-    'CONSTANT', 'NEW'
+    'CONSTANT', 'NEW', 'INITIALIZE'
 ])
 
 
 # Add boolean values to the keywords dictionary
 keywords.update({
+    'then': 'THEN',
     'true': 'TRUE',
     'false': 'FALSE',
     'if': 'IF',
@@ -201,7 +202,9 @@ keywords.update({
     'yield': 'YIELD',
     'self': 'SELF',
     'super': 'SUPER',
-    'require': 'REQUIRE'
+    'require': 'REQUIRE',''
+    'new': 'NEW',
+    'initialize': 'INITIALIZE'
 })
 
 def t_MULTILINE_COMMENT(t):

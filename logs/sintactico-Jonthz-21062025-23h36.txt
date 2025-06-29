@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 21/06/2025
+Hora: 23:36:53
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Instanciación de objetos
+obj1 = MyClass.new
+obj2 = Person.new("John")
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 3: Token inesperado 'John'
