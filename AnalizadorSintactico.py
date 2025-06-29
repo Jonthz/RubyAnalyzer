@@ -216,7 +216,6 @@ def p_while_statement(p):
                  | WHILE expression statements END'''
     print(f"Bucle while: Mientras {p[2]}, ejecutar {p[3]}")
 
-
 def p_gets_statement(p):
     '''statement : IDENTIFIER ASSIGN GETS'''
     print(f"Entrada del usuario almacenada en la variable {p[1]}")
