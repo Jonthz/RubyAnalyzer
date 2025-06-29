@@ -252,39 +252,79 @@ def p_if_statement(p):
                  | IF expression statements ELSIF expression statements END
                  | IF expression statements ELSIF expression statements ELSE statements END'''
     print(f"Condición IF: {p[1]}  {p[2]}  {p[3]} con cuerpo {p[3]}")
-    #semantico
     if len(p) == 5:  # if ... end
-        p[0] = f"if ({p[2]}) {{{p[3]}}}"
-        print(f"Condición IF: Si {p[2]} entonces {p[3]}")
-    elif len(p) == 6:  # if ... then statement end
-        p[0] = f"if ({p[2]}) {{{p[4]}}}"
-        print(f"Condición IF con THEN: Si {p[2]} entonces {p[4]}")
+        p[0] = {
+            "tipo": "if",
+            "condicion": p[2],
+            "cuerpo": p[3]
+        }
     elif len(p) == 7:  # if ... else ... end
-        p[0] = f"if ({p[2]}) {{{p[3]}}} else {{{p[5]}}}"
-        print(f"Condición IF-ELSE: Si {p[2]} entonces {p[3]} sino {p[5]}")
+        p[0] = {
+            "tipo": "if_else",
+            "condicion": p[2],
+            "cuerpo_if": p[3],
+            "cuerpo_else": p[5]
+        }
     elif len(p) == 8:  # if ... elsif ... end
-        p[0] = f"if ({p[2]}) {{{p[3]}}} else if ({p[5]}) {{{p[6]}}}"
-        print(f"Condición IF-ELSIF: Si {p[2]} entonces {p[3]} sino si {p[5]} entonces {p[6]}")
+        p[0] = {
+            "tipo": "if_elsif",
+            "condicion": p[2],
+            "cuerpo_if": p[3],
+            "condicion_elsif": p[5],
+            "cuerpo_elsif": p[6]
+        }
     else:  # if ... elsif ... else ... end
-        p[0] = f"if ({p[2]}) {{{p[3]}}} else if ({p[5]}) {{{p[6]}}} else {{{p[8]}}}"
-        print(f"Condición IF-ELSIF-ELSE: Si {p[2]} entonces {p[3]} sino si {p[5]} entonces {p[6]} sino {p[8]}")
+        p[0] = {
+            "tipo": "if_elsif_else",
+            "condicion": p[2],
+            "cuerpo_if": p[3],
+            "condicion_elsif": p[5],
+            "cuerpo_elsif": p[6],
+            "cuerpo_else": p[8]
+        }
+    print(f"AST generado para estructura IF: {p[0]}")
 
 def p_while_statement(p):
     '''structureControlWhile : WHILE expression statements END'''
     p[0] = f"while ({p[2]}) {{{p[3]}}}"
-    print(f"Bucle while: Mientras {p[2]}, ejecutar {p[3]}")
+    p[0] = {
+        "tipo": "while",
+        "condicion": p[2],
+        "cuerpo": p[3]
+    }
+    print(f"AST generado para estructura WHILE: {p[0]}")
 
 def p_for_statement(p):
     '''structureControlFor : FOR IDENTIFIER IN range statements END'''
     print(f"Estructura For: Iterando de {p[3]} con la variable {p[2]} ejecutando {p[5]}")
+    p[0] = {
+        "tipo": "for",
+        "variable": p[2],
+        "rango": p[4],
+        "cuerpo": p[5]
+    }
+    print(f"AST generado para estructura FOR: {p[0]}")
 
 def p_range(p):
     '''range : factor RANGE factor'''
-    p[0] = f"{p[1]}..{p[3]}"  # Rango de 1..5
+    p[0] = {
+        "tipo": "rango",
+        "inicio": p[1],
+        "fin": p[3]
+    }
 
 def p_range_expr(p):
     '''range : expression RANGE expression'''
-    p[0] = f"{p[1]}..{p[3]}"
+    p[0] = {
+        "tipo": "rango",
+        "inicio": p[1],
+        "fin": p[3]
+    }
+def p_break_statement(p):
+    '''statement : BREAK'''
+    p[0] = {"tipo": "break"}
+    print("Break encontrado")
+
 
 # ver si nos ponemos a hacer los en linea
 
@@ -342,15 +382,32 @@ def p_method_without_params_declaration(p):
 def p_method_with_params_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
     print(f"Método con parámetros declarado: {p[2]} con parámetros {p[4]} y cuerpo {p[6]}")
-    p[0] = f"def {p[2]}({', '.join(map(str, p[4]))}) {{{p[6]}}}"
+    p[0] = {
+        "tipo": "metodo",
+        "nombre": p[2],
+        "parametros": p[4],
+        "cuerpo": p[6]
+    }
 
 def p_method_with_return_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
-                |  DEF IDENTIFIER statements RETURN statements END '''
+                 | DEF IDENTIFIER statements RETURN statements END'''
     if len(p) == 10:  # Con parámetros y return
-        p[0] = f"def {p[2]}({', '.join(map(str, p[4]))}) {{{p[6]}; return {p[8]}}}"
+        p[0] = {
+            "tipo": "metodo",
+            "nombre": p[2],
+            "parametros": p[4],
+            "cuerpo": p[6],
+            "retorno": p[8]
+        }
     else:  # Sin parámetros, con return
-        p[0] = f"def {p[2]} {{{p[3]}; return {p[5]}}}"
+        p[0] = {
+            "tipo": "metodo",
+            "nombre": p[2],
+            "parametros": [],
+            "cuerpo": p[3],
+            "retorno": p[5]
+        }
     print(f"Method with return declared: {p[2]}")
 
 def p_method_call_without_params(p):
