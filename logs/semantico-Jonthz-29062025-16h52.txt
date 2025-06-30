@@ -1,0 +1,20 @@
+ANÁLISIS SEMÁNTICO - REPORTE COMPLETO
+==================================================
+
+Fecha: 29/06/2025 16:52:33
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+
+    x = 5
+    y = x + z
+    break
+    
+
+TABLA DE SÍMBOLOS:
+--------------------
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. 'break' fuera de un bucle

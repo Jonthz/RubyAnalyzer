@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 29/06/2025
+Hora: 17:09:41
+Usuario: Jonthz
+
+--- Código Analizado ---
+"hola
+"hola" + 5
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

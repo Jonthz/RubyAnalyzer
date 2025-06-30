@@ -1,0 +1,17 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 18:51:29
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+x = 10
+$y = 11
+puts x + y
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

@@ -1,0 +1,20 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 17:36:29
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+
+    x = 5
+    y = 10
+    suma = x + y
+    puts suma
+    
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

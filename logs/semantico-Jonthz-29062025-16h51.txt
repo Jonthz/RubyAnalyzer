@@ -1,0 +1,21 @@
+ANÁLISIS SEMÁNTICO - REPORTE COMPLETO
+==================================================
+
+Fecha: 29/06/2025 16:51:19
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+
+    x = 10
+    if x > 5
+        puts "Mayor a 5"
+    else
+        puts "Menor o igual a 5"
+    end
+    
+
+TABLA DE SÍMBOLOS:
+--------------------
+
+NO SE ENCONTRARON ERRORES SEMÁNTICOS
