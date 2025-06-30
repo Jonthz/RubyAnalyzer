@@ -1,3 +1,28 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 29/06/2025
+Hora: 22:01:02
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+# ------------------------------
+# Asignación simple
+# ------------------------------
+x = 3
+y = 10
+mensaje = "Hola mundo"
+
+# ------------------------------
+# Asignaciones compuestas
+# ------------------------------
+x += 2
+y -= 5
+x *= 2
+x /= 2
+x **= 3
+x **= "hola"
+y %= 4
+y %= "hola"
+
 # ------------------------------
 # IF simple
 # ------------------------------
@@ -28,3 +53,8 @@ while contador < 3; contador += 1; end
 # FOR inline
 # ------------------------------
 for i in 1..3; puts i; end
+
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 65: Token inesperado 'hola'
+Error sintáctico en línea 67: Token inesperado 'hola'
