@@ -28,12 +28,49 @@ def add_semantic_warning(message):
     print(f"  Advertencia Semántica: {message}")
 
 def infer_type(expr):
-    """Inferencia de tipo simple y directa"""
+    """
+    Inferencia de tipo simple y directa
+    MEJORADO con sistema de compatibilidad Ruby (Jonathan Zambrano)
+    """
+    # ===== DETECCIÓN DE CONVERSIONES JZ (tu contribución) =====
+    if isinstance(expr, dict) and expr.get("tipo") == "llamada_metodo":
+        method_name = expr.get("nombre")
+        target_obj = expr.get("objeto")
+        
+        # Mapeo de métodos de conversión Ruby (Jonathan Zambrano)
+        conversion_methods_jz = {
+            "to_i": "integer",          # Convertir a entero
+            "to_f": "float",            # Convertir a flotante  
+            "to_s": "string",           # Convertir a string
+            "to_a": "array",            # Convertir a array
+            "to_h": "hash",             # Convertir a hash
+            "to_sym": "symbol",         # Convertir a símbolo
+            "chomp": "string",          # Quitar salto de línea
+            "strip": "string",          # Quitar espacios
+            "upcase": "string",         # Mayúsculas
+            "downcase": "string",       # Minúsculas
+            "round": "integer",         # Redondear
+            "floor": "integer",         # Piso
+            "ceil": "integer"           # Techo
+        }
+        
+        if method_name in conversion_methods_jz:
+            print(f"[JZ] Conversión detectada: {method_name} -> {conversion_methods_jz[method_name]}")
+            return conversion_methods_jz[method_name]
+    
+    # ===== INFERENCIA ORIGINAL (mantener base) =====
     if isinstance(expr, int):
         return "integer"
     elif isinstance(expr, float):
         return "float"
     elif isinstance(expr, str):
+        # ===== MEJORA JZ: Detectar strings numéricos =====
+        if expr.replace('.', '', 1).replace('-', '', 1).isdigit():
+            print(f"String numérico detectado: '{expr}'")
+            return "string_numeric"
+        elif expr.isdigit():
+            print(f"String numérico entero detectado: '{expr}'")
+            return "string_numeric"
         return "string"
     elif isinstance(expr, bool):
         return "boolean"
@@ -46,7 +83,24 @@ def infer_type(expr):
         if expr.get("tipo") == "operacion":
             op = expr.get("op")
             if op in ["+", "-", "*", "/", "**", "%"]:
-                return "numeric"  # Simplificado
+                # ===== MEJORA JZ: Inferencia más específica según operandos =====
+                left_type = infer_type(expr.get("izq"))
+                right_type = infer_type(expr.get("der"))
+                
+                # Concatenación de strings (JZ)
+                if op == "+" and (left_type == "string" or right_type == "string"):
+                    return "string"
+                
+                # Operaciones numéricas (JZ mejorado)
+                if left_type == "float" or right_type == "float":
+                    return "float"
+                elif op == "/":  # División siempre retorna float en Ruby
+                    return "float"
+                elif left_type == "string_numeric" and right_type == "string_numeric":
+                    return "numeric"  # Mantener compatibilidad
+                else:
+                    return "numeric"  # Simplificado original
+                    
             elif op in ["==", "!=", ">", "<", ">=", "<=", "&&", "||"]:
                 return "boolean"
         # Si es una variable
@@ -92,39 +146,139 @@ def lookup_variable(name):
     return symbol_table.get(name, None)
 
 def is_compatible_types(type1, type2):
-    """Verificar si dos tipos son compatibles"""
+    """
+    Verificar si dos tipos son compatibles
+    MEJORADO con sistema JZ (Jonathan Zambrano)
+    """
     if type1 == type2:
         return True
-    # Permitir compatibilidad entre números
-    if {type1, type2}.issubset({"integer", "float", "numeric"}):
+    
+    # ===== COMPATIBILIDAD ORIGINAL =====
+    original_numeric = {"integer", "float", "numeric"}
+    if {type1, type2}.issubset(original_numeric):
         return True
+    
+    # ===== MEJORAS JZ: Compatibilidad Ruby extendida =====
+    
+    # Compatibilidad numérica extendida (JZ)
+    jz_numeric = {"integer", "float", "numeric", "string_numeric"}
+    if {type1, type2}.issubset(jz_numeric):
+        print(f"Compatibilidad numérica extendida: {type1} ↔ {type2}")
+        return True
+    
+    # Strings son compatibles entre sí (JZ)
+    if type1 == "string" and type2 == "string":
+        return True
+    
+    # String numérico con numéricos (JZ)
+    if (type1 == "string_numeric" and type2 in original_numeric) or \
+       (type2 == "string_numeric" and type1 in original_numeric):
+        print(f"Compatibilidad string numérico: {type1} ↔ {type2}")
+        return True
+    
     return False
 
 # Validación de operaciones simplificada
 def validar_operacion(op, izq, der):
-    """Valida que dos operandos sean compatibles para la operación"""
+    """
+    Valida que dos operandos sean compatibles para la operación
+    MEJORADO con sistema de compatibilidad Ruby (Jonathan Zambrano)
+    """
+    # Usar la función infer_type mejorada (que ya incluye detección JZ)
     left_type = infer_type(izq)
     right_type = infer_type(der)
     
-    # Operaciones aritméticas
+    print(f"🔧 Validando operación: {left_type} {op} {right_type}")
+    
+    # ===== OPERACIONES ARITMÉTICAS =====
     if op in ["+", "-", "*", "/", "**", "%"]:
+        
+        # ===== MEJORA JZ: Concatenación inteligente =====
+        if op == "+":
+            if left_type == "string" or right_type == "string":
+                if left_type == "string" and right_type == "string":
+                    print(f" Concatenación de strings válida")
+                    return "string"
+                elif left_type == "string" and right_type in ["integer", "float"]:
+                    add_semantic_warning(f"Concatenación string + {right_type}: considere usar .to_s")
+                    print(f"Sugerencia: Use {get_var_name_jz(der)}.to_s para convertir a string")
+                    return "string"
+                elif right_type == "string" and left_type in ["integer", "float"]:
+                    add_semantic_warning(f"Concatenación {left_type} + string: considere usar .to_s")
+                    print(f"Sugerencia: Use {get_var_name_jz(izq)}.to_s para convertir a string")
+                    return "string"
+        
+        # ===== VERIFICACIÓN DE COMPATIBILIDAD (original + JZ) =====
         if is_compatible_types(left_type, right_type):
-            print(f" Operación aritmética '{op}' válida entre '{left_type}' y '{right_type}'")
-            return "numeric"
+            # ===== MEJORA JZ: Tipo resultante más específico =====
+            if left_type == "float" or right_type == "float":
+                result_type = "float"
+            elif op == "/":  # División siempre retorna float en Ruby (JZ)
+                result_type = "float"
+            elif left_type == "string_numeric" and right_type == "string_numeric":
+                add_semantic_warning(f"Operación entre strings numéricos: considere conversión explícita")
+                print(f"Sugerencia: Use .to.i o .to_f para convertir strings numéricos")
+                result_type = "numeric"
+            else:
+                result_type = "numeric"  # Mantener original
+            
+            print(f" Operación aritmética '{op}' válida entre '{left_type}' y '{right_type}' = {result_type}")
+            return result_type
         else:
-            add_semantic_error(f"Operación '{op}' entre tipos incompatibles: '{left_type}' y '{right_type}'")
+            # ===== MEJORA JZ: Sugerencias específicas para errores =====
+            error_msg = f"Operación '{op}' entre tipos incompatibles: '{left_type}' y '{right_type}'"
+            add_semantic_error(error_msg)
+            
+            # Sugerencias JZ según el tipo de error
+            if left_type == "string" and right_type in ["integer", "float"]:
+                print(f"Sugerencia: Use {get_var_name_jz(izq)}.to_i o .to_f para convertir el string")
+            elif right_type == "string" and left_type in ["integer", "float"]:
+                print(f"Sugerencia: Use {get_var_name_jz(der)}.to_i o .to_f para convertir el string")
+            elif left_type == "string" and right_type == "string":
+                if op == "+":
+                    print(f"Nota: Concatenación de strings debería funcionar, verifique el contenido")
+                else:
+                    print(f"Sugerencia: Para operaciones numéricas con strings, use .to.i o .to.f")
+            
             return "error"
     
-    # Operaciones de comparación
+    # ===== OPERACIONES DE COMPARACIÓN =====
     elif op in ["==", "!=", ">", "<", ">=", "<="]:
+        
+        # ===== MEJORA JZ: Comparaciones Ruby más permisivas =====
+        if left_type == right_type:
+            print(f"✅ [JZ] Comparación '{op}' válida entre tipos idénticos: {left_type}")
+            return "boolean"
+        
+        # Comparaciones numéricas (JZ extendido)
+        numeric_types = ["integer", "float", "numeric", "string_numeric"]
+        if left_type in numeric_types and right_type in numeric_types:
+            if left_type == "string_numeric" or right_type == "string_numeric":
+                add_semantic_warning(f"[JZ] Comparación con string numérico: considere conversión explícita")
+                print(f"💡 [JZ] Sugerencia: Use .to.i o .to_f para comparaciones más precisas")
+            print(f"✅ [JZ] Comparación numérica '{op}' válida: {left_type} {op} {right_type}")
+            return "boolean"
+        
+        # Compatibilidad original
         if is_compatible_types(left_type, right_type):
             print(f" Comparación '{op}' válida entre '{left_type}' y '{right_type}'")
             return "boolean"
         else:
+            # ===== MEJORA JZ: Comparaciones Ruby son más permisivas =====
+            if op in ["==", "!="]:
+                print(f"✅ [JZ] Comparación de igualdad '{op}' válida (Ruby permite cualquier tipo)")
+                return "boolean"
+            
+            # Advertencia para comparaciones de orden (JZ)
+            if op in [">", "<", ">=", "<="]:
+                add_semantic_warning(f"[JZ] Comparación de orden '{op}' entre tipos diferentes: {left_type} y {right_type}")
+                add_semantic_warning(f"[JZ] Esto puede lanzar una excepción en tiempo de ejecución")
+            
+            # Error menos severo (original mejorado)
             add_semantic_error(f"Comparación '{op}' entre tipos incompatibles: '{left_type}' y '{right_type}'")
             return "boolean"  # Ruby permite comparar cualquier cosa
     
-    # Operaciones lógicas
+    # ===== OPERACIONES LÓGICAS (original) =====
     elif op in ["&&", "||"]:
         print(f" Operación lógica '{op}' válida")
         return "boolean"
@@ -305,23 +459,32 @@ def analizar_semantica(ast):
             method_name = ast.get("nombre")
             args = ast.get("argumentos", [])
             
-            print(f"📞 Analizando llamada a método '{method_name}' con {len(args)} argumentos")
+            print(f"Analizando llamada a método '{method_name}' con {len(args)} argumentos")
             
-            # Buscar el método en la tabla de símbolos
-            method_info = lookup_variable(method_name)
+            # ===== MEJORA JZ: Métodos de conversión integrados =====
+            conversion_methods_jz = ["to_i", "to_f", "to_s", "to_a", "to_h", "to_sym", "chomp", "strip", "upcase", "downcase", "round", "floor", "ceil"]
             
-            if method_info and method_info.get('is_method', False):
-                expected_params = method_info['param_count']
-                actual_args = len(args)
-                
-                if expected_params == actual_args:
-                    print(f" Llamada válida: método '{method_name}' espera {expected_params} argumentos y recibió {actual_args}")
-                else:
-                    add_semantic_error(f"Método '{method_name}' espera {expected_params} parámetros, pero recibió {actual_args}")
+            if method_name in conversion_methods_jz:
+                print(f"[JZ] Método de conversión integrado '{method_name}' reconocido")
+                # Los métodos de conversión no necesitan verificación de argumentos
             else:
-                add_semantic_warning(f"Método '{method_name}' no está definido o no es un método")
+                # Buscar el método en la tabla de símbolos
+                method_info = lookup_variable(method_name)
+                
+                if method_info and method_info.get('is_method', False):
+                    expected_params = method_info['param_count']
+                    actual_args = len(args)
+                    
+                    if expected_params == actual_args:
+                        print(f"Llamada válida: método '{method_name}' espera {expected_params} argumentos y recibió {actual_args}")
+                    else:
+                        add_semantic_error(f"Método '{method_name}' espera {expected_params} parámetros, pero recibió {actual_args}")
+                else:
+                    # ===== VERIFICACIÓN DE ARGUMENTOS JZ (tu contribución) =====
+                    print(f"[JZ] Verificando argumentos para método definido por usuario...")
+                    analyze_method_call_jz(method_name, args)
             
-            # Analizar los argumentos
+            # Analizar los argumentos (siempre necesario)
             for arg in args:
                 analizar_semantica(arg)
                 
@@ -491,39 +654,215 @@ def analizar_codigo(codigo):
         add_semantic_error(f"Error interno durante análisis: {e}")
         print(f" Error durante análisis semántico: {e}")
 
-# Función de utilidad para testing
-def test_semantic_analyzer():
-    """Función de prueba simple para el analizador semántico"""
-    test_code = """
-    x = 5
-    y = 10
-    suma = x + y
-    puts suma
+# Agregar después de la línea 659 en AnalizadorSemantico.py:
+
+# ==========================================================================
+# COMPROBACIÓN DE ARGUMENTOS EN MÉTODOS - Jonathan Zambrano
+# ==========================================================================
+
+def check_method_arguments_jz(method_name, provided_args, call_location="método"):
     """
+    Verificar que los métodos sean llamados con la cantidad correcta de argumentos
+    y que los tipos coincidan (Jonathan Zambrano)
     
-    print(" PROBANDO ANALIZADOR SEMÁNTICO SIMPLE")
-    analizar_codigo(test_code)
+    Args:
+        method_name: Nombre del método a verificar
+        provided_args: Lista de argumentos proporcionados
+        call_location: Contexto de la llamada (para mensajes)
+    
+    Returns:
+        dict: {"valid": bool, "errors": list, "warnings": list}
+    """
+    result = {
+        "valid": True,
+        "errors": [],
+        "warnings": []
+    }
+    
+    print(f"Verificando argumentos para método '{method_name}'")
+    print(f"Argumentos proporcionados: {len(provided_args)} - {provided_args}")
+    
+    # Buscar el método en la tabla de símbolos
+    method_info = lookup_variable(method_name)
+    
+    if not method_info:
+        # Método no encontrado
+        error_msg = f"Método '{method_name}' no está definido"
+        result["errors"].append(error_msg)
+        result["valid"] = False
+        add_semantic_error(error_msg)
+        print(f"[JZ] {error_msg}")
+        return result
+    
+    if not method_info.get('is_method', False):
+        # No es un método
+        error_msg = f" '{method_name}' no es un método"
+        result["errors"].append(error_msg)
+        result["valid"] = False
+        add_semantic_error(error_msg)
+        print(f" {error_msg}")
+        return result
+    
+    # Obtener información del método
+    expected_params = method_info.get('param_count', 0)
+    actual_args = len(provided_args)
+    method_params = method_info.get('params', [])
+    
+    print(f" Método '{method_name}' espera {expected_params} parámetros")
+    print(f" Parámetros definidos: {method_params}")
+    
+    # ===== VERIFICACIÓN DE CANTIDAD DE ARGUMENTOS =====
+    if expected_params != actual_args:
+        error_msg = f"Método '{method_name}' espera {expected_params} argumentos, pero recibió {actual_args}"
+        result["errors"].append(error_msg)
+        result["valid"] = False
+        add_semantic_error(error_msg)
+        print(f"{error_msg}")
+        
+        # Sugerencias específicas
+        if actual_args < expected_params:
+            missing = expected_params - actual_args
+            print(f"[JZ] Faltan {missing} argumento(s)")
+            if method_params:
+                missing_params = method_params[actual_args:]
+                print(f"[JZ] Parámetros faltantes: {missing_params}")
+        else:
+            excess = actual_args - expected_params
+            print(f"[JZ] Sobran {excess} argumento(s)")
+        
+        return result
+    
+    # ===== VERIFICACIÓN DE TIPOS DE ARGUMENTOS =====
+    print(f"[JZ] Cantidad de argumentos correcta ({actual_args})")
+    
+    # Analizar tipos de cada argumento
+    for i, arg in enumerate(provided_args):
+        arg_type = infer_type(arg)
+        param_name = method_params[i] if i < len(method_params) else f"param_{i+1}"
+        
+        print(f"Argumento {i+1} ({param_name}): tipo '{arg_type}'")
+        
+        # ===== VERIFICACIONES DE TIPO ESPECÍFICAS JZ =====
+        
+        # 1. Verificar argumentos no definidos
+        if arg_type == "undefined":
+            error_msg = f"Argumento {i+1} para '{method_name}' usa variable no definida"
+            result["errors"].append(error_msg)
+            result["valid"] = False
+            add_semantic_error(error_msg)
+            print(f" {error_msg}")
+        
+        # 2. Verificar tipos problemáticos
+        elif arg_type == "unknown":
+            warning_msg = f"[Argumento {i+1} para '{method_name}' tiene tipo desconocido"
+            result["warnings"].append(warning_msg)
+            add_semantic_warning(warning_msg)
+            print(f"{warning_msg}")
+        
+        # 3. Verificar strings numéricos (sugerir conversión)
+        elif arg_type == "string_numeric":
+            warning_msg = f"[Argumento {i+1} para '{method_name}' es string numérico: considere conversión explícita"
+            result["warnings"].append(warning_msg)
+            add_semantic_warning(warning_msg)
+            print(f"{warning_msg}")
+            print(f" Sugerencia: Use .to_i o .to_f si el método espera un número")
+        
+        # 4. Análisis de compatibilidad avanzada
+        else:
+            print(f"] Argumento {i+1} ({param_name}): tipo '{arg_type}' válido")
+    
+    # ===== VERIFICACIONES ADICIONALES JZ =====
+    
+    # Verificar si hay mezcla de tipos incompatibles
+    arg_types = [infer_type(arg) for arg in provided_args]
+    unique_types = set(arg_types)
+    
+    if len(unique_types) > 1:
+        # Hay mezcla de tipos - verificar compatibilidad
+        problematic_combinations = []
+        
+        for i in range(len(arg_types)):
+            for j in range(i+1, len(arg_types)):
+                type1, type2 = arg_types[i], arg_types[j]
+                if not is_compatible_types(type1, type2):
+                    problematic_combinations.append((i+1, type1, j+1, type2))
+        
+        if problematic_combinations:
+            warning_msg = f"[JZ] Método '{method_name}' recibe tipos incompatibles:"
+            result["warnings"].append(warning_msg)
+            add_semantic_warning(warning_msg)
+            print(f"⚠️ [JZ] {warning_msg}")
+            
+            for arg1_pos, type1, arg2_pos, type2 in problematic_combinations:
+                incompatible_msg = f"[JZ] Argumento {arg1_pos} ({type1}) incompatible con argumento {arg2_pos} ({type2})"
+                print(f"  ⚠️ [JZ] {incompatible_msg}")
+                
+                # Sugerencias específicas
+                suggest_argument_conversion_jz(arg1_pos, type1, type2)
+                suggest_argument_conversion_jz(arg2_pos, type2, type1)
+    
+    if result["valid"]:
+        success_msg = f"✅ [JZ] Llamada a método '{method_name}' válida: {actual_args} argumentos correctos"
+        print(success_msg)
+    
+    return result
 
-def test_assignment_debug():
-    """Función de prueba específica para asignaciones"""
-    test_code = "x = 5"
-    
-    print(" PROBANDO ASIGNACIÓN SIMPLE")
-    print(f"Código: {test_code}")
-    
-    # Obtener AST directamente del parser
-    ast = parser.parse(test_code)
-    print(f"AST obtenido: {ast}")
-    
-    # Analizar manualmente
-    if ast:
-        print(" Analizando AST manualmente...")
-        analizar_semantica(ast)
-        print(f" Tabla de símbolos final: {symbol_table}")
-    else:
-        print(" AST es None")
+# Agregar función auxiliar después de check_method_arguments_jz:
 
-# ← AGREGAR ESTA LÍNEA AL FINAL:
-if __name__ == "__main__":
-    print(" EJECUTANDO PRUEBA DE DEBUG")
-    test_assignment_debug()
+def get_var_name_jz(expr):
+    """
+    Función auxiliar para obtener nombre de variable (Jonathan Zambrano)
+    """
+    if isinstance(expr, dict):
+        if expr.get("tipo") == "uso_variable":
+            return expr.get("nombre", "variable")
+        elif expr.get("tipo") == "llamada_metodo":
+            obj = expr.get("objeto")
+            if isinstance(obj, dict) and obj.get("tipo") == "uso_variable":
+                return obj.get("nombre", "variable")
+            elif isinstance(obj, str):
+                return obj
+    elif isinstance(expr, str):
+        return f"'{expr}'"
+    elif isinstance(expr, (int, float)):
+        return str(expr) 
+    return "valor"
+
+def suggest_argument_conversion_jz(arg_position, from_type, to_type):
+    """
+    Sugerir conversiones para argumentos incompatibles (Jonathan Zambrano)
+    """
+    conversion_suggestions = {
+        ("string", "integer"): "Use .to_i para convertir string a entero",
+        ("string", "float"): "Use .to_f para convertir string a decimal", 
+        ("string", "numeric"): "Use .to_i o .to_f para convertir string a número",
+        ("integer", "string"): "Use .to_s para convertir entero a string",
+        ("float", "string"): "Use .to_s para convertir decimal a string",
+        ("string_numeric", "integer"): "Use .to_i para convertir string numérico a entero",
+        ("string_numeric", "float"): "Use .to_f para convertir string numérico a decimal"
+    }
+    
+    suggestion = conversion_suggestions.get((from_type, to_type))
+    if suggestion:
+        print(f"[JZ] Para argumento {arg_position}: {suggestion}")
+
+def analyze_method_call_jz(method_name, arguments):
+    """
+    Analizar llamada a método completa (Jonathan Zambrano)
+    Función principal que verifica argumentos y compatibilidad
+    """
+    print(f"\n[JZ] === ANÁLISIS DE LLAMADA A MÉTODO ===")
+    print(f"[JZ] Método: {method_name}")
+    print(f"[JZ] Argumentos: {arguments}")
+    
+    # Analizar cada argumento primero
+    for i, arg in enumerate(arguments):
+        print(f"🔍 [JZ] Analizando argumento {i+1}...")
+        analizar_semantica(arg)
+    
+    # Verificar argumentos
+    result = check_method_arguments_jz(method_name, arguments)
+    
+    print(f"[JZ] === FIN ANÁLISIS DE LLAMADA ===\n")
+    
+    return result
