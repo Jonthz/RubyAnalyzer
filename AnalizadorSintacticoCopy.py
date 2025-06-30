@@ -3,7 +3,6 @@ from AnalizadorLexico import tokens
 import os
 import datetime
 from AnalizadorLexico import get_github_username
-#import AnalizadorSemantico as sa
 # ==========================================================================
 # CONFIGURACIÓN DE PRECEDENCIA
 # ==========================================================================
@@ -277,6 +276,30 @@ def p_vars(p):
     p[0] = p[1]  # Retorna la variable o la asignación
     print(f"🔍 DEBUG VARS: p[1] = {p[1]}")
     print(f"🔍 DEBUG VARS: p[0] = {p[0]}")
+
+def p_method_call_conversion_jz(p):
+    '''expression : expression DOT IDENTIFIER
+                  | factor DOT IDENTIFIER
+                  | IDENTIFIER DOT IDENTIFIER'''
+    # Detectar métodos de conversión (Jonathan Zambrano)
+    conversion_methods_jz = ["to_i", "to_f", "to_s", "to_a", "to_h", "to_sym", "chomp", "strip", "upcase", "downcase", "round", "floor", "ceil"]
+    
+    if p[3] in conversion_methods_jz:
+        p[0] = {
+            "tipo": "llamada_metodo",
+            "nombre": p[3],
+            "objeto": p[1],
+            "argumentos": []
+        }
+        print(f"🔄 [JZ] Conversión de tipo detectada: {p[1]} -> {p[3]}")
+    else:
+        p[0] = {
+            "tipo": "llamada_metodo",
+            "nombre": p[3],
+            "objeto": p[1],
+            "argumentos": []
+        }
+        print(f"📞 [JZ] Llamada a método: {p[1]}.{p[3]}")
 
 def p_local_var(p):
     '''p_local_var : IDENTIFIER ASSIGN statement
