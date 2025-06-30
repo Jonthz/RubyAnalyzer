@@ -417,6 +417,15 @@ def p_break_statement(p):
     p[0] = {"tipo": "break"}
     print("Break encontrado")
 
+def p_break_if_statement(p):
+    '''statement : BREAK structureControlIf
+                 | BREAK structureControlIfLine'''
+    p[0] = {
+        "tipo": "break_if",
+        "condicion": p[3]
+    }
+    print(f"Break condicional encontrado con condición: {p[3]}")
+
 
 # ver si nos ponemos a hacer los en linea
 def p_if_inline_statement(p):
@@ -591,7 +600,14 @@ def p_method_call_simple(p):
         "nombre": p[1],
         "argumentos": []
     }
-
+def p_method_call_with_params(p):
+    '''statement : IDENTIFIER LPAREN params RPAREN'''
+    p[0] = {
+        "tipo": "llamada_metodo",
+        "nombre": p[1],
+        "argumentos": p[3]
+    }
+    print(f"Llamada a método '{p[1]}' con argumentos {p[3]}")
 def p_class_definition(p):
     '''statement : CLASS CONSTANT statements END
                  | CLASS CONSTANT LESS CONSTANT statements END

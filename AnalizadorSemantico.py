@@ -285,6 +285,12 @@ def analizar_semantica(ast):
                 add_semantic_error("'break' fuera de un bucle")
             else:
                 print("Break válido dentro de un bucle")
+        elif tipo == "break_if":
+            if not loop_stack:
+                add_semantic_error("'break if' fuera de un bucle")
+            else:
+                print("Break condicional válido dentro de un bucle")
+            analizar_semantica(ast.get("condicion"))
         #Darwin Pacheco (Fin)        
         # Arrays, hashes, sets
         elif tipo in ["array", "hash", "set"]:
