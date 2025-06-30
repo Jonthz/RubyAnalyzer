@@ -1,0 +1,24 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 20:58:43
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+def suma(a, b)
+    puts a
+    puts b
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  suma: metodo (Inicializada)
+  a: parameter (Sin inicializar)
+  b: parameter (Sin inicializar)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  suma
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

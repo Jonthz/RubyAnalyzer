@@ -1,0 +1,21 @@
+ANÁLISIS SEMÁNTICO - REPORTE COMPLETO
+==================================================
+
+Fecha: 29/06/2025 17:09:41
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+"hola
+"hola" + 5
+
+TABLA DE SÍMBOLOS:
+--------------------
+
+ERRORES ENCONTRADOS (5):
+--------------------
+1. Variable 'hola' usada sin ser declarada
+2. Variable 'hola' no está definida
+3. Operación '+' requiere tipos numéricos, pero se encontró: undefined y integer
+4. Variable 'hola' no está definida
+5. Tipos incompatibles en operación '+': undefined y integer

@@ -1,0 +1,149 @@
+Tokens reconocidos:
+CLASS: class
+CONSTANT: Animal
+DEF: def
+INITIALIZE: initialize
+LPAREN: (
+IDENTIFIER: name
+RPAREN: )
+INSTANCE_VAR: @name
+ASSIGN: =
+IDENTIFIER: name
+END: end
+DEF: def
+IDENTIFIER: speak
+RAISE: raise
+STRING: Método 'speak' debe ser implementado en la clase derivada
+END: end
+DEF: def
+IDENTIFIER: info
+STRING: #{@name} es un animal.
+END: end
+END: end
+CLASS: class
+CONSTANT: Dog
+LESS: <
+CONSTANT: Animal
+DEF: def
+INITIALIZE: initialize
+LPAREN: (
+IDENTIFIER: name
+COMMA: ,
+IDENTIFIER: breed
+RPAREN: )
+SUPER: super
+LPAREN: (
+IDENTIFIER: name
+RPAREN: )
+INSTANCE_VAR: @breed
+ASSIGN: =
+IDENTIFIER: breed
+END: end
+DEF: def
+IDENTIFIER: speak
+PUTS: puts
+STRING: #{@name}, el perro de raza #{@breed}, ladra.
+END: end
+DEF: def
+IDENTIFIER: info
+STRING: #{@name} es un perro de raza #{@breed}.
+END: end
+END: end
+CLASS: class
+CONSTANT: Cat
+LESS: <
+CONSTANT: Animal
+DEF: def
+INITIALIZE: initialize
+LPAREN: (
+IDENTIFIER: name
+RPAREN: )
+SUPER: super
+LPAREN: (
+IDENTIFIER: name
+RPAREN: )
+END: end
+DEF: def
+IDENTIFIER: speak
+PUTS: puts
+STRING: #{@name}, el gato, maulla.
+END: end
+DEF: def
+IDENTIFIER: info
+STRING: #{@name} es un gato.
+END: end
+END: end
+IDENTIFIER: add
+ASSIGN: =
+LAMBDA: lambda
+LBRACE: {
+PIPE: |
+IDENTIFIER: a
+COMMA: ,
+IDENTIFIER: b
+PIPE: |
+IDENTIFIER: a
+PLUS: +
+IDENTIFIER: b
+RBRACE: }
+IDENTIFIER: multiply
+ASSIGN: =
+PROC: proc
+LBRACE: {
+PIPE: |
+IDENTIFIER: a
+COMMA: ,
+IDENTIFIER: b
+PIPE: |
+IDENTIFIER: a
+TIMES: *
+IDENTIFIER: b
+RBRACE: }
+IDENTIFIER: dog
+ASSIGN: =
+CONSTANT: Dog
+DOT: .
+NEW: new
+LPAREN: (
+STRING: Rex
+COMMA: ,
+STRING: Pastor Alemán
+RPAREN: )
+IDENTIFIER: cat
+ASSIGN: =
+CONSTANT: Cat
+DOT: .
+NEW: new
+LPAREN: (
+STRING: Whiskers
+RPAREN: )
+BEGIN: begin
+IDENTIFIER: dog
+DOT: .
+IDENTIFIER: speak
+IDENTIFIER: cat
+DOT: .
+IDENTIFIER: speak
+PUTS: puts
+STRING: \nInformación del perro: #{dog.info}
+PUTS: puts
+STRING: Información del gato: #{cat.info}
+PUTS: puts
+STRING: \nResultado de la suma con lambda: #{add.call(5, 3)}
+PUTS: puts
+STRING: Resultado de la multiplicación con proc: #{multiply.call(5, 3)}
+RAISE: raise
+STRING: ¡Algo salió mal!
+IF: if
+IDENTIFIER: dog
+DOT: .
+IDENTIFIER: nil?
+RESCUE: rescue
+HASH_ROCKET: =>
+IDENTIFIER: e
+PUTS: puts
+STRING: Error: #{e.message}
+ENSURE: ensure
+PUTS: puts
+STRING: \nFin de la ejecución de Clases y Métodos Lambda.
+END: end

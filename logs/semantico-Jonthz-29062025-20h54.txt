@@ -1,0 +1,23 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 20:54:30
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+def saludo
+    "Hola"
+end
+
+saludo
+
+TABLA DE SÍMBOLOS:
+--------------------
+  saludo: metodo (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  saludo
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

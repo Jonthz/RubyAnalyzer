@@ -2,6 +2,7 @@ import sys
 import os
 from AnalizadorLexico import tokens, lex, test_lexical_analyzer
 from AnalizadorSintacticoCopy import yacc, test_parser
+from AnalizadorSemantico import analizar_codigo
 
 # Cambia la manera en que cargas los algoritmos desde archivos
 def load_algorithm_from_file(file_name):
@@ -18,14 +19,16 @@ def main():
     print("Seleccione el tipo de análisis:")
     print("1. Análisis Léxico")
     print("2. Análisis Sintáctico")
-    print("3. Salir")
+    print("3. Análisis Semántico")
+    print("4. Análisis Completo (Léxico + Sintáctico + Semántico)")
+    print("5. Salir")
 
     tipo = input("\nOpción: ")
 
-    if tipo == "3":
+    if tipo == "5":
         print("¡Hasta luego!")
         sys.exit(0)
-    elif tipo not in ("1", "2"):
+    elif tipo not in ("1", "2", "3", "4"):
         print("Opción inválida. Intente de nuevo.")
         return main()
 
@@ -69,8 +72,17 @@ def main():
             # Ejecutar análisis según la selección
             if tipo == "1":
                 test_lexical_analyzer(ruby_code)
-            else:
+            elif tipo == "2":
                 test_parser(ruby_code)
+            elif tipo == "3":
+                analizar_codigo(ruby_code)
+            elif tipo == "4":
+                print("\n🔍 === ANÁLISIS LÉXICO ===")
+                test_lexical_analyzer(ruby_code)
+                print("\n🔍 === ANÁLISIS SINTÁCTICO ===")
+                test_parser(ruby_code)
+                print("\n🔍 === ANÁLISIS SEMÁNTICO ===")
+                analizar_codigo(ruby_code)
 
 
     elif option == "2":
@@ -84,8 +96,17 @@ def main():
             # Ejecutar análisis según selección
             if tipo == "1":
                 test_lexical_analyzer(algorithm_code)
-            else:
+            elif tipo == "2":
                 test_parser(algorithm_code)
+            elif tipo == "3":
+                analizar_codigo(algorithm_code)
+            elif tipo == "4":
+                print("\n🔍 === ANÁLISIS LÉXICO ===")
+                test_lexical_analyzer(algorithm_code)
+                print("\n🔍 === ANÁLISIS SINTÁCTICO ===")
+                test_parser(algorithm_code)
+                print("\n🔍 === ANÁLISIS SEMÁNTICO ===")
+                analizar_codigo(algorithm_code)
     
     elif option == "3":
         algorithm_code = load_algorithm_from_file('algorithms/quick_sort.rb')
@@ -98,8 +119,17 @@ def main():
             # Ejecutar análisis según selección
             if tipo == "1":
                 test_lexical_analyzer(algorithm_code)
-            else:
+            elif tipo == "2":
                 test_parser(algorithm_code)
+            elif tipo == "3":
+                analizar_codigo(algorithm_code)
+            elif tipo == "4":
+                print("\n🔍 === ANÁLISIS LÉXICO ===")
+                test_lexical_analyzer(algorithm_code)
+                print("\n🔍 === ANÁLISIS SINTÁCTICO ===")
+                test_parser(algorithm_code)
+                print("\n🔍 === ANÁLISIS SEMÁNTICO ===")
+                analizar_codigo(algorithm_code)
     
     elif option == "4":
         algorithm_code = load_algorithm_from_file('algorithms/class_algorithm.rb')
@@ -112,8 +142,17 @@ def main():
             # Ejecutar análisis según selección
             if tipo == "1":
                 test_lexical_analyzer(algorithm_code)
-            else:
+            elif tipo == "2":
                 test_parser(algorithm_code)
+            elif tipo == "3":
+                analizar_codigo(algorithm_code)
+            elif tipo == "4":
+                print("\n🔍 === ANÁLISIS LÉXICO ===")
+                test_lexical_analyzer(algorithm_code)
+                print("\n🔍 === ANÁLISIS SINTÁCTICO ===")
+                test_parser(algorithm_code)
+                print("\n🔍 === ANÁLISIS SEMÁNTICO ===")
+                analizar_codigo(algorithm_code)
     
     elif option == "5":
         algorithm_code = load_algorithm_from_file('algorithms/temp.rb')
@@ -126,8 +165,17 @@ def main():
             # Ejecutar análisis según selección
             if tipo == "1":
                 test_lexical_analyzer(algorithm_code)
-            else:
+            elif tipo == "2":
                 test_parser(algorithm_code)
+            elif tipo == "3":
+                analizar_codigo(algorithm_code)
+            elif tipo == "4":
+                print("\n🔍 === ANÁLISIS LÉXICO ===")
+                test_lexical_analyzer(algorithm_code)
+                print("\n🔍 === ANÁLISIS SINTÁCTICO ===")
+                test_parser(algorithm_code)
+                print("\n🔍 === ANÁLISIS SEMÁNTICO ===")
+                analizar_codigo(algorithm_code)
     
     elif option == "6":
         print("¡Hasta luego!")

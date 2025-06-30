@@ -1,0 +1,19 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 20:20:44
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+if x > 5; puts "Mayor"; end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+ERRORES ENCONTRADOS (3):
+--------------------
+1. Variable 'x' usada sin ser declarada
+2. Variable 'x' no está definida
+3. Comparación '>' entre tipos incompatibles: 'undefined' y 'integer'

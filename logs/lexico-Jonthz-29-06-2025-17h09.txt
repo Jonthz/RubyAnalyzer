@@ -1,0 +1,9 @@
+Tokens reconocidos:
+STRING: hola
+
+IDENTIFIER: hola
+PLUS: +
+INTEGER: 5
+
+Errores léxicos:
+Error léxico: " en la línea 277
