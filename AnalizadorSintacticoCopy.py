@@ -14,7 +14,7 @@ precedence = (
     ('left', 'PLUS', 'MINUS'),     # Aritmética, PLUS y MINUS tienen la misma precedencia
     ('left', 'TIMES', 'DIVIDE'),   # Aritmética, TIMES y DIVIDE tienen la misma precedencia,
     ('nonassoc', 'LESS', 'GREATER', 'LESS_EQUAL', 'GREATER_EQUAL', 'EQUALS', 'NOT_EQUALS'),
-    ('right', 'POWER'),
+    ('right', 'POWER', 'MOD'),  # Exponentiation y módulo tienen mayor precedencia
     ('right', 'NOT'),              # Negación lógica
     ('nonassoc', 'HASH_ROCKET'),
     ('nonassoc', 'RANGE'), 
@@ -172,6 +172,16 @@ def p_factor_power(p):
         "der": p[3]
     }
 
+def p_factor_mod(p):
+    '''factor : factor MOD factor'''
+    p[0] = p[1] % p[3]
+    p[0] = {
+        "tipo": "operacion",
+        "op": "%",
+        "izq": p[1],
+        "der": p[3]
+    }
+
 def p_factor_expr(p):
     'factor : LPAREN expression RPAREN'
     p[0] = p[2]
@@ -273,7 +283,13 @@ def p_local_var(p):
                  | IDENTIFIER PLUS_ASSIGN expression
                  | IDENTIFIER MINUS_ASSIGN expression
                  | IDENTIFIER TIMES_ASSIGN expression
-                 | IDENTIFIER DIVIDE_ASSIGN expression'''
+                 | IDENTIFIER DIVIDE_ASSIGN INTEGER
+                 | IDENTIFIER DIVIDE_ASSIGN FLOAT
+                 | IDENTIFIER POWER_ASSIGN INTEGER
+                 | IDENTIFIER POWER_ASSIGN FLOAT
+                 | IDENTIFIER MOD_ASSIGN INTEGER
+                 | IDENTIFIER MOD_ASSIGN FLOAT
+                 '''
     p[0] = {
         "tipo": "asignacion",
         "variable": p[1],
