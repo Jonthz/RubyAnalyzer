@@ -65,13 +65,27 @@ def infer_type(expr):
             return "hash"
     return "unknown"
 
-def declare_variable(name, var_type, value=None):
-    """Declarar una variable en la tabla de símbolos"""
+def declare_symbol(name, symbol_type, value=None, params=None, is_method=False):
+    """Declarar un símbolo (variable o método) en la tabla de símbolos"""
+    # Los parámetros se consideran "inicializados" porque reciben valores
+    is_initialized = value is not None or is_method or symbol_type == "parameter"
+    
     symbol_table[name] = {
-        'type': var_type,
+        'type': symbol_type,
         'value': value,
-        'initialized': value is not None
+        'initialized': is_initialized,  # ← CAMBIO AQUÍ
+        'is_method': is_method,
+        'params': params if params else [],
+        'param_count': len(params) if params else 0
     }
+    
+    if is_method:
+        print(f"✅ Método '{name}' registrado con {len(params) if params else 0} parámetros")
+        # También mantener compatibilidad con defined_methods
+        if name not in defined_methods:
+            defined_methods.append(name)
+    else:
+        print(f"✅ Variable '{name}' declarada como {symbol_type}")
 
 def lookup_variable(name):
     """Buscar una variable en la tabla de símbolos"""
@@ -149,7 +163,7 @@ def analizar_semantica(ast):
             print(f"🔍 DEBUG: Tipo inferido: {value_type}")
             
             # Actualizar tabla de símbolos
-            declare_variable(var_name, value_type, valor)
+            declare_symbol(var_name, value_type, valor)
             print(f"🔍 DEBUG: Tabla de símbolos actualizada: {symbol_table}")
             
         # Uso de variable
@@ -161,6 +175,21 @@ def analizar_semantica(ast):
             else:
                 print(f"✅ Uso válido de variable '{var_name}' (tipo: {var_info['type']})")
                 
+        # Uso de identificador (puede ser variable o método)
+        elif tipo == "uso_identificador":
+            var_name = ast.get("nombre")
+            
+            # Buscar en la tabla de símbolos
+            symbol_info = lookup_variable(var_name)
+            
+            if symbol_info:
+                if symbol_info.get('is_method', False):
+                    print(f"✅ Llamada válida a método '{var_name}()' (sin argumentos)")
+                else:
+                    print(f"✅ Uso válido de variable '{var_name}' (tipo: {symbol_info['type']})")
+            else:
+                add_semantic_error(f"Identificador '{var_name}' no está definido")
+
         # Operación
         elif tipo == "operacion":
             # Analizar operandos primero
@@ -177,20 +206,30 @@ def analizar_semantica(ast):
             params = ast.get("parametros", [])
             cuerpo = ast.get("cuerpo", [])
             
-            print(f"📝 Analizando método '{method_name}'")
+            print(f"🔧 Analizando definición de método: {method_name}")
+            print(f"🔧 Parámetros encontrados: {params}")
             
-            # Registrar método como definido
-            if method_name not in defined_methods:
-                defined_methods.append(method_name)
+            # REGISTRAR EL MÉTODO EN LA TABLA DE SÍMBOLOS (tu sugerencia)
+            declare_symbol(method_name, "metodo", None, params, True)
             
-            # Declarar parámetros como variables locales
+            # CORREGIR: Analizar parámetros como variables locales del método
             for param in params:
                 if isinstance(param, str):
-                    declare_variable(param, "parameter", None)
-                    print(f"  📋 Parámetro '{param}' declarado")
+                    declare_symbol(param, "parameter", None, None, False)
+                    print(f"  📋 Parámetro '{param}' declarado como variable local")
+                elif isinstance(param, dict) and param.get("tipo") == "uso_variable":
+                    # Si los parámetros vienen como diccionarios de uso_variable
+                    param_name = param.get("nombre")
+                    if param_name:
+                        declare_symbol(param_name, "parameter", None, None, False)
+                        print(f"  📋 Parámetro '{param_name}' declarado como variable local")
             
-            # Analizar cuerpo del método
-            analizar_semantica(cuerpo)
+            # Analizar cuerpo del método (aquí ya deberían estar disponibles los parámetros)
+            if cuerpo:
+                print(f"🔧 Analizando cuerpo del método {method_name}")
+                analizar_semantica(cuerpo)
+            
+            print(f"✅ Método {method_name} completamente procesado")
             
         # Estructuras de control con bucles
         elif tipo in ["for", "while", "for_inline", "while_inline"]:
@@ -206,7 +245,7 @@ def analizar_semantica(ast):
             # Para bucles for, declarar variable de iteración
             if tipo.startswith("for") and "variable" in ast:
                 var_iter = ast["variable"]
-                declare_variable(var_iter, "integer", 0)
+                declare_symbol(var_iter, "integer", 0)
                 print(f"  🔢 Variable de iteración '{var_iter}' declarada")
             
             # Analizar cuerpo
@@ -253,15 +292,33 @@ def analizar_semantica(ast):
         elif tipo == "llamada_metodo":
             method_name = ast.get("nombre")
             args = ast.get("argumentos", [])
-            print(f"📞 Llamada a método '{method_name}' con {len(args)} argumentos")
             
-            # Verificar si el método está definido
-            if method_name not in defined_methods:
-                add_semantic_warning(f"Método '{method_name}' no está definido localmente")
+            print(f"📞 Analizando llamada a método '{method_name}' con {len(args)} argumentos")
             
-            # Analizar argumentos
+            # Buscar el método en la tabla de símbolos
+            method_info = lookup_variable(method_name)
+            
+            if method_info and method_info.get('is_method', False):
+                expected_params = method_info['param_count']
+                actual_args = len(args)
+                
+                if expected_params == actual_args:
+                    print(f"✅ Llamada válida: método '{method_name}' espera {expected_params} argumentos y recibió {actual_args}")
+                else:
+                    add_semantic_error(f"Método '{method_name}' espera {expected_params} parámetros, pero recibió {actual_args}")
+            else:
+                add_semantic_warning(f"Método '{method_name}' no está definido o no es un método")
+            
+            # Analizar los argumentos
             for arg in args:
                 analizar_semantica(arg)
+                
+        # Puts statement
+        elif tipo == "puts":
+            print(f"📄 Analizando puts")
+            # Analizar el valor que se va a imprimir
+            if "valor" in ast:
+                analizar_semantica(ast["valor"])
                 
         else:
             # Analiza recursivamente cualquier otro diccionario
@@ -270,25 +327,39 @@ def analizar_semantica(ast):
                     analizar_semantica(value)
 
 def generar_reporte_semantico():
-    """Generar un reporte simple del análisis semántico"""
+    """Generar un reporte completo del análisis semántico"""
     print("\n" + "="*50)
     print("    REPORTE DE ANÁLISIS SEMÁNTICO")
     print("="*50)
     
-    # Mostrar tabla de símbolos
-    print("\n📋 TABLA DE SÍMBOLOS:")
-    if symbol_table:
-        for var_name, var_info in symbol_table.items():
+    # Separar variables y métodos
+    variables = {}
+    methods = {}
+    
+    for name, info in symbol_table.items():
+        if info.get('is_method', False):
+            methods[name] = info
+        else:
+            variables[name] = info
+    
+    # Mostrar variables
+    print("\n📋 TABLA DE SÍMBOLOS - VARIABLES:")
+    if variables:
+        for var_name, var_info in variables.items():
             status = "✅ Inicializada" if var_info['initialized'] else "⚠️  Sin inicializar"
             print(f"  • {var_name}: {var_info['type']} - {status}")
     else:
-        print("  (Vacía)")
+        print("  (Ninguna)")
     
-    # Mostrar métodos definidos
-    if defined_methods:
-        print(f"\n📝 MÉTODOS DEFINIDOS ({len(defined_methods)}):")
-        for method in defined_methods:
-            print(f"  • {method}")
+    # Mostrar métodos
+    print("\n🔧 TABLA DE SÍMBOLOS - MÉTODOS:")
+    if methods:
+        for method_name, method_info in methods.items():
+            param_count = method_info['param_count']
+            param_text = f"({param_count} parámetros)" if param_count > 0 else "(sin parámetros)"
+            print(f"  • {method_name}: metodo {param_text}")
+    else:
+        print("  (Ninguno)")
     
     # Mostrar errores
     if semantic_errors:

@@ -1,0 +1,26 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 20:53:21
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+def suma(a, b)
+    a + b
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  suma: metodo (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  suma
+
+ERRORES ENCONTRADOS (4):
+--------------------
+1. Variable 'a' usada sin ser declarada
+2. Variable 'b' usada sin ser declarada
+3. Variable 'a' no está definida
+4. Variable 'b' no está definida

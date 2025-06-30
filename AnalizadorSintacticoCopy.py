@@ -526,15 +526,22 @@ def p_method_without_params_declaration(p):
 def p_method_with_params_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
     print(f"Método con parámetros declarado: {p[2]} con parámetros {p[4]} y cuerpo {p[6]}")
+    print(f"🔍 DEBUG MÉTODO CON PARAMS:")
+    print(f"  Nombre: {p[2]}")
+    print(f"  Parámetros: {p[4]}")
+    print(f"  Tipo de parámetros: {type(p[4])}")
+    print(f"  Cuerpo: {p[6]}")
     p[0] = {
         "tipo": "metodo",
         "nombre": p[2],
         "parametros": p[4],
         "cuerpo": p[6]
     }
-
+    print(f"Método con parámetros declarado: {p[2]} con parámetros {p[4]} y cuerpo {p[6]}")
+    
 def p_method_with_return_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
+                 | DEF IDENTIFIER LPAREN params RPAREN RETURN statements END
                  | DEF IDENTIFIER statements RETURN statements END'''
     if len(p) == 10:  # Con parámetros y return
         p[0] = {
