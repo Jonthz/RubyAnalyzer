@@ -1,3 +1,11 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 22:02:08
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
 # ------------------------------
 # IF simple
 # ------------------------------
@@ -28,3 +36,15 @@ while contador < 3; contador += 1; end
 # FOR inline
 # ------------------------------
 for i in 1..3; puts i; end
+
+
+TABLA DE SÍMBOLOS:
+--------------------
+  contador: integer (Inicializada)
+  i: integer (Inicializada)
+
+ERRORES ENCONTRADOS (3):
+--------------------
+1. Variable 'x' usada sin ser declarada
+2. Variable 'x' no está definida
+3. Comparación '>' entre tipos incompatibles: 'undefined' y 'integer'

@@ -28,8 +28,8 @@ precedence = (
 def p_program(p):
     '''program : statements'''
     p[0] = p[1]  # ← IMPORTANTE: Debe pasar el valor
-    print(f"🔍 DEBUG PROGRAM: p[1] = {p[1]}")
-    print(f"🔍 DEBUG PROGRAM: p[0] = {p[0]}")
+    print(f"DEBUG PROGRAM: p[1] = {p[1]}")
+    print(f"DEBUG PROGRAM: p[0] = {p[0]}")
 
 def p_statements(p):
     '''statements : statement
@@ -47,15 +47,15 @@ def p_statements(p):
             p[0] = [p[3]]
         else:
             p[0] = p[1] + [p[3]]  # Varias declaraciones con separador
-    print(f"🔍 DEBUG STATEMENTS: len(p) = {len(p)}")
-    print(f"🔍 DEBUG STATEMENTS: p[0] = {p[0]}")
+    print(f"DEBUG STATEMENTS: len(p) = {len(p)}")
+    print(f"DEBUG STATEMENTS: p[0] = {p[0]}")
 
 def p_statement(p):
     '''statement :  expression'''
     print(f"Declaración: {p[1]}")
     p[0] = p[1]  # Retorna la expresión como declaración
-    print(f"🔍 DEBUG STATEMENT: p[1] = {p[1]}")
-    print(f"🔍 DEBUG STATEMENT: p[0] = {p[0]}")
+    print(f"DEBUG STATEMENT: p[1] = {p[1]}")
+    print(f"DEBUG STATEMENT: p[0] = {p[0]}")
 
 # eliminado stament_block 
 
@@ -274,8 +274,8 @@ def p_vars(p):
     | p_class_var
     | p_constant_var'''
     p[0] = p[1]  # Retorna la variable o la asignación
-    print(f"🔍 DEBUG VARS: p[1] = {p[1]}")
-    print(f"🔍 DEBUG VARS: p[0] = {p[0]}")
+    print(f"DEBUG VARS: p[1] = {p[1]}")
+    print(f"DEBUG VARS: p[0] = {p[0]}")
 
 def p_method_call_conversion_jz(p):
     '''expression : expression DOT IDENTIFIER
@@ -321,19 +321,55 @@ def p_local_var(p):
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
 
 def p_global_var(p):
-    '''p_global_var : GLOBAL_VAR ASSIGN statement'''
+    '''p_global_var : GLOBAL_VAR ASSIGN statement
+                   | GLOBAL_VAR PLUS_ASSIGN expression
+                   | GLOBAL_VAR MINUS_ASSIGN expression
+                   | GLOBAL_VAR TIMES_ASSIGN expression
+                   | GLOBAL_VAR DIVIDE_ASSIGN expression
+                   | GLOBAL_VAR POWER_ASSIGN expression
+                   | GLOBAL_VAR MOD_ASSIGN expression
+    '''
     print(f"Variable global {p[1]} asignada con el valor {p[3]}")
-    p[0] = f"{p[1]} = {p[3]}"
+    p[0] = {
+        "tipo": "asignacion_global",
+        "variable": p[1],
+        "operador": p[2],
+        "valor": p[3]
+    }
 
 def p_instance_var(p):
-    '''p_instance_var : INSTANCE_VAR ASSIGN statement'''
+    '''p_instance_var : INSTANCE_VAR ASSIGN statement
+                     | INSTANCE_VAR PLUS_ASSIGN expression
+                     | INSTANCE_VAR MINUS_ASSIGN expression
+                     | INSTANCE_VAR TIMES_ASSIGN expression
+                     | INSTANCE_VAR DIVIDE_ASSIGN expression
+                     | INSTANCE_VAR POWER_ASSIGN expression
+                     | INSTANCE_VAR MOD_ASSIGN expression
+    '''
     print(f"Instance variable {p[1]} assigned with value {p[3]}")
-    p[0] = f"{p[1]} = {p[3]}"
+    p[0] = {
+        "tipo": "asignacion_instancia",
+        "variable": p[1],
+        "operador": p[2],
+        "valor": p[3]
+    }
 
 def p_class_var(p):
-    '''p_class_var : CLASS_VAR ASSIGN statement'''
+    '''p_class_var : CLASS_VAR ASSIGN statement
+                  | CLASS_VAR PLUS_ASSIGN expression
+                  | CLASS_VAR MINUS_ASSIGN expression
+                  | CLASS_VAR TIMES_ASSIGN expression
+                  | CLASS_VAR DIVIDE_ASSIGN expression
+                  | CLASS_VAR POWER_ASSIGN expression
+                  | CLASS_VAR MOD_ASSIGN expression
+    '''
     print(f"Variable de clase {p[1]} asignada con el valor {p[3]}")
-    p[0] = f"{p[1]} = {p[3]}"
+    p[0] = {
+        "tipo": "asignacion_clase",
+        "variable": p[1],
+        "operador": p[2],
+        "valor": p[3]
+    }
 
 def p_constant_var(p):
     '''p_constant_var : CONSTANT ASSIGN statement'''
@@ -440,6 +476,15 @@ def p_break_statement(p):
     p[0] = {"tipo": "break"}
     print("Break encontrado")
 
+def p_break_if_statement(p):
+    '''statement : BREAK structureControlIf
+                 | BREAK structureControlIfLine'''
+    p[0] = {
+        "tipo": "break_if",
+        "condicion": p[3]
+    }
+    print(f"Break condicional encontrado con condición: {p[3]}")
+
 
 # ver si nos ponemos a hacer los en linea
 def p_if_inline_statement(p):
@@ -448,9 +493,9 @@ def p_if_inline_statement(p):
                               | IF expression SEMICOLON statements SEMICOLON ELSIF expression SEMICOLON statements SEMICOLON END
                               | IF expression SEMICOLON statements SEMICOLON ELSIF expression SEMICOLON statements SEMICOLON ELSE statements SEMICOLON END'''
     
-    print(f"🔍 DEBUG IF INLINE: len(p) = {len(p)}")
+    print(f"DEBUG IF INLINE: len(p) = {len(p)}")
     for i, item in enumerate(p):
-        print(f"🔍 DEBUG IF INLINE: p[{i}] = {item}")
+        print(f"DEBUG IF INLINE: p[{i}] = {item}")
     
     # Corregir las longitudes:
     if len(p) == 7:  # IF expr SEMICOLON statements SEMICOLON END
@@ -565,7 +610,7 @@ def p_method_without_params_declaration(p):
 def p_method_with_params_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
     print(f"Método con parámetros declarado: {p[2]} con parámetros {p[4]} y cuerpo {p[6]}")
-    print(f"🔍 DEBUG MÉTODO CON PARAMS:")
+    print(f"DEBUG MÉTODO CON PARAMS:")
     print(f"  Nombre: {p[2]}")
     print(f"  Parámetros: {p[4]}")
     print(f"  Tipo de parámetros: {type(p[4])}")
@@ -614,39 +659,79 @@ def p_method_call_simple(p):
         "nombre": p[1],
         "argumentos": []
     }
-
+def p_method_call_with_params(p):
+    '''statement : IDENTIFIER LPAREN params RPAREN'''
+    p[0] = {
+        "tipo": "llamada_metodo",
+        "nombre": p[1],
+        "argumentos": p[3]
+    }
+    print(f"Llamada a método '{p[1]}' con argumentos {p[3]}")
 def p_class_definition(p):
     '''statement : CLASS CONSTANT statements END
                  | CLASS CONSTANT LESS CONSTANT statements END
                  | CLASS CONSTANT SEMICOLON END'''
     if len(p) == 5 and p[3] == ';':  # Clase vacía con punto y coma
-        p[0] = f"class {p[2]}; end"
+        p[0] = {
+            "tipo": "clase",
+            "nombre": p[2],
+            "hereda": None,
+            "cuerpo": []
+        }
         print(f"Definición de clase vacía: {p[2]}")
     elif len(p) == 5:  # Clase normal
-        p[0] = f"class {p[2]} {{{p[3]}}}"
+        p[0] = {
+            "tipo": "clase",
+            "nombre": p[2],
+            "hereda": None,
+            "cuerpo": p[3]
+        }
         print(f"Definición de clase: {p[2]} con contenido {p[3]}")
     else:  # Clase con herencia
-        p[0] = f"class {p[2]} < {p[4]} {{{p[5]}}}"
+        p[0] = {
+            "tipo": "clase",
+            "nombre": p[2],
+            "hereda": p[4],
+            "cuerpo": p[5]
+        }
         print(f"Definición de clase con herencia: {p[2]} hereda de {p[4]} con contenido {p[5]}")
 
 def p_class_method(p):
     '''statement : DEF SELF DOT IDENTIFIER statement END
                  | DEF SELF DOT IDENTIFIER LPAREN params RPAREN statement END'''
     if len(p) == 7:  # Sin parámetros
-        p[0] = f"def self.{p[4]} {{{p[5]}}}"
+        p[0] = {
+            "tipo": "metodo_clase",
+            "nombre": p[4],
+            "parametros": [],
+            "cuerpo": p[5]
+        }
         print(f"Método de clase declarado: {p[4]} con cuerpo {p[5]}")
     else:  # Con parámetros
-        p[0] = f"def self.{p[4]}({', '.join(map(str, p[6]))}) {{{p[8]}}}"
-        print(f"Método de clase con parámetros declarado: {p[4]} con parámetros {p[6]} y cuerpo {p[8]}")
+        p[0] = {
+            "tipo": "metodo_clase",
+            "nombre": p[4],
+            "parametros": p[6],
+            "cuerpo": p[8]
+        }
+    print(f"Método de clase con parámetros declarado: {p[4]} con parámetros {p[6]} y cuerpo {p[8]}")
 
 def p_initialize_method(p):
     '''statement : DEF INITIALIZE statement END
                  | DEF INITIALIZE LPAREN params RPAREN statement END'''
     if len(p) == 5:  # Sin parámetros
-        p[0] = f"def initialize {{{p[3]}}}"
+        p[0] = {
+            "tipo": "constructor",
+            "parametros": [],
+            "cuerpo": p[3]
+        }
         print(f"Constructor sin parámetros declarado con cuerpo {p[3]}")
     else:  # Con parámetros
-        p[0] = f"def initialize({', '.join(map(str, p[4]))}) {{{p[6]}}}"
+        p[0] = {
+            "tipo": "constructor",
+            "parametros": p[4],
+            "cuerpo": p[6]
+        }
         print(f"Constructor con parámetros declarado con parámetros {p[4]} y cuerpo {p[6]}")
 
 def p_object_instantiation(p):
@@ -654,16 +739,26 @@ def p_object_instantiation(p):
                   | CONSTANT DOT NEW LPAREN RPAREN
                   | CONSTANT DOT NEW LPAREN params RPAREN'''
     if len(p) == 4:  # MyClass.new
-        p[0] = f"{p[1]}.new"
+        p[0] = {
+            "tipo": "instanciacion_objeto",
+            "clase": p[1],
+            "parametros": []
+        }
         print(f"Instanciación del objeto de clase {p[1]} sin parámetros")
     elif len(p) == 6:  # MyClass.new()
-        p[0] = f"{p[1]}.new()"
+        p[0] = {
+            "tipo": "instanciacion_objeto",
+            "clase": p[1],
+            "parametros": []
+        }
         print(f"Instanciación del objeto de clase {p[1]} sin parámetros")
     else:  # MyClass.new(param1, param2)
-        params_str = ', '.join(map(str, p[5]))
-        p[0] = f"{p[1]}.new({params_str})"
-        print(f"Instanciación del objeto de clase {p[1]} con parámetros: {params_str}")
-
+        p[0] = {
+            "tipo": "instanciacion_objeto",
+            "clase": p[1],
+            "parametros": p[5]
+        }
+        print(f"Instanciación del objeto de clase {p[1]} con parámetros: {p[5]}")
 # ==========================================================================
 # ENTRADA/SALIDA
 # ==========================================================================
@@ -683,13 +778,21 @@ def p_puts_statement(p):
 def p_begin_rescue_ensure(p):
     '''statement : BEGIN statements RESCUE statements ENSURE statements END'''
     print("Bloque begin-rescue-ensure ejecutado")
-    p[0] = f"begin {{{p[2]}}} rescue {{{p[4]}}} ensure {{{p[6]}}}"
+    p[0] = {
+        "tipo": "begin_rescue_ensure",
+        "bloque_begin": p[2],
+        "bloque_rescue": p[4],
+        "bloque_ensure": p[6]
+    }
 
 def p_raise_statement(p):
     '''statement : RAISE expression
                  | RAISE STRING'''
     print(f"Raise lanzado con mensaje: {p[2]}")
-    p[0] = f"raise {p[2]}"
+    p[0] = {
+        "tipo": "raise",
+        "mensaje": p[2]
+    }
 
 def p_error(p):
     if p:

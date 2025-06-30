@@ -20,12 +20,12 @@ defined_methods = []
 def add_semantic_error(message):
     """Agregar un error semántico a la lista"""
     semantic_errors.append(message)
-    print(f"❌ Error Semántico: {message}")
+    print(f" Error Semántico: {message}")
 
 def add_semantic_warning(message):
     """Agregar una advertencia semántica"""
     semantic_warnings.append(message)
-    print(f"⚠️  Advertencia Semántica: {message}")
+    print(f"  Advertencia Semántica: {message}")
 
 def infer_type(expr):
     """
@@ -134,12 +134,12 @@ def declare_symbol(name, symbol_type, value=None, params=None, is_method=False):
     }
     
     if is_method:
-        print(f"✅ Método '{name}' registrado con {len(params) if params else 0} parámetros")
+        print(f" Método '{name}' registrado con {len(params) if params else 0} parámetros")
         # También mantener compatibilidad con defined_methods
         if name not in defined_methods:
             defined_methods.append(name)
     else:
-        print(f"✅ Variable '{name}' declarada como {symbol_type}")
+        print(f" Variable '{name}' declarada como {symbol_type}")
 
 def lookup_variable(name):
     """Buscar una variable en la tabla de símbolos"""
@@ -222,7 +222,7 @@ def validar_operacion(op, izq, der):
             else:
                 result_type = "numeric"  # Mantener original
             
-            print(f"✅ Operación aritmética '{op}' válida entre '{left_type}' y '{right_type}' = {result_type}")
+            print(f" Operación aritmética '{op}' válida entre '{left_type}' y '{right_type}' = {result_type}")
             return result_type
         else:
             # ===== MEJORA JZ: Sugerencias específicas para errores =====
@@ -261,7 +261,7 @@ def validar_operacion(op, izq, der):
         
         # Compatibilidad original
         if is_compatible_types(left_type, right_type):
-            print(f"✅ Comparación '{op}' válida entre '{left_type}' y '{right_type}'")
+            print(f" Comparación '{op}' válida entre '{left_type}' y '{right_type}'")
             return "boolean"
         else:
             # ===== MEJORA JZ: Comparaciones Ruby son más permisivas =====
@@ -280,7 +280,7 @@ def validar_operacion(op, izq, der):
     
     # ===== OPERACIONES LÓGICAS (original) =====
     elif op in ["&&", "||"]:
-        print(f"✅ Operación lógica '{op}' válida")
+        print(f" Operación lógica '{op}' válida")
         return "boolean"
     
     else:
@@ -290,35 +290,35 @@ def validar_operacion(op, izq, der):
 
 def analizar_semantica(ast):
     """Función principal del análisis semántico - versión con debug"""
-    print(f"🔍 DEBUG: Analizando AST: {ast}")
-    print(f"🔍 DEBUG: Tipo de AST: {type(ast)}")
+    print(f" DEBUG: Analizando AST: {ast}")
+    print(f" DEBUG: Tipo de AST: {type(ast)}")
     
     if isinstance(ast, list):
-        print(f"🔍 DEBUG: Lista con {len(ast)} elementos")
+        print(f" DEBUG: Lista con {len(ast)} elementos")
         for i, nodo in enumerate(ast):
-            print(f"🔍 DEBUG: Elemento {i}: {nodo}")
+            print(f" DEBUG: Elemento {i}: {nodo}")
             analizar_semantica(nodo)
     elif isinstance(ast, dict):
         tipo = ast.get("tipo")
-        print(f"🔍 DEBUG: Diccionario con tipo: {tipo}")
+        print(f" DEBUG: Diccionario con tipo: {tipo}")
         
         # Asignación de variable
         if tipo == "asignacion":
             var_name = ast.get("variable")
             valor = ast.get("valor")
             
-            print(f"🔍 DEBUG: Procesando asignación - Variable: {var_name}, Valor: {valor}")
+            print(f" DEBUG: Procesando asignación - Variable: {var_name}, Valor: {valor}")
             
             # Analizar primero el valor
             analizar_semantica(valor)
             
             # Inferir tipo del valor
             value_type = infer_type(valor)
-            print(f"🔍 DEBUG: Tipo inferido: {value_type}")
+            print(f" DEBUG: Tipo inferido: {value_type}")
             
             # Actualizar tabla de símbolos
             declare_symbol(var_name, value_type, valor)
-            print(f"🔍 DEBUG: Tabla de símbolos actualizada: {symbol_table}")
+            print(f" DEBUG: Tabla de símbolos actualizada: {symbol_table}")
             
         # Uso de variable
         elif tipo == "uso_variable":
@@ -327,7 +327,7 @@ def analizar_semantica(ast):
             if not var_info:
                 add_semantic_error(f"Variable '{var_name}' usada sin ser declarada")
             else:
-                print(f"✅ Uso válido de variable '{var_name}' (tipo: {var_info['type']})")
+                print(f" Uso válido de variable '{var_name}' (tipo: {var_info['type']})")
                 
         # Uso de identificador (puede ser variable o método)
         elif tipo == "uso_identificador":
@@ -338,9 +338,9 @@ def analizar_semantica(ast):
             
             if symbol_info:
                 if symbol_info.get('is_method', False):
-                    print(f"✅ Llamada válida a método '{var_name}()' (sin argumentos)")
+                    print(f" Llamada válida a método '{var_name}()' (sin argumentos)")
                 else:
-                    print(f"✅ Uso válido de variable '{var_name}' (tipo: {symbol_info['type']})")
+                    print(f" Uso válido de variable '{var_name}' (tipo: {symbol_info['type']})")
             else:
                 add_semantic_error(f"Identificador '{var_name}' no está definido")
 
@@ -355,39 +355,44 @@ def analizar_semantica(ast):
             validar_operacion(ast.get("op"), ast.get("izq"), ast.get("der"))
             
         # Método
+        # Darwin Pacheco (Inicio), encargado de analizar semanticamente metodos, y estructuras de control
         elif tipo == "metodo":
             method_name = ast.get("nombre")
             params = ast.get("parametros", [])
             cuerpo = ast.get("cuerpo", [])
-            
-            print(f"🔧 Analizando definición de método: {method_name}")
-            print(f"🔧 Parámetros encontrados: {params}")
-            
-            # REGISTRAR EL MÉTODO EN LA TABLA DE SÍMBOLOS (tu sugerencia)
+            retorno = ast.get("retorno", None)
+
+            print(f"Analizando definición de método: {method_name}")
+            print(f"Parámetros encontrados: {params}")
+           
+            # Declarar el método en la tabla de símbolos
             declare_symbol(method_name, "metodo", None, params, True)
             
-            # CORREGIR: Analizar parámetros como variables locales del método
+            # Registrar el método en la lista de métodos definidos
             for param in params:
                 if isinstance(param, str):
                     declare_symbol(param, "parameter", None, None, False)
-                    print(f"  📋 Parámetro '{param}' declarado como variable local")
+                    print(f"Parámetro '{param}' declarado como variable local")
                 elif isinstance(param, dict) and param.get("tipo") == "uso_variable":
                     # Si los parámetros vienen como diccionarios de uso_variable
                     param_name = param.get("nombre")
                     if param_name:
                         declare_symbol(param_name, "parameter", None, None, False)
-                        print(f"  📋 Parámetro '{param_name}' declarado como variable local")
+                        print(f"Parámetro '{param_name}' declarado como variable local")
             
-            # Analizar cuerpo del método (aquí ya deberían estar disponibles los parámetros)
+            # Si hay cuerpo, analizarlo
             if cuerpo:
-                print(f"🔧 Analizando cuerpo del método {method_name}")
+                print(f"Analizando cuerpo del método {method_name}")
                 analizar_semantica(cuerpo)
+            if retorno is not None:
+                print(f"Analizando retorno del método {method_name}")
+                analizar_semantica(retorno)
             
-            print(f"✅ Método {method_name} completamente procesado")
+            print(f"Método {method_name} completamente procesado")
             
         # Estructuras de control con bucles
         elif tipo in ["for", "while", "for_inline", "while_inline"]:
-            print(f"🔄 Analizando estructura de control: {tipo}")
+            print(f"Analizando estructura de control: {tipo}")
             
             # Entrar a contexto de bucle
             loop_stack.append(True)
@@ -400,8 +405,8 @@ def analizar_semantica(ast):
             if tipo.startswith("for") and "variable" in ast:
                 var_iter = ast["variable"]
                 declare_symbol(var_iter, "integer", 0)
-                print(f"  🔢 Variable de iteración '{var_iter}' declarada")
-            
+                print(f"Variable de iteración '{var_iter}' declarada")
+
             # Analizar cuerpo
             analizar_semantica(ast.get("cuerpo", []))
             
@@ -410,8 +415,9 @@ def analizar_semantica(ast):
             
         # Estructuras condicionales
         elif tipo in ["if", "if_else", "if_elsif", "if_elsif_else", "if_inline", "if_else_inline"]:
-            print(f"🔀 Analizando estructura condicional: {tipo}")
-            
+
+            print(f"Analizando estructura condicional: {tipo}")
+       
             # Analizar condición
             if "condicion" in ast:
                 analizar_semantica(ast["condicion"])
@@ -433,11 +439,17 @@ def analizar_semantica(ast):
             if not loop_stack:
                 add_semantic_error("'break' fuera de un bucle")
             else:
-                print("✅ Break válido dentro de un bucle")
-                
+                print("Break válido dentro de un bucle")
+        elif tipo == "break_if":
+            if not loop_stack:
+                add_semantic_error("'break if' fuera de un bucle")
+            else:
+                print("Break condicional válido dentro de un bucle")
+            analizar_semantica(ast.get("condicion"))
+        #Darwin Pacheco (Fin)        
         # Arrays, hashes, sets
         elif tipo in ["array", "hash", "set"]:
-            print(f"📦 Analizando colección: {tipo}")
+            print(f"Analizando colección: {tipo}")
             # Analizar elementos si los hay
             if "elementos" in ast:
                 analizar_semantica(ast["elementos"])
@@ -455,6 +467,17 @@ def analizar_semantica(ast):
             if method_name in conversion_methods_jz:
                 print(f"✅ [JZ] Método de conversión integrado '{method_name}' reconocido")
                 # Los métodos de conversión no necesitan verificación de argumentos
+            # Buscar el método en la tabla de símbolos
+            method_info = lookup_variable(method_name)
+            
+            if method_info and method_info.get('is_method', False):
+                expected_params = method_info['param_count']
+                actual_args = len(args)
+                
+                if expected_params == actual_args:
+                    print(f" Llamada válida: método '{method_name}' espera {expected_params} argumentos y recibió {actual_args}")
+                else:
+                    add_semantic_error(f"Método '{method_name}' espera {expected_params} parámetros, pero recibió {actual_args}")
             else:
                 # ===== VERIFICACIÓN DE ARGUMENTOS JZ (tu contribución) =====
                 print(f"🔍 [JZ] Verificando argumentos para método definido por usuario...")
@@ -466,7 +489,7 @@ def analizar_semantica(ast):
                 
         # Puts statement
         elif tipo == "puts":
-            print(f"📄 Analizando puts")
+            print(f" Analizando puts")
             # Analizar el valor que se va a imprimir
             if "valor" in ast:
                 analizar_semantica(ast["valor"])
@@ -494,16 +517,16 @@ def generar_reporte_semantico():
             variables[name] = info
     
     # Mostrar variables
-    print("\n📋 TABLA DE SÍMBOLOS - VARIABLES:")
+    print("\n TABLA DE SÍMBOLOS - VARIABLES:")
     if variables:
         for var_name, var_info in variables.items():
-            status = "✅ Inicializada" if var_info['initialized'] else "⚠️  Sin inicializar"
+            status = " Inicializada" if var_info['initialized'] else "  Sin inicializar"
             print(f"  • {var_name}: {var_info['type']} - {status}")
     else:
         print("  (Ninguna)")
     
     # Mostrar métodos
-    print("\n🔧 TABLA DE SÍMBOLOS - MÉTODOS:")
+    print("\n TABLA DE SÍMBOLOS - MÉTODOS:")
     if methods:
         for method_name, method_info in methods.items():
             param_count = method_info['param_count']
@@ -514,15 +537,15 @@ def generar_reporte_semantico():
     
     # Mostrar errores
     if semantic_errors:
-        print(f"\n❌ ERRORES SEMÁNTICOS ENCONTRADOS ({len(semantic_errors)}):")
+        print(f"\n ERRORES SEMÁNTICOS ENCONTRADOS ({len(semantic_errors)}):")
         for i, error in enumerate(semantic_errors, 1):
             print(f"  {i}. {error}")
     else:
-        print("\n✅ NO SE ENCONTRARON ERRORES SEMÁNTICOS")
+        print("\n NO SE ENCONTRARON ERRORES SEMÁNTICOS")
     
     # Mostrar advertencias
     if semantic_warnings:
-        print(f"\n⚠️  ADVERTENCIAS SEMÁNTICAS ({len(semantic_warnings)}):")
+        print(f"\n  ADVERTENCIAS SEMÁNTICAS ({len(semantic_warnings)}):")
         for i, warning in enumerate(semantic_warnings, 1):
             print(f"  {i}. {warning}")
     
@@ -586,7 +609,7 @@ def log_semantic_analysis(codigo, errores, warnings):
             if not errores and not warnings:
                 log_file.write("\nNO SE ENCONTRARON ERRORES NI ADVERTENCIAS\n")
         
-        print(f"\n💾 Log guardado en: {log_filename}")
+        print(f"\n Log guardado en: {log_filename}")
         
     except Exception as e:
         print(f"Error al guardar log: {e}")
@@ -605,13 +628,13 @@ def analizar_codigo(codigo):
     try:
         ast = parser.parse(codigo)
         if ast is None:
-            print("❌ No se pudo analizar sintácticamente el código.")
+            print(" No se pudo analizar sintácticamente el código.")
             return
     except Exception as e:
-        print(f"❌ Error en análisis sintáctico: {e}")
+        print(f" Error en análisis sintáctico: {e}")
         return
     
-    print("🔍 INICIANDO ANÁLISIS SEMÁNTICO...")
+    print(" INICIANDO ANÁLISIS SEMÁNTICO...")
     print("-" * 40)
     
     try:
@@ -624,11 +647,11 @@ def analizar_codigo(codigo):
         # Guardar log
         log_semantic_analysis(codigo, semantic_errors, semantic_warnings)
         
-        print("✅ Análisis semántico completado.")
+        print(" Análisis semántico completado.")
         
     except Exception as e:
         add_semantic_error(f"Error interno durante análisis: {e}")
-        print(f"❌ Error durante análisis semántico: {e}")
+        print(f" Error durante análisis semántico: {e}")
 
 # Agregar después de la línea 659 en AnalizadorSemantico.py:
 
