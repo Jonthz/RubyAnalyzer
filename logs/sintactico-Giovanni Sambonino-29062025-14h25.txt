@@ -1,22 +1,9 @@
-# ------------------------------
-# Asignación simple
-# ------------------------------
-x = 3
-y = 10
-mensaje = "Hola mundo"
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 29/06/2025
+Hora: 14:25:48
+Usuario: Giovanni Sambonino
 
-# ------------------------------
-# Asignaciones compuestas
-# ------------------------------
-x += 2
-y -= 5
-x *= 2
-x /= 2
-x **= 3
-x **= "hola"
-y %= 4
-y %= "hola"
-
+--- Código Analizado ---
 # ------------------------------
 # IF simple
 # ------------------------------
@@ -40,10 +27,15 @@ if x > 5; puts "Mayor a 5"; elsif x == 5; puts "Es 5"; else puts "Menor a 5"; en
 # ------------------------------
 # WHILE inline
 # ------------------------------
-contador = 0
-while contador < 3; contador += 1; end
+while x < 5; x += 1; end
 
 # ------------------------------
 # FOR inline
 # ------------------------------
 for i in 1..3; puts i; end
+
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 19: Token inesperado 'else'
+Error sintáctico en línea 19: Token inesperado 'end'
+Error sintáctico en línea 24: Token inesperado '+='

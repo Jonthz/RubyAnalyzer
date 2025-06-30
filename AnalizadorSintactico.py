@@ -287,7 +287,6 @@ def p_while_statement(p):
     p[0] = f"while ({p[2]}) {{{p[3]}}}"
     print(f"Bucle while: Mientras {p[2]}, ejecutar {p[3]}")
 
-
 def p_gets_statement(p):
     '''statement : IDENTIFIER ASSIGN GETS'''
     p[0] = f"{p[1]} = gets"

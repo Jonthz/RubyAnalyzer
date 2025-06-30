@@ -3,7 +3,7 @@ from AnalizadorLexico import tokens
 import os
 import datetime
 from AnalizadorLexico import get_github_username
-import AnalizadorSemantico as sa
+#import AnalizadorSemantico as sa
 # ==========================================================================
 # CONFIGURACIÓN DE PRECEDENCIA
 # ==========================================================================
@@ -14,7 +14,7 @@ precedence = (
     ('left', 'PLUS', 'MINUS'),     # Aritmética, PLUS y MINUS tienen la misma precedencia
     ('left', 'TIMES', 'DIVIDE'),   # Aritmética, TIMES y DIVIDE tienen la misma precedencia,
     ('nonassoc', 'LESS', 'GREATER', 'LESS_EQUAL', 'GREATER_EQUAL', 'EQUALS', 'NOT_EQUALS'),
-    ('right', 'POWER'),
+    ('right', 'POWER', 'MOD'),  # Exponentiation y módulo tienen mayor precedencia
     ('right', 'NOT'),              # Negación lógica
     ('nonassoc', 'HASH_ROCKET'),
     ('nonassoc', 'RANGE'), 
@@ -33,7 +33,8 @@ def p_program(p):
 
 def p_statements(p):
     '''statements : statement
-                  | statements statement'''
+                  | statements statement
+                  | statements SEMICOLON statement''' 
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo statement
     else:
@@ -93,6 +94,10 @@ def p_expression_var(p):
                   | CLASS_VAR
                   | CONSTANT'''
     p[0] = p[1]
+    p[0] = {
+        "tipo": "uso_variable",
+        "nombre": p[1]
+    }
     print(f"Expresión de variable: {p[1]}")
 
 def p_term_single_factor(p):
@@ -103,19 +108,43 @@ def p_term_single_factor(p):
 def p_term_div(p):
     '''term : expression DIVIDE expression'''
     p[0] = p[1] / p[3]
-    sa.infer_type(p[0])
+#    sa.infer_type(p[0])
+    p[0] = {
+        "tipo": "operacion",
+        "op": "/",
+        "izq": p[1],
+        "der": p[3]
+    }
 
 def p_term_times(p):
     '''term : expression TIMES expression'''
     p[0] = p[1] * p[3]
+    p[0] = {
+        "tipo": "operacion",
+        "op": "*",
+        "izq": p[1],
+        "der": p[3]
+    }
 
 def p_expression_plus(p):
     '''term : expression PLUS expression'''
     p[0] = p[1] + p[3]
+    p[0] = {
+        "tipo": "operacion",
+        "op": "+",
+        "izq": p[1],
+        "der": p[3]
+    }
 
 def p_expression_minus(p):
     '''term : expression MINUS expression'''
     p[0] = p[1] - p[3]
+    p[0] = {
+        "tipo": "operacion",
+        "op": "-",
+        "izq": p[1],
+        "der": p[3]
+    }
 
 def p_factor_num(p):
     '''factor : INTEGER
@@ -129,6 +158,22 @@ def p_factor_string(p):
 def p_factor_power(p):
     'factor : factor POWER factor'
     p[0] = p[1] ** p[3]
+    p[0] = {
+        "tipo": "operacion",
+        "op": "**",
+        "izq": p[1],
+        "der": p[3]
+    }
+
+def p_factor_mod(p):
+    '''factor : factor MOD factor'''
+    p[0] = p[1] % p[3]
+    p[0] = {
+        "tipo": "operacion",
+        "op": "%",
+        "izq": p[1],
+        "der": p[3]
+    }
 
 def p_factor_expr(p):
     'factor : LPAREN expression RPAREN'
@@ -206,8 +251,23 @@ def p_vars(p):
     | p_constant_var'''
 
 def p_local_var(p):
-    '''p_local_var : IDENTIFIER ASSIGN statement'''
+    '''p_local_var : IDENTIFIER ASSIGN statement
+                 | IDENTIFIER PLUS_ASSIGN expression
+                 | IDENTIFIER MINUS_ASSIGN expression
+                 | IDENTIFIER TIMES_ASSIGN expression
+                 | IDENTIFIER DIVIDE_ASSIGN INTEGER
+                 | IDENTIFIER DIVIDE_ASSIGN FLOAT
+                 | IDENTIFIER POWER_ASSIGN INTEGER
+                 | IDENTIFIER POWER_ASSIGN FLOAT
+                 | IDENTIFIER MOD_ASSIGN INTEGER
+                 | IDENTIFIER MOD_ASSIGN FLOAT
+                 '''
     p[0] = f"{p[1]} = {p[3]}" 
+    p[0] = {
+        "tipo": "asignacion",
+        "variable": p[1],
+        "valor": p[3]
+    }
     print(f"Variable local {p[1]} asignada con el valor {p[3]}")
 
 def p_global_var(p):
@@ -246,7 +306,9 @@ def p_structure_control_expression(p):
     '''structureControl : structureControlIf
     | structureControlWhile
     | structureControlFor
-    | structureControlIfLine'''
+    | structureControlIfLine
+    | structureControlWhileLine
+    | structureControlForLine'''
 
 def p_if_statement(p):
     '''structureControlIf : IF expression statements END
@@ -330,8 +392,64 @@ def p_break_statement(p):
 
 # ver si nos ponemos a hacer los en linea
 def p_if_inline_statement(p):
-    '''structureControlIfLine : IF expression THEN statements END'''
+    '''structureControlIfLine : IF expression SEMICOLON statements SEMICOLON END
+                              | IF expression SEMICOLON statements SEMICOLON ELSE statements SEMICOLON END
+                              | IF expression SEMICOLON statements SEMICOLON ELSIF expression SEMICOLON statements SEMICOLON END
+                              | IF expression SEMICOLON statements SEMICOLON ELSIF expression SEMICOLON statements SEMICOLON ELSE statements SEMICOLON END'''
+    print(f"Condición IF: {p[1]}  {p[2]}  {p[4]} con cuerpo {p[4]}")
+    if len(p) == 6:
+        p[0] = {
+            "tipo": "if_inline",
+            "condicion": p[2],
+            "cuerpo": p[4]
+        }
+    elif len(p) == 8:
+        p[0] = {
+            "tipo": "if_else_inline",
+            "condicion": p[2],
+            "cuerpo_if": p[4],
+            "cuerpo_else": p[6]
+        }
+    elif len(p) == 9:
+        p[0] = {
+            "tipo": "if_elsif_inline",
+            "condicion": p[2],
+            "cuerpo_if": p[4],
+            "condicion_elsif": p[5],
+            "cuerpo_elsif": p[7]
+        }
+    elif len(p) == 11:
+        p[0] = {
+            "tipo": "if_elsif_else_inline",
+            "condicion": p[2],
+            "cuerpo_if": p[4],
+            "condicion_elsif": p[5],
+            "cuerpo_elsif": p[7],
+            "cuerpo_else": p[9]
+        }
+    print(f"AST generado para estructura IFLine: {p[0]}")
     
+def p_while_inline_statement(p):
+    '''structureControlWhileLine : WHILE expression SEMICOLON statements SEMICOLON END'''
+    p[0] = f"while ({p[2]}) {{{p[4]}}}"
+    p[0] = {
+        "tipo": "while_inline",
+        "condicion": p[2],
+        "cuerpo": p[4]
+    }
+    print(f"AST generado para estructura WHILEINLINE: {p[0]}")
+
+def p_for_inline_statement(p):
+    '''structureControlForLine : FOR IDENTIFIER IN range SEMICOLON statement SEMICOLON END'''
+    print(f"Estructura For: Iterando de {p[3]} con la variable {p[2]} ejecutando {p[6]}")
+    p[0] = {
+        "tipo": "for_inline",
+        "variable": p[2],
+        "rango": p[4],
+        "cuerpo": p[6]
+    }
+    print(f"AST generado para estructura FORINLINE: {p[0]}")
+
 # ==========================================================================
 # COLECCIONES (ARRAYS, HASHES, SETS)
 # ==========================================================================
