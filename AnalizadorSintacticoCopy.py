@@ -70,6 +70,8 @@ def p_params(p):
     else:
         p[0] = p[1] + [p[3]]  # Varios argumentos
 
+
+
 def p_params_empty(p):
     '''params : empty'''
     p[0] = []  # Parámetros vacíos
@@ -597,15 +599,7 @@ def p_set_elements(p):
 # ==========================================================================
 # MÉTODOS Y CLASES
 # ==========================================================================
-def p_method_without_params_declaration(p):
-    '''statement : DEF IDENTIFIER statements END'''
-    p[0] = {
-        "tipo": "metodo",
-        "nombre": p[2],
-        "parametros": [],
-        "cuerpo": p[3]
-    }
-    print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
+
 
 def p_method_with_params_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
@@ -642,7 +636,7 @@ def p_method_with_return_declaration(p):
         }
         print(f"Método con parámetros y cuerpo: {p[2]}, params: {p[4]}")
         
-    elif len(p) == 8:  # DEF IDENTIFIER LPAREN params RPAREN RETURN statements END
+    elif len(p) == 9:  # DEF IDENTIFIER LPAREN params RPAREN RETURN statements END
         p[0] = {
             "tipo": "metodo",
             "nombre": p[2],
@@ -663,6 +657,16 @@ def p_method_with_return_declaration(p):
         print(f"Método sin parámetros: {p[2]}")
     
     print(f"Method with return declared: {p[2]}")
+
+def p_method_without_params_declaration(p):
+    '''statement : DEF IDENTIFIER statements END'''
+    p[0] = {
+        "tipo": "metodo",
+        "nombre": p[2],
+        "parametros": [],
+        "cuerpo": p[3]
+    }
+    print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
 
 def p_method_call_without_params(p):
     '''statement : IDENTIFIER'''
@@ -824,6 +828,7 @@ def p_error(p):
 # ==========================================================================
 # Crear el analizador sintáctico
 parser = yacc.yacc()
+
 
 def test_parser(input_code):
     print("Parsing Ruby code:")

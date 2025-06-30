@@ -1,0 +1,26 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 30/06/2025 00:30:08
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+def sum(a,b) 
+return "Resultado:" + a + b
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  sum: metodo (Inicializada)
+  a: parameter (Inicializada)
+  b: parameter (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  sum
+
+ERRORES ENCONTRADOS (2):
+--------------------
+1. Operación '+' entre tipos incompatibles: 'string' y 'parameter'
+2. Operación '+' entre tipos incompatibles: 'string' y 'parameter'

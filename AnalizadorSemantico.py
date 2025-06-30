@@ -358,27 +358,39 @@ def analizar_semantica(ast):
         # Darwin Pacheco (Inicio), encargado de analizar semanticamente metodos, y estructuras de control
         elif tipo == "metodo":
             method_name = ast.get("nombre")
-            params = ast.get("parametros", [])
+            params_raw = ast.get("parametros", [])  # ← Parámetros en bruto
             cuerpo = ast.get("cuerpo", [])
             retorno = ast.get("retorno", None)
 
             print(f"Analizando definición de método: {method_name}")
-            print(f"Parámetros encontrados: {params}")
-           
-            # Declarar el método en la tabla de símbolos
-            declare_symbol(method_name, "metodo", None, params, True)
+            print(f"Parámetros en bruto: {params_raw}")
+            print(f"Tipo de parámetros: {type(params_raw)}")
             
-            # Registrar el método en la lista de métodos definidos
-            for param in params:
-                if isinstance(param, str):
-                    declare_symbol(param, "parameter", None, None, False)
-                    print(f"Parámetro '{param}' declarado como variable local")
-                elif isinstance(param, dict) and param.get("tipo") == "uso_variable":
-                    # Si los parámetros vienen como diccionarios de uso_variable
-                    param_name = param.get("nombre")
-                    if param_name:
-                        declare_symbol(param_name, "parameter", None, None, False)
-                        print(f"Parámetro '{param_name}' declarado como variable local")
+            # ===== EXTRAER NOMBRES DE PARÁMETROS CORRECTAMENTE (JZ) =====
+            param_names = []
+            
+            if isinstance(params_raw, list):
+                for param in params_raw:
+                    if isinstance(param, dict) and param.get("tipo") == "uso_variable":
+                        param_name = param.get("nombre")
+                        if param_name:
+                            param_names.append(param_name)
+                            print(f"[JZ] Parámetro extraído: {param_name}")
+                    elif isinstance(param, str):
+                        param_names.append(param)
+                        print(f"[JZ] Parámetro string: {param}")
+                    else:
+                        print(f"[JZ] WARNING: Parámetro no reconocido: {param}")
+            
+            print(f"Parámetros finales extraídos: {param_names}")
+           
+            # Declarar el método en la tabla de símbolos CON LOS NOMBRES CORRECTOS
+            declare_symbol(method_name, "metodo", None, param_names, True)
+            
+            # Registrar parámetros como variables locales
+            for param_name in param_names:
+                declare_symbol(param_name, "parameter", None, None, False)
+                print(f"Parámetro '{param_name}' declarado como variable local")
             
             # Si hay cuerpo, analizarlo
             if cuerpo:
