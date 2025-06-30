@@ -201,39 +201,44 @@ def analizar_semantica(ast):
             validar_operacion(ast.get("op"), ast.get("izq"), ast.get("der"))
             
         # Método
+        # Darwin Pacheco (Inicio), encargado de analizar semanticamente metodos, y estructuras de control
         elif tipo == "metodo":
             method_name = ast.get("nombre")
             params = ast.get("parametros", [])
             cuerpo = ast.get("cuerpo", [])
+            retorno = ast.get("retorno", None)
+
+            print(f"Analizando definición de método: {method_name}")
+            print(f"Parámetros encontrados: {params}")
             
-            print(f"🔧 Analizando definición de método: {method_name}")
-            print(f"🔧 Parámetros encontrados: {params}")
-            
-            # REGISTRAR EL MÉTODO EN LA TABLA DE SÍMBOLOS (tu sugerencia)
+            # Declarar el método en la tabla de símbolos
             declare_symbol(method_name, "metodo", None, params, True)
             
-            # CORREGIR: Analizar parámetros como variables locales del método
+            # Registrar el método en la lista de métodos definidos
             for param in params:
                 if isinstance(param, str):
                     declare_symbol(param, "parameter", None, None, False)
-                    print(f"  📋 Parámetro '{param}' declarado como variable local")
+                    print(f"Parámetro '{param}' declarado como variable local")
                 elif isinstance(param, dict) and param.get("tipo") == "uso_variable":
                     # Si los parámetros vienen como diccionarios de uso_variable
                     param_name = param.get("nombre")
                     if param_name:
                         declare_symbol(param_name, "parameter", None, None, False)
-                        print(f"  📋 Parámetro '{param_name}' declarado como variable local")
+                        print(f"Parámetro '{param_name}' declarado como variable local")
             
-            # Analizar cuerpo del método (aquí ya deberían estar disponibles los parámetros)
+            # Si hay cuerpo, analizarlo
             if cuerpo:
-                print(f"🔧 Analizando cuerpo del método {method_name}")
+                print(f"Analizando cuerpo del método {method_name}")
                 analizar_semantica(cuerpo)
+            if retorno is not None:
+                print(f"Analizando retorno del método {method_name}")
+                analizar_semantica(retorno)
             
-            print(f"✅ Método {method_name} completamente procesado")
+            print(f"Método {method_name} completamente procesado")
             
         # Estructuras de control con bucles
         elif tipo in ["for", "while", "for_inline", "while_inline"]:
-            print(f"🔄 Analizando estructura de control: {tipo}")
+            print(f"Analizando estructura de control: {tipo}")
             
             # Entrar a contexto de bucle
             loop_stack.append(True)
@@ -246,7 +251,7 @@ def analizar_semantica(ast):
             if tipo.startswith("for") and "variable" in ast:
                 var_iter = ast["variable"]
                 declare_symbol(var_iter, "integer", 0)
-                print(f"  🔢 Variable de iteración '{var_iter}' declarada")
+                print(f"Variable de iteración '{var_iter}' declarada")
             
             # Analizar cuerpo
             analizar_semantica(ast.get("cuerpo", []))
@@ -256,7 +261,7 @@ def analizar_semantica(ast):
             
         # Estructuras condicionales
         elif tipo in ["if", "if_else", "if_elsif", "if_elsif_else", "if_inline", "if_else_inline"]:
-            print(f"🔀 Analizando estructura condicional: {tipo}")
+            print(f"Analizando estructura condicional: {tipo}")
             
             # Analizar condición
             if "condicion" in ast:
@@ -279,11 +284,17 @@ def analizar_semantica(ast):
             if not loop_stack:
                 add_semantic_error("'break' fuera de un bucle")
             else:
-                print("✅ Break válido dentro de un bucle")
-                
+                print("Break válido dentro de un bucle")
+        elif tipo == "break_if":
+            if not loop_stack:
+                add_semantic_error("'break if' fuera de un bucle")
+            else:
+                print("Break condicional válido dentro de un bucle")
+            analizar_semantica(ast.get("condicion"))
+        #Darwin Pacheco (Fin)        
         # Arrays, hashes, sets
         elif tipo in ["array", "hash", "set"]:
-            print(f"📦 Analizando colección: {tipo}")
+            print(f"Analizando colección: {tipo}")
             # Analizar elementos si los hay
             if "elementos" in ast:
                 analizar_semantica(ast["elementos"])
