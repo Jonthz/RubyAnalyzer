@@ -568,6 +568,8 @@ def p_method_with_return_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
                  | DEF IDENTIFIER LPAREN params RPAREN RETURN statements END
                  | DEF IDENTIFIER statements RETURN statements END'''
+    print(f"Método con retorno declarado: {p[2]} con parámetros {p[4]} y retorno {p[6]}")
+    print(f"Metodo con retorno declarado: {p[2]} con cuerpo {p[4]} y retorno {p[6]}")
     if len(p) == 10:  # Con parámetros y return
         p[0] = {
             "tipo": "metodo",
@@ -575,6 +577,14 @@ def p_method_with_return_declaration(p):
             "parametros": p[4],
             "cuerpo": p[6],
             "retorno": p[8]
+        }
+    elif len(p) == 8:  # Con parámetros y return, sin cuerpo
+        p[0] = {
+            "tipo": "metodo",
+            "nombre": p[2],
+            "parametros": p[4],
+            "cuerpo": [],
+            "retorno": p[6]
         }
     else:  # Sin parámetros, con return
         p[0] = {

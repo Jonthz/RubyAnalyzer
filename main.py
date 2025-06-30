@@ -33,6 +33,7 @@ def main():
         return main()
 
     print("\nSeleccione una opción:")
+    
     print("1. Ingresar código Ruby manualmente")
     print("2. Usar algoritmo de prueba Insertion Sort")
     print("3. Usar algoritmo de prueba Quick Sort")

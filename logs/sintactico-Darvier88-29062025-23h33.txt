@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 29/06/2025
+Hora: 23:33:51
+Usuario: Darvier88
+
+--- Código Analizado ---
+def imprimir(a)
+  puts a
+end
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos
