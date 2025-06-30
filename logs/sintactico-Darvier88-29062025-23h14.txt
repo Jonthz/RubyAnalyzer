@@ -1,0 +1,13 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 29/06/2025
+Hora: 23:14:06
+Usuario: Darvier88
+
+--- Código Analizado ---
+sumar(a,b)
+return a+1
+end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 2: Token inesperado 'return'
+Error sintáctico en línea 3: Token inesperado 'end'

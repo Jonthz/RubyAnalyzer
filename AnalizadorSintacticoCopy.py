@@ -477,8 +477,8 @@ def p_break_statement(p):
     print("Break encontrado")
 
 def p_break_if_statement(p):
-    '''statement : BREAK structureControlIf
-                 | BREAK structureControlIfLine'''
+    '''statement : BREAK IF expression 
+                 | BREAK IF expression SEMICOLON'''
     p[0] = {
         "tipo": "break_if",
         "condicion": p[3]
