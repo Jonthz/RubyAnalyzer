@@ -1,30 +1,5 @@
-# ------------------------------
-# IF simple
-# ------------------------------
-if x > 5; puts "Mayor a 5"; end
-
-# ------------------------------
-# IF con ELSE
-# ------------------------------
-if x > 5; puts "Mayor a 5"; else puts "No es mayor"; end
-
-# ------------------------------
-# IF con ELSIF
-# ------------------------------
-if x > 5; puts "Mayor a 5"; elsif x == 5; puts "Es 5"; end
-
-# ------------------------------
-# IF con ELSIF y ELSE
-# ------------------------------
-if x > 5; puts "Mayor a 5"; elsif x == 5; puts "Es 5"; else puts "Menor a 5"; end
-
-# ------------------------------
-# WHILE inline
-# ------------------------------
-contador = 0
-while contador < 3; contador += 1; end
-
-# ------------------------------
-# FOR inline
-# ------------------------------
-for i in 1..3; puts i; end
+x = 10
+y = 20
+def sum(a,b)
+  return "Resultado"
+end

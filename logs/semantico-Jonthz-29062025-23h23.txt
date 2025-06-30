@@ -1,0 +1,24 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 23:23:43
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+def sum(a, b)
+  a + b
+end
+sum(5, 10)
+
+TABLA DE SÍMBOLOS:
+--------------------
+  sum: metodo (Inicializada)
+  a: parameter (Inicializada)
+  b: parameter (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  sum
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

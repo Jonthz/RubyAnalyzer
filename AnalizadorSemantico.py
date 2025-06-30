@@ -55,7 +55,7 @@ def infer_type(expr):
         }
         
         if method_name in conversion_methods_jz:
-            print(f"🔄 [JZ] Conversión detectada: {method_name} -> {conversion_methods_jz[method_name]}")
+            print(f"[JZ] Conversión detectada: {method_name} -> {conversion_methods_jz[method_name]}")
             return conversion_methods_jz[method_name]
     
     # ===== INFERENCIA ORIGINAL (mantener base) =====
@@ -66,10 +66,10 @@ def infer_type(expr):
     elif isinstance(expr, str):
         # ===== MEJORA JZ: Detectar strings numéricos =====
         if expr.replace('.', '', 1).replace('-', '', 1).isdigit():
-            print(f"🔍 [JZ] String numérico detectado: '{expr}'")
+            print(f"String numérico detectado: '{expr}'")
             return "string_numeric"
         elif expr.isdigit():
-            print(f"🔍 [JZ] String numérico entero detectado: '{expr}'")
+            print(f"String numérico entero detectado: '{expr}'")
             return "string_numeric"
         return "string"
     elif isinstance(expr, bool):
@@ -163,7 +163,7 @@ def is_compatible_types(type1, type2):
     # Compatibilidad numérica extendida (JZ)
     jz_numeric = {"integer", "float", "numeric", "string_numeric"}
     if {type1, type2}.issubset(jz_numeric):
-        print(f"🔍 [JZ] Compatibilidad numérica extendida: {type1} ↔ {type2}")
+        print(f"Compatibilidad numérica extendida: {type1} ↔ {type2}")
         return True
     
     # Strings son compatibles entre sí (JZ)
@@ -173,7 +173,7 @@ def is_compatible_types(type1, type2):
     # String numérico con numéricos (JZ)
     if (type1 == "string_numeric" and type2 in original_numeric) or \
        (type2 == "string_numeric" and type1 in original_numeric):
-        print(f"🔍 [JZ] Compatibilidad string numérico: {type1} ↔ {type2}")
+        print(f"Compatibilidad string numérico: {type1} ↔ {type2}")
         return True
     
     return False
@@ -197,15 +197,15 @@ def validar_operacion(op, izq, der):
         if op == "+":
             if left_type == "string" or right_type == "string":
                 if left_type == "string" and right_type == "string":
-                    print(f"✅ [JZ] Concatenación de strings válida")
+                    print(f" Concatenación de strings válida")
                     return "string"
                 elif left_type == "string" and right_type in ["integer", "float"]:
-                    add_semantic_warning(f"[JZ] Concatenación string + {right_type}: considere usar .to_s")
-                    print(f"💡 [JZ] Sugerencia: Use {get_var_name_jz(der)}.to_s para convertir a string")
+                    add_semantic_warning(f"Concatenación string + {right_type}: considere usar .to_s")
+                    print(f"Sugerencia: Use {get_var_name_jz(der)}.to_s para convertir a string")
                     return "string"
                 elif right_type == "string" and left_type in ["integer", "float"]:
-                    add_semantic_warning(f"[JZ] Concatenación {left_type} + string: considere usar .to_s")
-                    print(f"💡 [JZ] Sugerencia: Use {get_var_name_jz(izq)}.to_s para convertir a string")
+                    add_semantic_warning(f"Concatenación {left_type} + string: considere usar .to_s")
+                    print(f"Sugerencia: Use {get_var_name_jz(izq)}.to_s para convertir a string")
                     return "string"
         
         # ===== VERIFICACIÓN DE COMPATIBILIDAD (original + JZ) =====
@@ -216,8 +216,8 @@ def validar_operacion(op, izq, der):
             elif op == "/":  # División siempre retorna float en Ruby (JZ)
                 result_type = "float"
             elif left_type == "string_numeric" and right_type == "string_numeric":
-                add_semantic_warning(f"[JZ] Operación entre strings numéricos: considere conversión explícita")
-                print(f"💡 [JZ] Sugerencia: Use .to.i o .to_f para convertir strings numéricos")
+                add_semantic_warning(f"Operación entre strings numéricos: considere conversión explícita")
+                print(f"Sugerencia: Use .to.i o .to_f para convertir strings numéricos")
                 result_type = "numeric"
             else:
                 result_type = "numeric"  # Mantener original
@@ -231,14 +231,14 @@ def validar_operacion(op, izq, der):
             
             # Sugerencias JZ según el tipo de error
             if left_type == "string" and right_type in ["integer", "float"]:
-                print(f"💡 [JZ] Sugerencia: Use {get_var_name_jz(izq)}.to_i o .to_f para convertir el string")
+                print(f"Sugerencia: Use {get_var_name_jz(izq)}.to_i o .to_f para convertir el string")
             elif right_type == "string" and left_type in ["integer", "float"]:
-                print(f"💡 [JZ] Sugerencia: Use {get_var_name_jz(der)}.to_i o .to_f para convertir el string")
+                print(f"Sugerencia: Use {get_var_name_jz(der)}.to_i o .to_f para convertir el string")
             elif left_type == "string" and right_type == "string":
                 if op == "+":
-                    print(f"💡 [JZ] Nota: Concatenación de strings debería funcionar, verifique el contenido")
+                    print(f"Nota: Concatenación de strings debería funcionar, verifique el contenido")
                 else:
-                    print(f"💡 [JZ] Sugerencia: Para operaciones numéricas con strings, use .to.i o .to.f")
+                    print(f"Sugerencia: Para operaciones numéricas con strings, use .to.i o .to.f")
             
             return "error"
     
@@ -459,29 +459,30 @@ def analizar_semantica(ast):
             method_name = ast.get("nombre")
             args = ast.get("argumentos", [])
             
-            print(f"📞 Analizando llamada a método '{method_name}' con {len(args)} argumentos")
+            print(f"Analizando llamada a método '{method_name}' con {len(args)} argumentos")
             
             # ===== MEJORA JZ: Métodos de conversión integrados =====
             conversion_methods_jz = ["to_i", "to_f", "to_s", "to_a", "to_h", "to_sym", "chomp", "strip", "upcase", "downcase", "round", "floor", "ceil"]
             
             if method_name in conversion_methods_jz:
-                print(f"✅ [JZ] Método de conversión integrado '{method_name}' reconocido")
+                print(f"[JZ] Método de conversión integrado '{method_name}' reconocido")
                 # Los métodos de conversión no necesitan verificación de argumentos
-            # Buscar el método en la tabla de símbolos
-            method_info = lookup_variable(method_name)
-            
-            if method_info and method_info.get('is_method', False):
-                expected_params = method_info['param_count']
-                actual_args = len(args)
-                
-                if expected_params == actual_args:
-                    print(f" Llamada válida: método '{method_name}' espera {expected_params} argumentos y recibió {actual_args}")
-                else:
-                    add_semantic_error(f"Método '{method_name}' espera {expected_params} parámetros, pero recibió {actual_args}")
             else:
-                # ===== VERIFICACIÓN DE ARGUMENTOS JZ (tu contribución) =====
-                print(f"🔍 [JZ] Verificando argumentos para método definido por usuario...")
-                analyze_method_call_jz(method_name, args)
+                # Buscar el método en la tabla de símbolos
+                method_info = lookup_variable(method_name)
+                
+                if method_info and method_info.get('is_method', False):
+                    expected_params = method_info['param_count']
+                    actual_args = len(args)
+                    
+                    if expected_params == actual_args:
+                        print(f"Llamada válida: método '{method_name}' espera {expected_params} argumentos y recibió {actual_args}")
+                    else:
+                        add_semantic_error(f"Método '{method_name}' espera {expected_params} parámetros, pero recibió {actual_args}")
+                else:
+                    # ===== VERIFICACIÓN DE ARGUMENTOS JZ (tu contribución) =====
+                    print(f"[JZ] Verificando argumentos para método definido por usuario...")
+                    analyze_method_call_jz(method_name, args)
             
             # Analizar los argumentos (siempre necesario)
             for arg in args:
@@ -678,28 +679,28 @@ def check_method_arguments_jz(method_name, provided_args, call_location="método
         "warnings": []
     }
     
-    print(f"🔍 [JZ] Verificando argumentos para método '{method_name}'")
-    print(f"🔍 [JZ] Argumentos proporcionados: {len(provided_args)} - {provided_args}")
+    print(f"Verificando argumentos para método '{method_name}'")
+    print(f"Argumentos proporcionados: {len(provided_args)} - {provided_args}")
     
     # Buscar el método en la tabla de símbolos
     method_info = lookup_variable(method_name)
     
     if not method_info:
         # Método no encontrado
-        error_msg = f"[JZ] Método '{method_name}' no está definido"
+        error_msg = f"Método '{method_name}' no está definido"
         result["errors"].append(error_msg)
         result["valid"] = False
         add_semantic_error(error_msg)
-        print(f"❌ [JZ] {error_msg}")
+        print(f"[JZ] {error_msg}")
         return result
     
     if not method_info.get('is_method', False):
         # No es un método
-        error_msg = f"[JZ] '{method_name}' no es un método"
+        error_msg = f" '{method_name}' no es un método"
         result["errors"].append(error_msg)
         result["valid"] = False
         add_semantic_error(error_msg)
-        print(f"❌ [JZ] {error_msg}")
+        print(f" {error_msg}")
         return result
     
     # Obtener información del método
@@ -707,68 +708,68 @@ def check_method_arguments_jz(method_name, provided_args, call_location="método
     actual_args = len(provided_args)
     method_params = method_info.get('params', [])
     
-    print(f"📋 [JZ] Método '{method_name}' espera {expected_params} parámetros")
-    print(f"📋 [JZ] Parámetros definidos: {method_params}")
+    print(f" Método '{method_name}' espera {expected_params} parámetros")
+    print(f" Parámetros definidos: {method_params}")
     
     # ===== VERIFICACIÓN DE CANTIDAD DE ARGUMENTOS =====
     if expected_params != actual_args:
-        error_msg = f"[JZ] Método '{method_name}' espera {expected_params} argumentos, pero recibió {actual_args}"
+        error_msg = f"Método '{method_name}' espera {expected_params} argumentos, pero recibió {actual_args}"
         result["errors"].append(error_msg)
         result["valid"] = False
         add_semantic_error(error_msg)
-        print(f"❌ [JZ] {error_msg}")
+        print(f"{error_msg}")
         
         # Sugerencias específicas
         if actual_args < expected_params:
             missing = expected_params - actual_args
-            print(f"💡 [JZ] Faltan {missing} argumento(s)")
+            print(f"[JZ] Faltan {missing} argumento(s)")
             if method_params:
                 missing_params = method_params[actual_args:]
-                print(f"💡 [JZ] Parámetros faltantes: {missing_params}")
+                print(f"[JZ] Parámetros faltantes: {missing_params}")
         else:
             excess = actual_args - expected_params
-            print(f"💡 [JZ] Sobran {excess} argumento(s)")
+            print(f"[JZ] Sobran {excess} argumento(s)")
         
         return result
     
     # ===== VERIFICACIÓN DE TIPOS DE ARGUMENTOS =====
-    print(f"✅ [JZ] Cantidad de argumentos correcta ({actual_args})")
+    print(f"[JZ] Cantidad de argumentos correcta ({actual_args})")
     
     # Analizar tipos de cada argumento
     for i, arg in enumerate(provided_args):
         arg_type = infer_type(arg)
         param_name = method_params[i] if i < len(method_params) else f"param_{i+1}"
         
-        print(f"🔍 [JZ] Argumento {i+1} ({param_name}): tipo '{arg_type}'")
+        print(f"Argumento {i+1} ({param_name}): tipo '{arg_type}'")
         
         # ===== VERIFICACIONES DE TIPO ESPECÍFICAS JZ =====
         
         # 1. Verificar argumentos no definidos
         if arg_type == "undefined":
-            error_msg = f"[JZ] Argumento {i+1} para '{method_name}' usa variable no definida"
+            error_msg = f"Argumento {i+1} para '{method_name}' usa variable no definida"
             result["errors"].append(error_msg)
             result["valid"] = False
             add_semantic_error(error_msg)
-            print(f"❌ [JZ] {error_msg}")
+            print(f" {error_msg}")
         
         # 2. Verificar tipos problemáticos
         elif arg_type == "unknown":
-            warning_msg = f"[JZ] Argumento {i+1} para '{method_name}' tiene tipo desconocido"
+            warning_msg = f"[Argumento {i+1} para '{method_name}' tiene tipo desconocido"
             result["warnings"].append(warning_msg)
             add_semantic_warning(warning_msg)
-            print(f"⚠️ [JZ] {warning_msg}")
+            print(f"{warning_msg}")
         
         # 3. Verificar strings numéricos (sugerir conversión)
         elif arg_type == "string_numeric":
-            warning_msg = f"[JZ] Argumento {i+1} para '{method_name}' es string numérico: considere conversión explícita"
+            warning_msg = f"[Argumento {i+1} para '{method_name}' es string numérico: considere conversión explícita"
             result["warnings"].append(warning_msg)
             add_semantic_warning(warning_msg)
-            print(f"⚠️ [JZ] {warning_msg}")
-            print(f"💡 [JZ] Sugerencia: Use .to_i o .to_f si el método espera un número")
+            print(f"{warning_msg}")
+            print(f" Sugerencia: Use .to_i o .to_f si el método espera un número")
         
         # 4. Análisis de compatibilidad avanzada
         else:
-            print(f"✅ [JZ] Argumento {i+1} ({param_name}): tipo '{arg_type}' válido")
+            print(f"] Argumento {i+1} ({param_name}): tipo '{arg_type}' válido")
     
     # ===== VERIFICACIONES ADICIONALES JZ =====
     
@@ -843,16 +844,16 @@ def suggest_argument_conversion_jz(arg_position, from_type, to_type):
     
     suggestion = conversion_suggestions.get((from_type, to_type))
     if suggestion:
-        print(f"💡 [JZ] Para argumento {arg_position}: {suggestion}")
+        print(f"[JZ] Para argumento {arg_position}: {suggestion}")
 
 def analyze_method_call_jz(method_name, arguments):
     """
     Analizar llamada a método completa (Jonathan Zambrano)
     Función principal que verifica argumentos y compatibilidad
     """
-    print(f"\n🔍 [JZ] === ANÁLISIS DE LLAMADA A MÉTODO ===")
-    print(f"🔍 [JZ] Método: {method_name}")
-    print(f"🔍 [JZ] Argumentos: {arguments}")
+    print(f"\n[JZ] === ANÁLISIS DE LLAMADA A MÉTODO ===")
+    print(f"[JZ] Método: {method_name}")
+    print(f"[JZ] Argumentos: {arguments}")
     
     # Analizar cada argumento primero
     for i, arg in enumerate(arguments):
@@ -862,6 +863,6 @@ def analyze_method_call_jz(method_name, arguments):
     # Verificar argumentos
     result = check_method_arguments_jz(method_name, arguments)
     
-    print(f"🔍 [JZ] === FIN ANÁLISIS DE LLAMADA ===\n")
+    print(f"[JZ] === FIN ANÁLISIS DE LLAMADA ===\n")
     
     return result

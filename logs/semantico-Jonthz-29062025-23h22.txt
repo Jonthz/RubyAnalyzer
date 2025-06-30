@@ -1,0 +1,23 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 23:22:56
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+def sum()
+  puts 5 + 2
+end
+
+sum
+
+TABLA DE SÍMBOLOS:
+--------------------
+  sum: metodo (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  sum
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS
