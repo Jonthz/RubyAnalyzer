@@ -1,0 +1,19 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 22:31:50
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+x = 10
+y = "5"
+z = x + y.to_i
+
+TABLA DE SÍMBOLOS:
+--------------------
+  x: integer (Inicializada)
+  y: string_numeric (Inicializada)
+  z: numeric (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

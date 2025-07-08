@@ -1,0 +1,25 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 22:53:45
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+while x<10 
+x=x+1
+break if x==5
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  x: numeric (Inicializada)
+
+ERRORES ENCONTRADOS (6):
+--------------------
+1. Variable 'x' usada sin ser declarada
+2. Variable 'x' no está definida
+3. Comparación '<' entre tipos incompatibles: 'undefined' y 'integer'
+4. Variable 'x' usada sin ser declarada
+5. Variable 'x' no está definida
+6. Operación '+' entre tipos incompatibles: 'undefined' y 'integer'

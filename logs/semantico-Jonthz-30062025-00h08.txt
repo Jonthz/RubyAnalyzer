@@ -1,0 +1,17 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 30/06/2025 00:08:07
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+def sum(a,b)
+  return "Resultado"
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

@@ -1,0 +1,28 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 22:59:45
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+x = 10
+y = 20
+def sumar(a,b)
+return "Resultado:" + a + b
+end
+sumar(x,y)
+
+TABLA DE SÍMBOLOS:
+--------------------
+  x: integer (Inicializada)
+  y: integer (Inicializada)
+  sumar: metodo (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  sumar
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Método 'sumar' espera 0 parámetros, pero recibió 2

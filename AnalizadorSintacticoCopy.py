@@ -3,7 +3,6 @@ from AnalizadorLexico import tokens
 import os
 import datetime
 from AnalizadorLexico import get_github_username
-#import AnalizadorSemantico as sa
 # ==========================================================================
 # CONFIGURACIÓN DE PRECEDENCIA
 # ==========================================================================
@@ -70,6 +69,8 @@ def p_params(p):
         p[0] = [p[1]]  # Un solo argumento
     else:
         p[0] = p[1] + [p[3]]  # Varios argumentos
+
+
 
 def p_params_empty(p):
     '''params : empty'''
@@ -278,6 +279,30 @@ def p_vars(p):
     print(f"DEBUG VARS: p[1] = {p[1]}")
     print(f"DEBUG VARS: p[0] = {p[0]}")
 
+def p_method_call_conversion_jz(p):
+    '''expression : expression DOT IDENTIFIER
+                  | factor DOT IDENTIFIER
+                  | IDENTIFIER DOT IDENTIFIER'''
+    # Detectar métodos de conversión (Jonathan Zambrano)
+    conversion_methods_jz = ["to_i", "to_f", "to_s", "to_a", "to_h", "to_sym", "chomp", "strip", "upcase", "downcase", "round", "floor", "ceil"]
+    
+    if p[3] in conversion_methods_jz:
+        p[0] = {
+            "tipo": "llamada_metodo",
+            "nombre": p[3],
+            "objeto": p[1],
+            "argumentos": []
+        }
+        print(f"🔄 [JZ] Conversión de tipo detectada: {p[1]} -> {p[3]}")
+    else:
+        p[0] = {
+            "tipo": "llamada_metodo",
+            "nombre": p[3],
+            "objeto": p[1],
+            "argumentos": []
+        }
+        print(f"📞 [JZ] Llamada a método: {p[1]}.{p[3]}")
+
 def p_local_var(p):
     '''p_local_var : IDENTIFIER ASSIGN statement
                  | IDENTIFIER PLUS_ASSIGN expression
@@ -453,6 +478,15 @@ def p_break_statement(p):
     p[0] = {"tipo": "break"}
     print("Break encontrado")
 
+def p_break_if_statement(p):
+    '''statement : BREAK IF expression 
+                 | BREAK IF expression SEMICOLON'''
+    p[0] = {
+        "tipo": "break_if",
+        "condicion": p[3]
+    }
+    print(f"Break condicional encontrado con condición: {p[3]}")
+
 
 # ver si nos ponemos a hacer los en linea
 def p_if_inline_statement(p):
@@ -565,15 +599,7 @@ def p_set_elements(p):
 # ==========================================================================
 # MÉTODOS Y CLASES
 # ==========================================================================
-def p_method_without_params_declaration(p):
-    '''statement : DEF IDENTIFIER statements END'''
-    p[0] = {
-        "tipo": "metodo",
-        "nombre": p[2],
-        "parametros": [],
-        "cuerpo": p[3]
-    }
-    print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
+
 
 def p_method_with_params_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
@@ -595,7 +621,12 @@ def p_method_with_return_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
                  | DEF IDENTIFIER LPAREN params RPAREN RETURN statements END
                  | DEF IDENTIFIER statements RETURN statements END'''
-    if len(p) == 10:  # Con parámetros y return
+    
+    print(f"DEBUG MÉTODO CON RETURN:")
+    for i, item in enumerate(p):
+        print(f"  p[{i}] = {item}")
+    
+    if len(p) == 10:  # DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
         p[0] = {
             "tipo": "metodo",
             "nombre": p[2],
@@ -603,7 +634,19 @@ def p_method_with_return_declaration(p):
             "cuerpo": p[6],
             "retorno": p[8]
         }
-    else:  # Sin parámetros, con return
+        print(f"Método con parámetros y cuerpo: {p[2]}, params: {p[4]}")
+        
+    elif len(p) == 9:  # DEF IDENTIFIER LPAREN params RPAREN RETURN statements END
+        p[0] = {
+            "tipo": "metodo",
+            "nombre": p[2],
+            "parametros": p[4],  # ← AQUÍ ESTABA EL ERROR
+            "cuerpo": [],
+            "retorno": p[7]      # ← AQUÍ ESTABA EL ERROR
+        }
+        print(f"Método con parámetros sin cuerpo: {p[2]}, params: {p[4]}")
+        
+    else:  # len(p) == 7: DEF IDENTIFIER statements RETURN statements END
         p[0] = {
             "tipo": "metodo",
             "nombre": p[2],
@@ -611,7 +654,19 @@ def p_method_with_return_declaration(p):
             "cuerpo": p[3],
             "retorno": p[5]
         }
+        print(f"Método sin parámetros: {p[2]}")
+    
     print(f"Method with return declared: {p[2]}")
+
+def p_method_without_params_declaration(p):
+    '''statement : DEF IDENTIFIER statements END'''
+    p[0] = {
+        "tipo": "metodo",
+        "nombre": p[2],
+        "parametros": [],
+        "cuerpo": p[3]
+    }
+    print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
 
 def p_method_call_without_params(p):
     '''statement : IDENTIFIER'''
@@ -627,39 +682,79 @@ def p_method_call_simple(p):
         "nombre": p[1],
         "argumentos": []
     }
-
+def p_method_call_with_params(p):
+    '''statement : IDENTIFIER LPAREN params RPAREN'''
+    p[0] = {
+        "tipo": "llamada_metodo",
+        "nombre": p[1],
+        "argumentos": p[3]
+    }
+    print(f"Llamada a método '{p[1]}' con argumentos {p[3]}")
 def p_class_definition(p):
     '''statement : CLASS CONSTANT statements END
                  | CLASS CONSTANT LESS CONSTANT statements END
                  | CLASS CONSTANT SEMICOLON END'''
     if len(p) == 5 and p[3] == ';':  # Clase vacía con punto y coma
-        p[0] = f"class {p[2]}; end"
+        p[0] = {
+            "tipo": "clase",
+            "nombre": p[2],
+            "hereda": None,
+            "cuerpo": []
+        }
         print(f"Definición de clase vacía: {p[2]}")
     elif len(p) == 5:  # Clase normal
-        p[0] = f"class {p[2]} {{{p[3]}}}"
+        p[0] = {
+            "tipo": "clase",
+            "nombre": p[2],
+            "hereda": None,
+            "cuerpo": p[3]
+        }
         print(f"Definición de clase: {p[2]} con contenido {p[3]}")
     else:  # Clase con herencia
-        p[0] = f"class {p[2]} < {p[4]} {{{p[5]}}}"
+        p[0] = {
+            "tipo": "clase",
+            "nombre": p[2],
+            "hereda": p[4],
+            "cuerpo": p[5]
+        }
         print(f"Definición de clase con herencia: {p[2]} hereda de {p[4]} con contenido {p[5]}")
 
 def p_class_method(p):
     '''statement : DEF SELF DOT IDENTIFIER statement END
                  | DEF SELF DOT IDENTIFIER LPAREN params RPAREN statement END'''
     if len(p) == 7:  # Sin parámetros
-        p[0] = f"def self.{p[4]} {{{p[5]}}}"
+        p[0] = {
+            "tipo": "metodo_clase",
+            "nombre": p[4],
+            "parametros": [],
+            "cuerpo": p[5]
+        }
         print(f"Método de clase declarado: {p[4]} con cuerpo {p[5]}")
     else:  # Con parámetros
-        p[0] = f"def self.{p[4]}({', '.join(map(str, p[6]))}) {{{p[8]}}}"
-        print(f"Método de clase con parámetros declarado: {p[4]} con parámetros {p[6]} y cuerpo {p[8]}")
+        p[0] = {
+            "tipo": "metodo_clase",
+            "nombre": p[4],
+            "parametros": p[6],
+            "cuerpo": p[8]
+        }
+    print(f"Método de clase con parámetros declarado: {p[4]} con parámetros {p[6]} y cuerpo {p[8]}")
 
 def p_initialize_method(p):
     '''statement : DEF INITIALIZE statement END
                  | DEF INITIALIZE LPAREN params RPAREN statement END'''
     if len(p) == 5:  # Sin parámetros
-        p[0] = f"def initialize {{{p[3]}}}"
+        p[0] = {
+            "tipo": "constructor",
+            "parametros": [],
+            "cuerpo": p[3]
+        }
         print(f"Constructor sin parámetros declarado con cuerpo {p[3]}")
     else:  # Con parámetros
-        p[0] = f"def initialize({', '.join(map(str, p[4]))}) {{{p[6]}}}"
+        p[0] = {
+            "tipo": "constructor",
+            "parametros": p[4],
+            "cuerpo": p[6]
+        }
         print(f"Constructor con parámetros declarado con parámetros {p[4]} y cuerpo {p[6]}")
 
 def p_object_instantiation(p):
@@ -667,16 +762,26 @@ def p_object_instantiation(p):
                   | CONSTANT DOT NEW LPAREN RPAREN
                   | CONSTANT DOT NEW LPAREN params RPAREN'''
     if len(p) == 4:  # MyClass.new
-        p[0] = f"{p[1]}.new"
+        p[0] = {
+            "tipo": "instanciacion_objeto",
+            "clase": p[1],
+            "parametros": []
+        }
         print(f"Instanciación del objeto de clase {p[1]} sin parámetros")
     elif len(p) == 6:  # MyClass.new()
-        p[0] = f"{p[1]}.new()"
+        p[0] = {
+            "tipo": "instanciacion_objeto",
+            "clase": p[1],
+            "parametros": []
+        }
         print(f"Instanciación del objeto de clase {p[1]} sin parámetros")
     else:  # MyClass.new(param1, param2)
-        params_str = ', '.join(map(str, p[5]))
-        p[0] = f"{p[1]}.new({params_str})"
-        print(f"Instanciación del objeto de clase {p[1]} con parámetros: {params_str}")
-
+        p[0] = {
+            "tipo": "instanciacion_objeto",
+            "clase": p[1],
+            "parametros": p[5]
+        }
+        print(f"Instanciación del objeto de clase {p[1]} con parámetros: {p[5]}")
 # ==========================================================================
 # ENTRADA/SALIDA
 # ==========================================================================
@@ -696,13 +801,21 @@ def p_puts_statement(p):
 def p_begin_rescue_ensure(p):
     '''statement : BEGIN statements RESCUE statements ENSURE statements END'''
     print("Bloque begin-rescue-ensure ejecutado")
-    p[0] = f"begin {{{p[2]}}} rescue {{{p[4]}}} ensure {{{p[6]}}}"
+    p[0] = {
+        "tipo": "begin_rescue_ensure",
+        "bloque_begin": p[2],
+        "bloque_rescue": p[4],
+        "bloque_ensure": p[6]
+    }
 
 def p_raise_statement(p):
     '''statement : RAISE expression
                  | RAISE STRING'''
     print(f"Raise lanzado con mensaje: {p[2]}")
-    p[0] = f"raise {p[2]}"
+    p[0] = {
+        "tipo": "raise",
+        "mensaje": p[2]
+    }
 
 def p_error(p):
     if p:
@@ -715,6 +828,7 @@ def p_error(p):
 # ==========================================================================
 # Crear el analizador sintáctico
 parser = yacc.yacc()
+
 
 def test_parser(input_code):
     print("Parsing Ruby code:")

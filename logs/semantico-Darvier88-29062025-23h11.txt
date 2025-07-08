@@ -1,0 +1,29 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 23:11:37
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+def suma(a)
+return a+1
+end
+suma(a)
+
+TABLA DE SÍMBOLOS:
+--------------------
+  suma: metodo (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  suma
+
+ERRORES ENCONTRADOS (6):
+--------------------
+1. Variable 'a' usada sin ser declarada
+2. Variable 'a' usada sin ser declarada
+3. Variable 'a' no está definida
+4. Operación '+' entre tipos incompatibles: 'undefined' y 'integer'
+5. Método 'suma' espera 0 parámetros, pero recibió 1
+6. Variable 'a' usada sin ser declarada
