@@ -400,7 +400,16 @@ def p_method_with_return_declaration(p):
                 |  DEF IDENTIFIER statements RETURN statements END '''
     print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
 
-
+def p_return_statement(p):
+    '''statement : RETURN expression
+                 | RETURN factor
+                 | RETURN'''
+    if len(p) == 3:
+        p[0] = {"tipo": "return", "valor": p[2]}
+        print(f"Return con valor: {p[2]}")
+    else:
+        p[0] = {"tipo": "return", "valor": None}
+        print("Return sin valor")
 
 # Manejo de errores
 def p_error(p):

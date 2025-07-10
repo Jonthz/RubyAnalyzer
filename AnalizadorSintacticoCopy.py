@@ -3,7 +3,6 @@ from AnalizadorLexico import tokens
 import os
 import datetime
 from AnalizadorLexico import get_github_username
-#import AnalizadorSemantico as sa
 # ==========================================================================
 # CONFIGURACIÓN DE PRECEDENCIA
 # ==========================================================================
@@ -70,6 +69,8 @@ def p_params(p):
         p[0] = [p[1]]  # Un solo argumento
     else:
         p[0] = p[1] + [p[3]]  # Varios argumentos
+
+
 
 def p_params_empty(p):
     '''params : empty'''
@@ -277,6 +278,30 @@ def p_vars(p):
     p[0] = p[1]  # Retorna la variable o la asignación
     print(f"DEBUG VARS: p[1] = {p[1]}")
     print(f"DEBUG VARS: p[0] = {p[0]}")
+
+def p_method_call_conversion_jz(p):
+    '''expression : expression DOT IDENTIFIER
+                  | factor DOT IDENTIFIER
+                  | IDENTIFIER DOT IDENTIFIER'''
+    # Detectar métodos de conversión (Jonathan Zambrano)
+    conversion_methods_jz = ["to_i", "to_f", "to_s", "to_a", "to_h", "to_sym", "chomp", "strip", "upcase", "downcase", "round", "floor", "ceil"]
+    
+    if p[3] in conversion_methods_jz:
+        p[0] = {
+            "tipo": "llamada_metodo",
+            "nombre": p[3],
+            "objeto": p[1],
+            "argumentos": []
+        }
+        print(f"🔄 [JZ] Conversión de tipo detectada: {p[1]} -> {p[3]}")
+    else:
+        p[0] = {
+            "tipo": "llamada_metodo",
+            "nombre": p[3],
+            "objeto": p[1],
+            "argumentos": []
+        }
+        print(f"📞 [JZ] Llamada a método: {p[1]}.{p[3]}")
 
 def p_local_var(p):
     '''p_local_var : IDENTIFIER ASSIGN statement
@@ -529,6 +554,17 @@ def p_for_inline_statement(p):
     }
     print(f"AST generado para estructura FORINLINE: {p[0]}")
 
+def p_return_statement(p):
+    '''statement : RETURN expression
+                 | RETURN factor
+                 | RETURN'''
+    if len(p) == 3:
+        p[0] = {"tipo": "return", "valor": p[2]}
+        print(f"Return con valor: {p[2]}")
+    else:
+        p[0] = {"tipo": "return", "valor": None}
+        print("Return sin valor")
+
 # ==========================================================================
 # COLECCIONES (ARRAYS, HASHES, SETS)
 # ==========================================================================
@@ -574,15 +610,7 @@ def p_set_elements(p):
 # ==========================================================================
 # MÉTODOS Y CLASES
 # ==========================================================================
-def p_method_without_params_declaration(p):
-    '''statement : DEF IDENTIFIER statements END'''
-    p[0] = {
-        "tipo": "metodo",
-        "nombre": p[2],
-        "parametros": [],
-        "cuerpo": p[3]
-    }
-    print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
+
 
 def p_method_with_params_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
@@ -604,9 +632,12 @@ def p_method_with_return_declaration(p):
     '''statement : DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
                  | DEF IDENTIFIER LPAREN params RPAREN RETURN statements END
                  | DEF IDENTIFIER statements RETURN statements END'''
-    print(f"Método con retorno declarado: {p[2]} con parámetros {p[4]} y retorno {p[6]}")
-    print(f"Metodo con retorno declarado: {p[2]} con cuerpo {p[4]} y retorno {p[6]}")
-    if len(p) == 10:  # Con parámetros y return
+    
+    print(f"DEBUG MÉTODO CON RETURN:")
+    for i, item in enumerate(p):
+        print(f"  p[{i}] = {item}")
+    
+    if len(p) == 10:  # DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
         p[0] = {
             "tipo": "metodo",
             "nombre": p[2],
@@ -614,15 +645,19 @@ def p_method_with_return_declaration(p):
             "cuerpo": p[6],
             "retorno": p[8]
         }
-    elif len(p) == 8:  # Con parámetros y return, sin cuerpo
+        print(f"Método con parámetros y cuerpo: {p[2]}, params: {p[4]}")
+        
+    elif len(p) == 9:  # DEF IDENTIFIER LPAREN params RPAREN RETURN statements END
         p[0] = {
             "tipo": "metodo",
             "nombre": p[2],
-            "parametros": p[4],
+            "parametros": p[4],  # ← AQUÍ ESTABA EL ERROR
             "cuerpo": [],
-            "retorno": p[6]
+            "retorno": p[7]      # ← AQUÍ ESTABA EL ERROR
         }
-    else:  # Sin parámetros, con return
+        print(f"Método con parámetros sin cuerpo: {p[2]}, params: {p[4]}")
+        
+    else:  # len(p) == 7: DEF IDENTIFIER statements RETURN statements END
         p[0] = {
             "tipo": "metodo",
             "nombre": p[2],
@@ -630,7 +665,19 @@ def p_method_with_return_declaration(p):
             "cuerpo": p[3],
             "retorno": p[5]
         }
+        print(f"Método sin parámetros: {p[2]}")
+    
     print(f"Method with return declared: {p[2]}")
+
+def p_method_without_params_declaration(p):
+    '''statement : DEF IDENTIFIER statements END'''
+    p[0] = {
+        "tipo": "metodo",
+        "nombre": p[2],
+        "parametros": [],
+        "cuerpo": p[3]
+    }
+    print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
 
 def p_method_call_without_params(p):
     '''statement : IDENTIFIER'''
@@ -781,6 +828,7 @@ def p_raise_statement(p):
         "mensaje": p[2]
     }
 
+
 def p_error(p):
     if p:
         print(f"Error de sintaxis en la línea {p.lineno}: Token inesperado '{p.value}'")
@@ -792,6 +840,7 @@ def p_error(p):
 # ==========================================================================
 # Crear el analizador sintáctico
 parser = yacc.yacc()
+
 
 def test_parser(input_code):
     print("Parsing Ruby code:")
