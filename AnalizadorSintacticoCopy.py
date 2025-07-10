@@ -8,7 +8,7 @@ from AnalizadorLexico import get_github_username
 # ==========================================================================
 precedence = (
     ('right', 'RETURN'),           # Dar prioridad adecuada a return
-    ('nonassoc', 'THEN', 'ELSE', 'ELSIF'),  # Resolver el dangling else
+    ('nonassoc', 'ELSE', 'ELSIF'),  # Resolver el dangling else (eliminado THEN)
      ('left', 'OR', 'AND'),         # Lógica, OR y AND tienen la misma precedencia
     ('left', 'PLUS', 'MINUS'),     # Aritmética, PLUS y MINUS tienen la misma precedencia
     ('left', 'TIMES', 'DIVIDE'),   # Aritmética, TIMES y DIVIDE tienen la misma precedencia,
