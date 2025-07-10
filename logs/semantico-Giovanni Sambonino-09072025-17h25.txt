@@ -1,0 +1,30 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 09/07/2025 17:25:33
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+
+def saludo(nombre)
+  puts 'Hola ' + nombre
+end
+
+saludo('Mundo')
+
+
+TABLA DE SÍMBOLOS:
+--------------------
+  saludo: metodo (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  saludo
+
+ERRORES ENCONTRADOS (4):
+--------------------
+1. Variable 'nombre' usada sin ser declarada
+2. Variable 'nombre' usada sin ser declarada
+3. Variable 'nombre' no está definida
+4. Método 'saludo' espera 0 parámetros, pero recibió 1

@@ -27,6 +27,7 @@ def add_semantic_warning(message):
     semantic_warnings.append(message)
     print(f"  Advertencia Semántica: {message}")
 
+#Parte Giovanni
 def infer_type(expr):
     """
     Inferencia de tipo simple y directa
@@ -118,6 +119,7 @@ def infer_type(expr):
         elif expr.get("tipo") == "hash":
             return "hash"
     return "unknown"
+#Fin Parte Giovanni
 
 def declare_symbol(name, symbol_type, value=None, params=None, is_method=False):
     """Declarar un símbolo (variable o método) en la tabla de símbolos"""
@@ -292,7 +294,7 @@ def analizar_semantica(ast):
     """Función principal del análisis semántico - versión con debug"""
     print(f" DEBUG: Analizando AST: {ast}")
     print(f" DEBUG: Tipo de AST: {type(ast)}")
-    
+# Parte Giovanni    
     if isinstance(ast, list):
         print(f" DEBUG: Lista con {len(ast)} elementos")
         for i, nodo in enumerate(ast):
@@ -353,7 +355,7 @@ def analizar_semantica(ast):
                 analizar_semantica(ast.get("der"))
             # Validar la operación
             validar_operacion(ast.get("op"), ast.get("izq"), ast.get("der"))
-            
+# Fin Parte Giovanni           
         # Método
         # Darwin Pacheco (Inicio), encargado de analizar semanticamente metodos, y estructuras de control
         elif tipo == "metodo":

@@ -16,12 +16,12 @@ def get_github_username():
 tokens = [
     'DEF', 'IDENTIFIER', 'LBRACKET', 'RBRACKET', 'ASSIGN',
     'LPAREN', 'RPAREN', 'HASH_ROCKET' ,'FOR', 'IN', 'DOT', 'RANGE', 'MINUS', 'GETS', 'SET',
-    'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'COMMENT', 'STRING',
+    'PLUS', 'GREATER', 'WHILE', 'END', 'RETURN', 'STRING',
 #fin de GIOVANNI
-    'LBRACE', 'RBRACE', 'PIPE', 'COMMA', 'SEMICOLON', 
+    'LBRACE', 'RBRACE', 'COMMA', 'SEMICOLON', 
     'EQUALS', 'LESS', 'TIMES', 'DIVIDE', 'MOD', 'POWER',
     'FLOAT', 'GLOBAL_VAR', 'INSTANCE_VAR', 'CLASS_VAR',
-    'AND', 'OR', 'NOT', 'NOT_EQUALS', 'GREATER_EQUAL', 'LESS_EQUAL', 'SPACESHIP'
+    'AND', 'OR', 'NOT', 'NOT_EQUALS', 'GREATER_EQUAL', 'LESS_EQUAL'
 ]
 # Parte de GIOVANNI
 # Definición de las expresiones regulares para los tokens
@@ -55,7 +55,6 @@ t_LESS = r'<'
 t_NOT_EQUALS = r'!='
 t_GREATER_EQUAL = r'>='
 t_LESS_EQUAL = r'<='
-t_SPACESHIP = r'<=>'
 t_AND = r'&&'
 t_OR = r'\|\|'
 t_NOT = r'!'
@@ -71,15 +70,11 @@ t_TIMES_ASSIGN = r'\*='
 t_DIVIDE_ASSIGN = r'/='
 t_MOD_ASSIGN = r'%='
 t_POWER_ASSIGN = r'\*\*='
-t_FLOOR_DIVIDE = r'//'
-t_BITWISE_AND = r'\&'
-t_PIPE = r'\|'
-t_QUESTION_MARK = r'\?'  
 #=== Parte de Jonathan ====
 
 tokens.extend([
     'PLUS_ASSIGN', 'MINUS_ASSIGN', 'TIMES_ASSIGN',
-    'DIVIDE_ASSIGN', 'MOD_ASSIGN', 'POWER_ASSIGN', 'FLOOR_DIVIDE','BITWISE_AND', 'PUTS', 'QUESTION_MARK'
+    'DIVIDE_ASSIGN', 'MOD_ASSIGN', 'POWER_ASSIGN', 'PUTS'
 ])
 #=== Parte de Darwin ====
 
@@ -133,10 +128,6 @@ def t_STRING(t):
     t.value = t.value[1:-1]
     return t
 
-
-def t_COMMENT(t):
-    r'\#.*'
-    pass  # Ignorar comentarios
 #fin de GIOVANNI
 def t_GLOBAL_VAR(t):
     r'\$[a-zA-Z_][a-zA-Z0-9_]*'
@@ -165,44 +156,30 @@ def t_error(t):
 #fin de GIOVANNI
 #=== Parte de Jonathan ====
 tokens.extend([
-    'THEN','INTEGER', 'TRUE', 'FALSE',
-    'IF', 'ELSIF', 'ELSE', 'UNTIL', 'NEXT', 'BREAK', 'REDO', 'RETRY', 'CASE', 'WHEN',
-    'CLASS', 'MODULE',
+    'INTEGER', 'TRUE', 'FALSE',
+    'IF', 'ELSIF', 'ELSE', 'BREAK',
+    'CLASS',
     'BEGIN', 'RESCUE', 'ENSURE', 'RAISE', 'NIL',
-    'DO', 'LAMBDA', 'PROC', 'YIELD', 'SELF', 'SUPER', 'REQUIRE',
+    'SELF',
     'CONSTANT', 'NEW', 'INITIALIZE'
 ])
 
 
 # Add boolean values to the keywords dictionary
 keywords.update({
-    'then': 'THEN',
     'true': 'TRUE',
     'false': 'FALSE',
     'if': 'IF',
     'elsif': 'ELSIF',
     'else': 'ELSE',
-    'until': 'UNTIL',
-    'next': 'NEXT',
     'break': 'BREAK',
-    'redo': 'REDO',
-    'retry': 'RETRY',
-    'case': 'CASE',
-    'when': 'WHEN',
     'class': 'CLASS',
-    'module': 'MODULE',
     'begin': 'BEGIN',
     'rescue': 'RESCUE',
     'ensure': 'ENSURE',
     'raise': 'RAISE',
     'nil': 'NIL',
-    'do': 'DO',
-    'lambda': 'LAMBDA',
-    'proc': 'PROC',
-    'yield': 'YIELD',
     'self': 'SELF',
-    'super': 'SUPER',
-    'require': 'REQUIRE',''
     'new': 'NEW',
     'initialize': 'INITIALIZE'
 })
