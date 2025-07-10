@@ -36,7 +36,7 @@ def main():
     
     print("1. Ingresar código Ruby manualmente")
     print("2. Usar algoritmo de prueba Insertion Sort")
-    print("3. Usar algoritmo de prueba Quick Sort")
+    print("3. Usar algoritmo de prueba Suma de mayores y menores")
     print("4. Usar algoritmo de prueba Class")
     print("5. Usar algoritmo de prueba temp")
     print("6. Salir")
@@ -110,9 +110,9 @@ def main():
                 analizar_codigo(algorithm_code)
     
     elif option == "3":
-        algorithm_code = load_algorithm_from_file('algorithms/quick_sort.rb')
+        algorithm_code = load_algorithm_from_file('algorithms/sum_max_min.rb')
         if algorithm_code:
-            print(f"\nAnalizando algoritmo de prueba Quick Sort:")
+            print(f"\nAnalizando algoritmo de prueba Suma de mayores y menores:")
             print("=" * 40)
             print(algorithm_code)
             print("=" * 40)

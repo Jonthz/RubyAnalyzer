@@ -7,18 +7,20 @@ class Animal
     puts "El animal hace un sonido."
   end
 
-  def info
-    "#{@name} es un animal."
+  def info()
+    puts @name
   end
 end
 
 class Dog < Animal
   def initialize(name, breed)
-
+    super(name)
     @breed = breed
   end
 
-  
+  def speak()
+    puts "El perro #{@name} de raza #{@breed} ladra."
+  end
 
   def info()
     puts @name
@@ -31,7 +33,9 @@ class Cat < Animal
     super(name)
   end
 
-
+  def speak()
+    puts "El gato #{@name} maulla."
+  end
 
   def info()
     puts @name
@@ -41,5 +45,7 @@ end
 dog = Dog.new("Rex", "Pastor Aleman")
 cat = Cat.new("Whiskers")
 
+dog.speak
+cat.speak
 dog.info
 cat.info

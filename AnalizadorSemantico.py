@@ -184,6 +184,9 @@ def is_compatible_types(type1, type2):
     Verificar si dos tipos son compatibles
     MEJORADO con sistema JZ (Jonathan Zambrano)
     """
+    if type1 == "parameter" or type2 == "parameter":
+        return True
+    
     if type1 == type2:
         return True
     
@@ -230,6 +233,15 @@ def validar_operacion(op, izq, der):
     print(f"🔧 Validando operación: {left_type} {op} {right_type}")
     
     # ===== OPERACIONES ARITMÉTICAS =====
+    if left_type == "parameter" and right_type != "parameter":
+        print(f"[JZ] Operación permitida: '{op}' entre 'parameter' y '{right_type}'")
+        return right_type
+    if right_type == "parameter" and left_type != "parameter":
+        print(f"[JZ] Operación permitida: '{op}' entre '{left_type}' y 'parameter'")
+        return left_type
+    if left_type == "parameter" and right_type == "parameter":
+        print(f"[JZ] Operación permitida: '{op}' entre dos 'parameter'")
+        return "parameter"
     if op in ["+", "-", "*", "/", "**", "%"]:
         
         # ===== MEJORA JZ: Concatenación inteligente =====
