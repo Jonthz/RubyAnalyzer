@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 12:36:48
+Usuario: Darvier88
+
+--- Código Analizado ---
+MyClass.new('a')
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 1: Token inesperado 'a'

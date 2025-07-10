@@ -1,3 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 12:01:19
+Usuario: Darvier88
+
+--- Código Analizado ---
 def quick_sort(arr)
   if arr.length <= 1
     return arr
@@ -31,3 +37,11 @@ end
 arr1 = [12, 11, 13, 5, 6]
 sorted_arr1 = quick_sort(arr1)
 print_array(sorted_arr1)
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 72: Token inesperado 'left'
+Error sintáctico en línea 78: Token inesperado '<'
+Error sintáctico en línea 80: Token inesperado 'else'
+Error sintáctico en línea 82: Token inesperado 'end'
+Error sintáctico en línea 85: Token inesperado 'end'
+Error sintáctico en línea 89: Token inesperado 'end'

@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 01:36:03
+Usuario: Darvier88
+
+--- Código Analizado ---
+def hola arr
+puts arr
+end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 3: Token inesperado 'end'

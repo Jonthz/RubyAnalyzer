@@ -1,0 +1,57 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 09:22:01
+Usuario: Darvier88
+
+--- Código Analizado ---
+def quick_sort(arr, low, high)
+  if low < high
+    pivot_index = partition(arr, low, high)
+    quick_sort(arr, low, pivot_index - 1)  # Recursión en la sublista izquierda
+    quick_sort(arr, pivot_index + 1, high) # Recursión en la sublista derecha
+  end
+end
+
+def partition(arr, low, high)
+  pivot = arr[high]  # Elegimos el último elemento como pivote
+  i = low - 1        # Índice del elemento más pequeño
+
+  # Recorremos el array para organizar los elementos en base al pivote
+  for j in low..high-1
+    if arr[j] <= pivot
+      i += 1
+      arr[i], arr[j] = arr[j], arr[i]  # Intercambiamos los elementos
+    end
+  end
+
+  # Colocamos el pivote en su posición correcta
+  arr[i+1], arr[high] = arr[high], arr[i+1]
+  return i + 1
+end
+
+def print_array(arr)
+  puts arr.join(', ')
+end
+
+# Uso del algoritmo
+arr1 = [12, 11, 13, 5, 6]
+quick_sort(arr1, 0, arr1.length - 1)
+print_array(arr1)
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 36: Token inesperado ','
+Error sintáctico en línea 37: Token inesperado ','
+Error sintáctico en línea 37: Token inesperado ')'
+Error sintáctico en línea 38: Token inesperado ','
+Error sintáctico en línea 38: Token inesperado ','
+Error sintáctico en línea 39: Token inesperado 'end'
+Error sintáctico en línea 50: Token inesperado ','
+Error sintáctico en línea 50: Token inesperado '='
+Error sintáctico en línea 50: Token inesperado ','
+Error sintáctico en línea 51: Token inesperado 'end'
+Error sintáctico en línea 55: Token inesperado ','
+Error sintáctico en línea 55: Token inesperado '='
+Error sintáctico en línea 55: Token inesperado ','
+Error sintáctico en línea 57: Token inesperado 'end'
+Error sintáctico en línea 65: Token inesperado ','
+Error sintáctico en línea 65: Token inesperado ')'

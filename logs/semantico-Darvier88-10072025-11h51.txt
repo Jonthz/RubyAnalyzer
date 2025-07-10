@@ -1,3 +1,11 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 11:51:13
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
 def quick_sort(arr)
   if arr.length <= 1
     return arr
@@ -19,6 +27,7 @@ def quick_sort(arr)
     end
     i = i + 1
   end
+
   sorted_left = quick_sort(left)
   sorted_right = quick_sort(right)
   return sorted_left + [pivot] + sorted_right
@@ -31,3 +40,18 @@ end
 arr1 = [12, 11, 13, 5, 6]
 sorted_arr1 = quick_sort(arr1)
 print_array(sorted_arr1)
+
+TABLA DE SÍMBOLOS:
+--------------------
+  print_array: metodo (Inicializada)
+  arr: parameter (Inicializada)
+  arr1: array (Inicializada)
+  sorted_arr1: unknown (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  print_array
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Método 'quick_sort' no está definido

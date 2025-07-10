@@ -1,15 +1,21 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 09:19:08
+Usuario: Darvier88
+
+--- Código Analizado ---
 def quick_sort(arr)
-  if arr.length <= 1
+  if arr <= 1
     return arr
   end
 
-  pivot_index = 0
+  pivot_index = arr
   pivot = arr[pivot_index]
   left = []
   right = []
 
   i = 0
-  while i < arr.length
+  while i < arr
     if i != pivot_index
       if arr[i] < pivot
         left = left + [arr[i]]
@@ -19,6 +25,7 @@ def quick_sort(arr)
     end
     i = i + 1
   end
+
   sorted_left = quick_sort(left)
   sorted_right = quick_sort(right)
   return sorted_left + [pivot] + sorted_right
@@ -31,3 +38,6 @@ end
 arr1 = [12, 11, 13, 5, 6]
 sorted_arr1 = quick_sort(arr1)
 print_array(sorted_arr1)
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

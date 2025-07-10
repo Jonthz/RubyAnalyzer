@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 01:15:26
+Usuario: Darvier88
+
+--- Código Analizado ---
+def hola(arr)
+puts arr
+return arr
+
+--- Resultados del Análisis ---
+Error sintáctico: Fin de archivo inesperado

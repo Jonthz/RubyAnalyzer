@@ -188,6 +188,9 @@ def t_MULTILINE_COMMENT(t):
     r'=begin(?:.|\n)*?=end'
     t.lexer.lineno += t.value.count('\n')  # Actualiza el contador de líneas
     pass
+def t_SINGLELINE_COMMENT(t):
+    r'\#.*'
+    pass  # Ignorar el comentario de una sola línea
 
 def t_INTEGER(t):
     r'\b\d+\b'

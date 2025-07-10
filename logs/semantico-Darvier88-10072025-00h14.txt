@@ -1,0 +1,98 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 00:14:57
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+def quick_sort(arr)
+  if arr <= 1
+    return arr
+  end
+
+  pivot_index = arr
+  pivot = arr[pivot_index]
+  left = []
+  right = []
+
+  i = 0
+  while i < arr
+    if i != pivot_index
+      if arr[i] < pivot
+        left = left + [arr[i]]
+      else
+        right = right + [arr[i]]
+      end
+    end
+    i = i + 1
+  end
+
+  sorted_left = quick_sort(left)
+  sorted_right = quick_sort(right)
+  return sorted_left + [pivot] + sorted_right
+end
+
+def print_array(arr)
+  puts arr
+end
+
+arr1 = [12, 11, 13, 5, 6]
+sorted_arr1 = quick_sort(arr1)
+print_array(sorted_arr1)
+
+TABLA DE SÍMBOLOS:
+--------------------
+  quick_sort: metodo (Inicializada)
+  pivot_index: undefined (Inicializada)
+  pivot: undefined (Inicializada)
+  left: numeric (Inicializada)
+  right: numeric (Inicializada)
+  i: numeric (Inicializada)
+  sorted_left: unknown (Inicializada)
+  sorted_right: unknown (Inicializada)
+  print_array: metodo (Inicializada)
+  arr1: unknown (Inicializada)
+  sorted_arr1: unknown (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  quick_sort
+  print_array
+
+ERRORES ENCONTRADOS (25):
+--------------------
+1. Variable 'arr' usada sin ser declarada
+2. Variable 'arr' usada sin ser declarada
+3. Variable 'arr' no está definida
+4. Comparación '<=' entre tipos incompatibles: 'undefined' y 'integer'
+5. 'return' solo puede usarse dentro de un método o estructura de control
+6. Variable 'arr' usada sin ser declarada
+7. Variable 'arr' usada sin ser declarada
+8. Variable 'arr' no está definida
+9. Variable 'arr' usada sin ser declarada
+10. Variable 'arr' no está definida
+11. Variable 'arr' usada sin ser declarada
+12. Variable 'arr' no está definida
+13. Comparación '<' entre tipos incompatibles: 'integer' y 'undefined'
+14. Variable 'arr' usada sin ser declarada
+15. Comparación '<' entre tipos incompatibles: 'unknown' y 'undefined'
+16. Operación '+' entre tipos incompatibles: 'unknown' y 'nil'
+17. Operación '+' entre tipos incompatibles: 'unknown' y 'nil'
+18. Método 'quick_sort' espera 0 parámetros, pero recibió 1
+19. Método 'quick_sort' espera 0 parámetros, pero recibió 1
+20. 'return' solo puede usarse dentro de un método o estructura de control
+21. Operación '+' entre tipos incompatibles: 'numeric' y 'unknown'
+22. Variable 'arr' usada sin ser declarada
+23. Variable 'arr' usada sin ser declarada
+24. Método 'quick_sort' espera 0 parámetros, pero recibió 1
+25. Método 'print_array' espera 0 parámetros, pero recibió 1
+
+ADVERTENCIAS (6):
+--------------------
+1. [JZ] Comparación de orden '<=' entre tipos diferentes: undefined y integer
+2. [JZ] Esto puede lanzar una excepción en tiempo de ejecución
+3. [JZ] Comparación de orden '<' entre tipos diferentes: integer y undefined
+4. [JZ] Esto puede lanzar una excepción en tiempo de ejecución
+5. [JZ] Comparación de orden '<' entre tipos diferentes: unknown y undefined
+6. [JZ] Esto puede lanzar una excepción en tiempo de ejecución

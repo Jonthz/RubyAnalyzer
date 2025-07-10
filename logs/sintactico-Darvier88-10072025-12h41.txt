@@ -1,3 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 12:41:05
+Usuario: Darvier88
+
+--- Código Analizado ---
 class Animal
   def initialize(name)
     @name = name
@@ -7,14 +13,13 @@ class Animal
     puts "El animal hace un sonido."
   end
 
-  def info
-    "#{@name} es un animal."
+  def info()
+    puts @name
   end
 end
 
 class Dog < Animal
   def initialize(name, breed)
-
     @breed = breed
   end
 
@@ -41,5 +46,9 @@ end
 dog = Dog.new("Rex", "Pastor Aleman")
 cat = Cat.new("Whiskers")
 
-dog.info
-cat.info
+dog.info()
+cat.info()
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 119: Token inesperado ')'
+Error sintáctico en línea 120: Token inesperado ')'

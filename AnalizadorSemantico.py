@@ -80,8 +80,23 @@ def infer_type(expr):
         return "boolean"
     elif expr is None:
         return "nil"
+    elif isinstance(expr, tuple):
+        # Manejar tuplas del parser (tipo, contenido)
+            if len(expr) == 2 and expr[0] == "array":
+                elementos = expr[1]
+                if isinstance(elementos, list) and len(elementos) == 0:
+                    print("Array vacío detectado (tupla)")
+                    return "empty_array"
+                else:
+                    print(f"Array con {len(elementos)} elementos detectado (tupla)")
+                    return "array"
+            return "unknown"
+        # Si es un array
     elif isinstance(expr, list):
-        return "array"
+            if len(expr) == 0:
+                print("Array vacío detectado")
+                return "empty_array"
+            return "array"
     elif isinstance(expr, dict):
         # Si es una operación
         if expr.get("tipo") == "operacion":
@@ -115,8 +130,22 @@ def infer_type(expr):
             else:
                 add_semantic_error(f"Variable '{var_name}' no está definida")
                 return "undefined"
+        elif isinstance(expr, tuple):
+        # Manejar tuplas del parser (tipo, contenido)
+            if len(expr) == 2 and expr[0] == "array":
+                elementos = expr[1]
+                if isinstance(elementos, list) and len(elementos) == 0:
+                    print("Array vacío detectado (tupla)")
+                    return "empty_array"
+                else:
+                    print(f"Array con {len(elementos)} elementos detectado (tupla)")
+                    return "array"
+            return "unknown"
         # Si es un array
-        elif expr.get("tipo") == "array":
+        elif isinstance(expr, list):
+            if len(expr) == 0:
+                print("Array vacío detectado")
+                return "empty_array"
             return "array"
         # Si es un hash
         elif expr.get("tipo") == "hash":
@@ -170,7 +199,12 @@ def is_compatible_types(type1, type2):
     if {type1, type2}.issubset(jz_numeric):
         print(f"Compatibilidad numérica extendida: {type1} ↔ {type2}")
         return True
-    
+    if type1 == "empty_array" and type2 == "array":
+        print(f"Array vacío compatible con array: {type1} ↔ {type2}")
+        return True
+    if type1 == "array" and type2 == "empty_array":
+        print(f"Array compatible con array vacío: {type1} ↔ {type2}")
+        return True
     # Strings son compatibles entre sí (JZ)
     if type1 == "string" and type2 == "string":
         return True
@@ -363,56 +397,57 @@ def analizar_semantica(ast):
         # Darwin Pacheco (Inicio), encargado de analizar semanticamente metodos, y estructuras de control
         elif tipo == "metodo":
             method_name = ast.get("nombre")
-            params_raw = ast.get("parametros", [])  # ← Parámetros en bruto
+            params_raw = ast.get("parametros", [])
             cuerpo = ast.get("cuerpo", [])
             retorno = ast.get("retorno", None)
 
             print(f"Analizando definición de método: {method_name}")
-            print(f"Parámetros en bruto: {params_raw}")
-            print(f"Tipo de parámetros: {type(params_raw)}")
             
-            # ===== EXTRAER NOMBRES DE PARÁMETROS CORRECTAMENTE (JZ) =====
+            # ===== ENTRAR AL CONTEXTO DEL MÉTODO =====
+            context_stack.append("metodo")
+            print(f"[CONTEXT] Entrando a método '{method_name}' - Stack: {context_stack}")
+            
+            # Extraer nombres de parámetros
             param_names = []
-            
             if isinstance(params_raw, list):
                 for param in params_raw:
                     if isinstance(param, dict) and param.get("tipo") == "uso_variable":
                         param_name = param.get("nombre")
                         if param_name:
                             param_names.append(param_name)
-                            print(f"[JZ] Parámetro extraído: {param_name}")
                     elif isinstance(param, str):
                         param_names.append(param)
-                        print(f"[JZ] Parámetro string: {param}")
-                    else:
-                        print(f"[JZ] WARNING: Parámetro no reconocido: {param}")
             
-            print(f"Parámetros finales extraídos: {param_names}")
-           
-            # Declarar el método en la tabla de símbolos CON LOS NOMBRES CORRECTOS
+            # Declarar el método en la tabla de símbolos
             declare_symbol(method_name, "metodo", None, param_names, True)
             
             # Registrar parámetros como variables locales
             for param_name in param_names:
                 declare_symbol(param_name, "parameter", None, None, False)
-                print(f"Parámetro '{param_name}' declarado como variable local")
             
-            # Si hay cuerpo, analizarlo
+            # Analizar cuerpo del método
             if cuerpo:
                 print(f"Analizando cuerpo del método {method_name}")
                 analizar_semantica(cuerpo)
+                
+            # Analizar retorno del método
             if retorno is not None:
                 print(f"Analizando retorno del método {method_name}")
                 analizar_semantica(retorno)
             
+            # ===== SALIR DEL CONTEXTO DEL MÉTODO =====
+            context_stack.pop()
+            print(f"[CONTEXT] Saliendo de método '{method_name}' - Stack: {context_stack}")
             print(f"Método {method_name} completamente procesado")
             
         # Estructuras de control con bucles
         elif tipo in ["for", "while", "for_inline", "while_inline"]:
             print(f"Analizando estructura de control: {tipo}")
             
-            # Entrar a contexto de bucle
+            # ===== ENTRAR AL CONTEXTO DEL BUCLE =====
             loop_stack.append(True)
+            context_stack.append(tipo)
+            print(f"[CONTEXT] Entrando a bucle '{tipo}' - Stack: {context_stack}")
             
             # Analizar condición si existe
             if "condicion" in ast:
@@ -427,14 +462,19 @@ def analizar_semantica(ast):
             # Analizar cuerpo
             analizar_semantica(ast.get("cuerpo", []))
             
-            # Salir del contexto de bucle
+            # ===== SALIR DEL CONTEXTO DEL BUCLE =====
             loop_stack.pop()
+            context_stack.pop()
+            print(f"[CONTEXT] Saliendo de bucle '{tipo}' - Stack: {context_stack}")
             
         # Estructuras condicionales
         elif tipo in ["if", "if_else", "if_elsif", "if_elsif_else", "if_inline", "if_else_inline"]:
-
             print(f"Analizando estructura condicional: {tipo}")
-       
+            
+            # ===== ENTRAR AL CONTEXTO CONDICIONAL =====
+            context_stack.append(tipo)
+            print(f"[CONTEXT] Entrando a condicional '{tipo}' - Stack: {context_stack}")
+            
             # Analizar condición
             if "condicion" in ast:
                 analizar_semantica(ast["condicion"])
@@ -450,6 +490,10 @@ def analizar_semantica(ast):
                 
             if "cuerpo_elsif" in ast:
                 analizar_semantica(ast["cuerpo_elsif"])
+            
+            # ===== SALIR DEL CONTEXTO CONDICIONAL =====
+            context_stack.pop()
+            print(f"[CONTEXT] Saliendo de condicional '{tipo}' - Stack: {context_stack}")
                 
         # Break statement
         elif tipo == "break":
@@ -457,17 +501,24 @@ def analizar_semantica(ast):
                 add_semantic_error("'break' fuera de un bucle")
             else:
                 print("Break válido dentro de un bucle")
+                
         elif tipo == "break_if":
             if not loop_stack:
                 add_semantic_error("'break if' fuera de un bucle")
             else:
                 print("Break condicional válido dentro de un bucle")
             analizar_semantica(ast.get("condicion"))
+            
+        # ===== CORRECCIÓN DEL MANEJO DE RETURN =====
         elif tipo == "return":
-            if not context_stack or context_stack[-1] not in ["metodo", "for", "while", "for_inline", "while_inline","if", "if_else", "if_elsif", "if_elsif_else", "if_inline", "if_else_inline"]:
-                add_semantic_error("'return' solo puede usarse dentro de un método o estructura de control")
+            print(f"[CONTEXT] Verificando return - Stack actual: {context_stack}")
+            
+            # Verificar si estamos dentro de un método
+            if "metodo" not in context_stack:
+                add_semantic_error("'return' solo puede usarse dentro de un método")
             else:
-                print("Uso válido de 'return' dentro de contexto permitido")
+                print("✅ Uso válido de 'return' dentro de método")
+                
             # Analizar el valor retornado si existe
             if ast.get("valor") is not None:
                 analizar_semantica(ast.get("valor"))
@@ -649,6 +700,7 @@ def analizar_codigo(codigo):
     semantic_warnings = []
     symbol_table = {}  # Tabla simple
     defined_methods = []
+    context_stack = []
     
     # Obtener AST del parser sintáctico
     try:

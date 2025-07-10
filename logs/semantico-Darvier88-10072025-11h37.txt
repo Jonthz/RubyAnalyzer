@@ -1,0 +1,19 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 11:37:55
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+arr = [1,2,3]
+index = 0
+num = arr[index]
+
+TABLA DE SÍMBOLOS:
+--------------------
+  arr: array (Inicializada)
+  index: integer (Inicializada)
+  num: integer (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

@@ -7,7 +7,6 @@ from AnalizadorLexico import get_github_username
 # CONFIGURACIÓN DE PRECEDENCIA
 # ==========================================================================
 precedence = (
-    ('right', 'RETURN'),           # Dar prioridad adecuada a return
     ('nonassoc', 'ELSE', 'ELSIF'),  # Resolver el dangling else (eliminado THEN)
      ('left', 'OR', 'AND'),         # Lógica, OR y AND tienen la misma precedencia
     ('left', 'PLUS', 'MINUS'),     # Aritmética, PLUS y MINUS tienen la misma precedencia
@@ -60,17 +59,15 @@ def p_statement(p):
 # eliminado stament_block 
 
 # ==========================================================================
-# PARÁMETROS Y ELEMENTOS
+#  ELEMENTOS
 # ==========================================================================
 def p_params(p):
-    '''params : expression
-              | params COMMA expression'''
+    '''params : IDENTIFIER
+              | params COMMA IDENTIFIER'''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo argumento
     else:
         p[0] = p[1] + [p[3]]  # Varios argumentos
-
-
 
 def p_params_empty(p):
     '''params : empty'''
@@ -83,7 +80,8 @@ def p_optional_elements(p):
 
 def p_elements(p):
     '''elements : expression
-                | elements COMMA expression'''
+                | elements COMMA expression
+    '''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo elemento
     else:
@@ -558,19 +556,29 @@ def p_return_statement(p):
     '''statement : RETURN expression
                  | RETURN factor
                  | RETURN'''
+    print(f"Tamño de p: {len(p)}")
     if len(p) == 3:
         p[0] = {"tipo": "return", "valor": p[2]}
         print(f"Return con valor: {p[2]}")
     else:
         p[0] = {"tipo": "return", "valor": None}
         print("Return sin valor")
+    print(f"Tamño de p: {len(p)}")
 
 # ==========================================================================
 # COLECCIONES (ARRAYS, HASHES, SETS)
 # ==========================================================================
 def p_array(p):
-    '''expression : LBRACKET optional_elements RBRACKET'''
-    p[0] = p[2]  # Devuelve la lista de elementos dentro del arreglo
+    '''expression : LBRACKET optional_elements RBRACKET
+             | LBRACKET IDENTIFIER LBRACKET IDENTIFIER RBRACKET RBRACKET'''
+     # Caso 1: arreglo con elementos opcionales dentro
+    if len(p) == 4:  # LBRACKET optional_elements RBRACKET
+        p[0] = ('array', p[2])  # Devuelve el nodo 'array' con los elementos dentro
+        print(f"Array creado con {len(p[2])} elementos: {p[2]}")
+    # Caso 2: arreglo anidado
+    elif len(p) == 6:  # LBRACKET IDENTIFIER LBRACKET IDENTIFIER RBRACKET RBRACKET
+        p[0] = ('array_index', p[2], p[4])  # Nodo para representar 'arr[i]'
+        print(f"Array anidado: {p[2]}[{p[4]}]")
 
 def p_hash(p):
     '''expression : LBRACE key_value_pairs RBRACE'''
@@ -694,7 +702,7 @@ def p_method_call_simple(p):
         "argumentos": []
     }
 def p_method_call_with_params(p):
-    '''statement : IDENTIFIER LPAREN params RPAREN'''
+    '''statement : IDENTIFIER LPAREN elements RPAREN'''
     p[0] = {
         "tipo": "llamada_metodo",
         "nombre": p[1],
@@ -771,7 +779,7 @@ def p_initialize_method(p):
 def p_object_instantiation(p):
     '''expression : CONSTANT DOT NEW
                   | CONSTANT DOT NEW LPAREN RPAREN
-                  | CONSTANT DOT NEW LPAREN params RPAREN'''
+                  | CONSTANT DOT NEW LPAREN elements RPAREN'''
     if len(p) == 4:  # MyClass.new
         p[0] = {
             "tipo": "instanciacion_objeto",
