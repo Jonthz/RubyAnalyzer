@@ -1,4 +1,11 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
 
+Fecha: 30/06/2025 00:40:18
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
 # Algoritmo de Clases Intermedio - Compatible con Parser Actual
 
 class Calculator
@@ -23,7 +30,7 @@ class Calculator
       return num / den
     end
   end
-
+end
 
 class Student
   def initialize(name)
@@ -69,3 +76,16 @@ puts "Resultados calculados"
 puts result1
 puts result2
 puts result3
+
+TABLA DE SÍMBOLOS:
+--------------------
+  study_time: unknown (Inicializada)
+  final_grade: unknown (Inicializada)
+
+ERRORES ENCONTRADOS (5):
+--------------------
+1. Método 'study' no está definido
+2. Método 'grade' no está definido
+3. Variable 'result1' usada sin ser declarada
+4. Variable 'result2' usada sin ser declarada
+5. Variable 'result3' usada sin ser declarada

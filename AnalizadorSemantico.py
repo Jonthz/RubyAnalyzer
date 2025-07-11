@@ -672,6 +672,33 @@ def analizar_semantica(ast):
                 analizar_semantica(cuerpo)
         
                 
+        # Definición de clase
+        elif tipo == "clase":
+            class_name = ast.get("nombre")
+            cuerpo = ast.get("cuerpo", [])
+            print(f"Analizando definición de clase: {class_name}")
+            # Analizar métodos y registrar como ClassName.metodo
+            for elemento in cuerpo:
+                if isinstance(elemento, dict) and elemento.get("tipo") == "metodo":
+                    method_name = elemento.get("nombre")
+                    params = elemento.get("parametros", [])
+                    # Extraer nombres de parámetros como antes
+                    param_names = []
+                    for param in params:
+                        if isinstance(param, dict) and param.get("tipo") == "uso_variable":
+                            param_names.append(param.get("nombre"))
+                        elif isinstance(param, str):
+                            param_names.append(param)
+                    # Registrar método como ClassName.metodo
+                    declare_symbol(f"{class_name}.{method_name}", "metodo", None, param_names, True)
+                    print(f" Método de instancia registrado: {class_name}.{method_name}({param_names})")
+                    # Analizar el cuerpo del método
+                    if "cuerpo" in elemento:
+                        analizar_semantica(elemento["cuerpo"])
+                    if "retorno" in elemento:
+                        analizar_semantica(elemento["retorno"])
+                else:
+                    analizar_semantica(elemento)
         else:
             # Analiza recursivamente cualquier otro diccionario
             for key, value in ast.items():
