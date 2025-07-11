@@ -1,0 +1,24 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 12:30:54
+Usuario: Jonthz
+
+--- Código Analizado ---
+class Calculator
+  def initialize(name)
+    @name = name
+  end
+
+
+  def add_numbers(x, y)
+    puts "Sumando números"
+    result = x + y
+    puts result
+    return result
+  end
+
+
+add_numbers(10)
+
+--- Resultados del Análisis ---
+Error sintáctico: Fin de archivo inesperado

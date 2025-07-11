@@ -951,4 +951,5 @@ def test_parser(input_code):
     print(f"Análisis sintáctico completado. Logs guardados en: {os.path.abspath(log_filename)}")
     print("Parse finished.")
 
+    return result, syntax_errors
 __all__ = ["parser", "test_parser"]

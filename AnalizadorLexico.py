@@ -257,6 +257,7 @@ def test_lexical_analyzer(input_data):
     print(f"Análisis léxico completado. Logs guardados en: {os.path.abspath('logs')}")
     print(f"Tokens reconocidos:\n{tokens}")
     print(f"Errores léxicos: {error_tokens}")
+    return tokens, error_tokens
 
 #=== Parte de Darwin ====
 

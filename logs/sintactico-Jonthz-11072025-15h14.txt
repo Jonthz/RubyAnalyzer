@@ -1,0 +1,38 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 15:14:54
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Ejemplo de código Ruby - Jonathan Zambrano
+class Calculator
+  def initialize(name)
+    @name = name
+  end
+
+  def add_numbers(x, y)
+    result = x % y
+    puts "Suma: #{result}"
+    return result
+  end
+
+  def add_strings(str1, str2)
+    result = str1.to_i + str2.to_i
+    puts "Suma de strings: #{result}"
+    return result
+  end
+end
+
+# Crear instancia y probar
+calc = Calculator.new("MiCalculadora")
+sum1 = calc.add_numbers(10, 20)
+sum2 = calc.add_strings("15", "25")
+
+puts "Resultados:"
+puts sum1
+puts sum2
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 112: Token inesperado '%'
+Error sintáctico en línea 115: Token inesperado 'end'
+Error sintáctico en línea 122: Token inesperado 'end'

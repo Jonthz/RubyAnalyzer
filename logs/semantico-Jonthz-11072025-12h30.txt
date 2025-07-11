@@ -1,0 +1,39 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 12:30:18
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+class Calculator
+  def initialize(name)
+    @name = name
+  end
+
+
+  def add_numbers(x, y)
+    puts "Sumando números"
+    result = x + y
+    puts result
+    return result
+  end
+end
+
+add_numbers(10)
+
+TABLA DE SÍMBOLOS:
+--------------------
+  Calculator: clase (Sin inicializar)
+  name: parameter (Inicializada)
+  @name: instance_variable (Inicializada)
+  add_numbers: metodo (Inicializada)
+  x: parameter (Inicializada)
+  y: parameter (Inicializada)
+  result: numeric (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  add_numbers
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS
