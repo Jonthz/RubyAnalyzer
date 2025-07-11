@@ -17,6 +17,12 @@ loop_stack = []
 # Lista para tracking de métodos definidos
 defined_methods = []
 
+# Pila para contexto de métodos y estructuras de control
+context_stack = []
+
+# Diccionario para almacenar información de tipos de retorno de métodos
+method_return_types = {}
+
 def add_semantic_error(message):
     """Agregar un error semántico a la lista"""
     semantic_errors.append(message)
@@ -77,9 +83,34 @@ def infer_type(expr):
         return "boolean"
     elif expr is None:
         return "nil"
+    elif isinstance(expr, tuple):
+        # Manejar tuplas del parser (tipo, contenido)
+            if len(expr) == 2 and expr[0] == "array":
+                elementos = expr[1]
+                if isinstance(elementos, list) and len(elementos) == 0:
+                    print("Array vacío detectado (tupla)")
+                    return "empty_array"
+                else:
+                    print(f"Array con {len(elementos)} elementos detectado (tupla)")
+                    return "array"
+            return "unknown"
+        # Si es un array
     elif isinstance(expr, list):
+        if len(expr) == 0:
+            print("Array vacío detectado")
+            return "empty_array"
+        elif len(expr) == 1:
+            # Si es una lista con un solo elemento, inferir el tipo de ese elemento
+            print(f"Lista con un elemento detectada, infiriendo tipo del elemento")
+            return infer_type(expr[0])
         return "array"
+    
     elif isinstance(expr, dict):
+        if expr.get("tipo") == "llamada_metodo":
+            # Delegar al análisis semántico para obtener el tipo de retorno
+            return_type = analizar_semantica(expr)
+            if return_type:
+                return return_type
         # Si es una operación
         if expr.get("tipo") == "operacion":
             op = expr.get("op")
@@ -112,8 +143,22 @@ def infer_type(expr):
             else:
                 add_semantic_error(f"Variable '{var_name}' no está definida")
                 return "undefined"
+        elif isinstance(expr, tuple):
+        # Manejar tuplas del parser (tipo, contenido)
+            if len(expr) == 2 and expr[0] == "array":
+                elementos = expr[1]
+                if isinstance(elementos, list) and len(elementos) == 0:
+                    print("Array vacío detectado (tupla)")
+                    return "empty_array"
+                else:
+                    print(f"Array con {len(elementos)} elementos detectado (tupla)")
+                    return "array"
+            return "unknown"
         # Si es un array
-        elif expr.get("tipo") == "array":
+        elif isinstance(expr, list):
+            if len(expr) == 0:
+                print("Array vacío detectado")
+                return "empty_array"
             return "array"
         # Si es un hash
         elif expr.get("tipo") == "hash":
@@ -121,7 +166,7 @@ def infer_type(expr):
     return "unknown"
 #Fin Parte Giovanni
 
-def declare_symbol(name, symbol_type, value=None, params=None, is_method=False):
+def declare_symbol(name, symbol_type, value=None, params=None, is_method=False, return_type=None):
     """Declarar un símbolo (variable o método) en la tabla de símbolos"""
     # Los parámetros se consideran "inicializados" porque reciben valores
     is_initialized = value is not None or is_method or symbol_type == "parameter"
@@ -132,7 +177,8 @@ def declare_symbol(name, symbol_type, value=None, params=None, is_method=False):
         'initialized': is_initialized,  # ← CAMBIO AQUÍ
         'is_method': is_method,
         'params': params if params else [],
-        'param_count': len(params) if params else 0
+        'param_count': len(params) if params else 0,
+        'return_type': return_type
     }
     
     if is_method:
@@ -152,6 +198,9 @@ def is_compatible_types(type1, type2):
     Verificar si dos tipos son compatibles
     MEJORADO con sistema JZ (Jonathan Zambrano)
     """
+    if type1 == "parameter" or type2 == "parameter":
+        return True
+    
     if type1 == type2:
         return True
     
@@ -167,7 +216,12 @@ def is_compatible_types(type1, type2):
     if {type1, type2}.issubset(jz_numeric):
         print(f"Compatibilidad numérica extendida: {type1} ↔ {type2}")
         return True
-    
+    if type1 == "empty_array" and type2 == "array":
+        print(f"Array vacío compatible con array: {type1} ↔ {type2}")
+        return True
+    if type1 == "array" and type2 == "empty_array":
+        print(f"Array compatible con array vacío: {type1} ↔ {type2}")
+        return True
     # Strings son compatibles entre sí (JZ)
     if type1 == "string" and type2 == "string":
         return True
@@ -193,6 +247,15 @@ def validar_operacion(op, izq, der):
     print(f"🔧 Validando operación: {left_type} {op} {right_type}")
     
     # ===== OPERACIONES ARITMÉTICAS =====
+    if left_type == "parameter" and right_type != "parameter":
+        print(f"[JZ] Operación permitida: '{op}' entre 'parameter' y '{right_type}'")
+        return right_type
+    if right_type == "parameter" and left_type != "parameter":
+        print(f"[JZ] Operación permitida: '{op}' entre '{left_type}' y 'parameter'")
+        return left_type
+    if left_type == "parameter" and right_type == "parameter":
+        print(f"[JZ] Operación permitida: '{op}' entre dos 'parameter'")
+        return "parameter"
     if op in ["+", "-", "*", "/", "**", "%"]:
         
         # ===== MEJORA JZ: Concatenación inteligente =====
@@ -321,6 +384,19 @@ def analizar_semantica(ast):
             # Actualizar tabla de símbolos
             declare_symbol(var_name, value_type, valor)
             print(f" DEBUG: Tabla de símbolos actualizada: {symbol_table}")
+
+        elif tipo == "asignacion_instancia":
+            var_name = ast.get("variable")  # @name
+            valor = ast.get("valor")
+            
+            print(f"Procesando variable de instancia: {var_name}")
+            
+            # Analizar el valor asignado
+            analizar_semantica(valor)
+            
+            # Declarar variable de instancia
+            declare_symbol(var_name, "instance_variable", valor, None, False)
+            print(f"📋 Variable de instancia '{var_name}' declarada")
             
         # Uso de variable
         elif tipo == "uso_variable":
@@ -360,56 +436,77 @@ def analizar_semantica(ast):
         # Darwin Pacheco (Inicio), encargado de analizar semanticamente metodos, y estructuras de control
         elif tipo == "metodo":
             method_name = ast.get("nombre")
-            params_raw = ast.get("parametros", [])  # ← Parámetros en bruto
+            params_raw = ast.get("parametros", [])
             cuerpo = ast.get("cuerpo", [])
             retorno = ast.get("retorno", None)
 
             print(f"Analizando definición de método: {method_name}")
-            print(f"Parámetros en bruto: {params_raw}")
-            print(f"Tipo de parámetros: {type(params_raw)}")
             
-            # ===== EXTRAER NOMBRES DE PARÁMETROS CORRECTAMENTE (JZ) =====
+            # ===== ENTRAR AL CONTEXTO DEL MÉTODO =====
+            context_stack.append("metodo")
+            print(f"[CONTEXT] Entrando a método '{method_name}' - Stack: {context_stack}")
+            
+            # Extraer nombres de parámetros
             param_names = []
-            
             if isinstance(params_raw, list):
                 for param in params_raw:
                     if isinstance(param, dict) and param.get("tipo") == "uso_variable":
                         param_name = param.get("nombre")
                         if param_name:
                             param_names.append(param_name)
-                            print(f"[JZ] Parámetro extraído: {param_name}")
                     elif isinstance(param, str):
                         param_names.append(param)
-                        print(f"[JZ] Parámetro string: {param}")
-                    else:
-                        print(f"[JZ] WARNING: Parámetro no reconocido: {param}")
             
-            print(f"Parámetros finales extraídos: {param_names}")
-           
-            # Declarar el método en la tabla de símbolos CON LOS NOMBRES CORRECTOS
+            # Declarar el método en la tabla de símbolos
             declare_symbol(method_name, "metodo", None, param_names, True)
             
             # Registrar parámetros como variables locales
             for param_name in param_names:
                 declare_symbol(param_name, "parameter", None, None, False)
-                print(f"Parámetro '{param_name}' declarado como variable local")
             
-            # Si hay cuerpo, analizarlo
+            # Analizar cuerpo del método
             if cuerpo:
                 print(f"Analizando cuerpo del método {method_name}")
                 analizar_semantica(cuerpo)
+            
+            return_type = "unknown"
             if retorno is not None:
                 print(f"Analizando retorno del método {method_name}")
                 analizar_semantica(retorno)
+                return_type = infer_type(retorno)
+                print(f"Método '{method_name}' retorna tipo: {return_type}")
             
+            # Declarar el método con el tipo de retorno
+            declare_symbol(method_name, "metodo", None, param_names, True, return_type)
+            # ===== SALIR DEL CONTEXTO DEL MÉTODO =====
+            context_stack.pop()
+            print(f"[CONTEXT] Saliendo de método '{method_name}' - Stack: {context_stack}")
             print(f"Método {method_name} completamente procesado")
+
+        elif tipo == "constructor":
+            params_raw = ast.get("parametros", [])
+            cuerpo = ast.get("cuerpo")
+            
+            print(f"Analizando constructor con parámetros: {params_raw}")
+            
+            # Declarar parámetros del constructor como variables locales
+            for param_name in params_raw:
+                if isinstance(param_name, str):
+                    declare_symbol(param_name, "parameter", None, None, False)
+                    print(f"📋 Parámetro del constructor '{param_name}' declarado")
+            
+            # Analizar cuerpo del constructor
+            if cuerpo:
+                analizar_semantica(cuerpo)
             
         # Estructuras de control con bucles
         elif tipo in ["for", "while", "for_inline", "while_inline"]:
             print(f"Analizando estructura de control: {tipo}")
             
-            # Entrar a contexto de bucle
+            # ===== ENTRAR AL CONTEXTO DEL BUCLE =====
             loop_stack.append(True)
+            context_stack.append(tipo)
+            print(f"[CONTEXT] Entrando a bucle '{tipo}' - Stack: {context_stack}")
             
             # Analizar condición si existe
             if "condicion" in ast:
@@ -424,14 +521,19 @@ def analizar_semantica(ast):
             # Analizar cuerpo
             analizar_semantica(ast.get("cuerpo", []))
             
-            # Salir del contexto de bucle
+            # ===== SALIR DEL CONTEXTO DEL BUCLE =====
             loop_stack.pop()
+            context_stack.pop()
+            print(f"[CONTEXT] Saliendo de bucle '{tipo}' - Stack: {context_stack}")
             
         # Estructuras condicionales
         elif tipo in ["if", "if_else", "if_elsif", "if_elsif_else", "if_inline", "if_else_inline"]:
-
             print(f"Analizando estructura condicional: {tipo}")
-       
+            
+            # ===== ENTRAR AL CONTEXTO CONDICIONAL =====
+            context_stack.append(tipo)
+            print(f"[CONTEXT] Entrando a condicional '{tipo}' - Stack: {context_stack}")
+            
             # Analizar condición
             if "condicion" in ast:
                 analizar_semantica(ast["condicion"])
@@ -447,6 +549,10 @@ def analizar_semantica(ast):
                 
             if "cuerpo_elsif" in ast:
                 analizar_semantica(ast["cuerpo_elsif"])
+            
+            # ===== SALIR DEL CONTEXTO CONDICIONAL =====
+            context_stack.pop()
+            print(f"[CONTEXT] Saliendo de condicional '{tipo}' - Stack: {context_stack}")
                 
         # Break statement
         elif tipo == "break":
@@ -454,12 +560,27 @@ def analizar_semantica(ast):
                 add_semantic_error("'break' fuera de un bucle")
             else:
                 print("Break válido dentro de un bucle")
+                
         elif tipo == "break_if":
             if not loop_stack:
                 add_semantic_error("'break if' fuera de un bucle")
             else:
                 print("Break condicional válido dentro de un bucle")
             analizar_semantica(ast.get("condicion"))
+            
+        # ===== CORRECCIÓN DEL MANEJO DE RETURN =====
+        elif tipo == "return":
+            print(f"[CONTEXT] Verificando return - Stack actual: {context_stack}")
+            
+            # Verificar si estamos dentro de un método
+            if "metodo" not in context_stack:
+                add_semantic_error("'return' solo puede usarse dentro de un método")
+            else:
+                print("✅ Uso válido de 'return' dentro de método")
+                
+            # Analizar el valor retornado si existe
+            if ast.get("valor") is not None:
+                analizar_semantica(ast.get("valor"))
         #Darwin Pacheco (Fin)        
         # Arrays, hashes, sets
         elif tipo in ["array", "hash", "set"]:
@@ -481,6 +602,18 @@ def analizar_semantica(ast):
             if method_name in conversion_methods_jz:
                 print(f"[JZ] Método de conversión integrado '{method_name}' reconocido")
                 # Los métodos de conversión no necesitan verificación de argumentos
+            elif method_name in method_return_types:
+                return_type = method_return_types[method_name]
+                print(f"Llamada a método '{method_name}' retorna tipo: {return_type}")
+                return return_type
+            
+            elif method_name in symbol_table:
+                method_info = symbol_table[method_name]
+                if method_info.get('is_method', False):
+                    return_type = method_info.get('return_type')
+                    if return_type:
+                        print(f"Método '{method_name}' tiene tipo de retorno definido: {return_type}")
+                        return return_type
             else:
                 # Buscar el método en la tabla de símbolos
                 method_info = lookup_variable(method_name)
@@ -501,13 +634,27 @@ def analizar_semantica(ast):
             # Analizar los argumentos (siempre necesario)
             for arg in args:
                 analizar_semantica(arg)
-                
+           
         # Puts statement
         elif tipo == "puts":
             print(f" Analizando puts")
             # Analizar el valor que se va a imprimir
             if "valor" in ast:
                 analizar_semantica(ast["valor"])
+
+        elif tipo == "clase":
+            class_name = ast.get("nombre")
+            cuerpo = ast.get("cuerpo", [])
+            
+            print(f"Analizando clase: {class_name}")
+            
+            # Declarar la clase
+            declare_symbol(class_name, "clase", None, [], False)
+            
+            # Analizar contenido de la clase
+            if cuerpo:
+                analizar_semantica(cuerpo)
+        
                 
         else:
             # Analiza recursivamente cualquier otro diccionario
@@ -638,6 +785,7 @@ def analizar_codigo(codigo):
     semantic_warnings = []
     symbol_table = {}  # Tabla simple
     defined_methods = []
+    context_stack = []
     
     # Obtener AST del parser sintáctico
     try:
@@ -744,28 +892,40 @@ def check_method_arguments_jz(method_name, provided_args, call_location="método
             excess = actual_args - expected_params
             print(f"[JZ] Sobran {excess} argumento(s)")
         
-        return result
-    
+        #return result
+    max_args_to_analyze = min(len(provided_args), len(method_params))
+
     # ===== VERIFICACIÓN DE TIPOS DE ARGUMENTOS =====
-    print(f"[JZ] Cantidad de argumentos correcta ({actual_args})")
-    
-    # Analizar tipos de cada argumento
-    for i, arg in enumerate(provided_args):
+    print(f"Analizando {max_args_to_analyze} argumentos de {len(provided_args)} proporcionados")    # Analizar tipos de cada argumento
+    # REEMPLAZAR el bucle for completo (línea 875):
+
+# Analizar argumentos que corresponden a parámetros definidos
+    for i in range(max_args_to_analyze):
+        arg = provided_args[i]
         arg_type = infer_type(arg)
-        param_name = method_params[i] if i < len(method_params) else f"param_{i+1}"
+        param_name = method_params[i]
         
         print(f"Argumento {i+1} ({param_name}): tipo '{arg_type}'")
         
-        # ===== VERIFICACIONES DE TIPO ESPECÍFICAS JZ =====
+        # Verificaciones de tipo (como antes)...
+
+    # Analizar argumentos extra (si los hay)
+    if len(provided_args) > len(method_params):
+        print(f"Analizando {len(provided_args) - len(method_params)} argumentos extra...")
         
-        # 1. Verificar argumentos no definidos
-        if arg_type == "undefined":
-            error_msg = f"Argumento {i+1} para '{method_name}' usa variable no definida"
-            result["errors"].append(error_msg)
-            result["valid"] = False
-            add_semantic_error(error_msg)
-            print(f" {error_msg}")
-        
+        for i in range(len(method_params), len(provided_args)):
+            arg = provided_args[i]
+            arg_type = infer_type(arg)
+            
+            print(f"Argumento EXTRA {i+1}: tipo '{arg_type}'")
+            
+            # Solo verificar errores básicos en argumentos extra
+            if arg_type == "undefined":
+                error_msg = f"Argumento extra {i+1} usa variable no definida"
+                result["errors"].append(error_msg)
+                add_semantic_error(error_msg)
+                print(f" {error_msg}")
+    ''' 
         # 2. Verificar tipos problemáticos
         elif arg_type == "unknown":
             warning_msg = f"[Argumento {i+1} para '{method_name}' tiene tipo desconocido"
@@ -814,9 +974,9 @@ def check_method_arguments_jz(method_name, provided_args, call_location="método
                 # Sugerencias específicas
                 suggest_argument_conversion_jz(arg1_pos, type1, type2)
                 suggest_argument_conversion_jz(arg2_pos, type2, type1)
-    
+    '''
     if result["valid"]:
-        success_msg = f"✅ [JZ] Llamada a método '{method_name}' válida: {actual_args} argumentos correctos"
+        success_msg = f"Llamada a método '{method_name}' válida: {actual_args} argumentos correctos"
         print(success_msg)
     
     return result
@@ -880,3 +1040,11 @@ def analyze_method_call_jz(method_name, arguments):
     print(f"[JZ] === FIN ANÁLISIS DE LLAMADA ===\n")
     
     return result
+def infer_type_by_method_name(method_name):
+    """Inferir tipo por nombre de método (heurística)"""
+    if method_name.startswith(("get_", "obtener_")):
+        if "numero" in method_name or "num" in method_name:
+            return "numeric"
+        elif "string" in method_name or "texto" in method_name:
+            return "string"
+    return "unknown"

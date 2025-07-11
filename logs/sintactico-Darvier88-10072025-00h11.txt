@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 00:11:49
+Usuario: Darvier88
+
+--- Código Analizado ---
+left = left + [arr[i]]
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 34: Token inesperado '['

@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 09:29:08
+Usuario: Darvier88
+
+--- Código Analizado ---
+quick_sort(arr, low, pivot_index - 1)
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 78: Token inesperado ','
+Error sintáctico en línea 78: Token inesperado ')'

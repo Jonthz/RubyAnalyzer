@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 09:30:44
+Usuario: Darvier88
+
+--- Código Analizado ---
+quick_sort(arr, low, pivot_index - 1)
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

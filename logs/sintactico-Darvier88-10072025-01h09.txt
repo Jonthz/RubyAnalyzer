@@ -1,0 +1,13 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 01:09:49
+Usuario: Darvier88
+
+--- Código Analizado ---
+def quick_sort(arr)
+puts arr
+return arr
+end
+
+--- Resultados del Análisis ---
+Error durante el análisis: list index out of range

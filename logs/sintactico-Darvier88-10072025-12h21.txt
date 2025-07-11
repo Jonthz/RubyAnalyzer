@@ -1,0 +1,59 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 12:21:34
+Usuario: Darvier88
+
+--- Código Analizado ---
+class Animal
+  def initialize(name)
+    @name = name
+  end
+
+  def speak()
+    puts "El animal hace un sonido."
+  end
+
+  def info()
+    puts @name
+  end
+end
+
+class Dog < Animal
+  def initialize(name, breed)
+    super(name)
+    @breed = breed
+  end
+
+  
+
+  def info()
+    puts @name
+    puts @breed
+  end
+end
+
+class Cat < Animal
+  def initialize(name)
+    super(name)
+  end
+
+
+
+  def info()
+    puts @name
+  end
+end
+
+dog = Dog.new("Rex", "Pastor Aleman")
+cat = Cat.new("Whiskers")
+
+dog.info()
+cat.info()
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 118: Token inesperado '@breed'
+Error sintáctico en línea 127: Token inesperado 'end'
+Error sintáctico en línea 141: Token inesperado 'Rex'
+Error sintáctico en línea 142: Token inesperado 'Whiskers'
+Error sintáctico en línea 144: Token inesperado ')'
+Error sintáctico en línea 145: Token inesperado ')'

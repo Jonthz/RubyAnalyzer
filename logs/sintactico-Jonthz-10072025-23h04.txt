@@ -1,0 +1,32 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 23:04:37
+Usuario: Jonthz
+
+--- Código Analizado ---
+class Animal
+  def initialize(name)
+    @name = name
+  end
+
+  def speak()
+    puts "El animal hace un sonido."
+  end
+
+  def info()
+    puts @name
+  end
+end
+
+
+
+cat = Cat.new("Whiskers")
+animal = Animal.new("Generic Animal")
+
+animal.speak
+animal.info
+cat.speak
+
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

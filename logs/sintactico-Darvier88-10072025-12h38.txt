@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 12:38:39
+Usuario: Darvier88
+
+--- Código Analizado ---
+arr = ["a","b","c","d"]
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

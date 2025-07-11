@@ -243,17 +243,48 @@ def p_initialize_method(p):
 def p_object_instantiation(p):
     '''expression : CONSTANT DOT NEW
                   | CONSTANT DOT NEW LPAREN RPAREN
-                  | CONSTANT DOT NEW LPAREN params RPAREN'''
-    if len(p) == 4:  # MyClass.new
-        p[0] = f"{p[1]}.new"
+                  | CONSTANT DOT NEW LPAREN elements RPAREN'''
+    print(f"Instanciación del objeto de clase {p[1]} con parámetros {p[3]}")
+    # Caso 1: MyClass.new
+    if len(p) == 4:
+        p[0] = {
+            "tipo": "expresión",
+            "contenido": [
+                {"tipo": "CONSTANT", "valor": p[1]},
+                {"tipo": "DOT", "valor": "."},
+                {"tipo": "NEW", "valor": "new"}
+            ]
+        }
         print(f"Instanciación del objeto de clase {p[1]} sin parámetros")
-    elif len(p) == 6:  # MyClass.new()
-        p[0] = f"{p[1]}.new()"
+    
+    # Caso 2: MyClass.new()
+    elif len(p) == 6:
+        p[0] = {
+            "tipo": "expresión",
+            "contenido": [
+                {"tipo": "CONSTANT", "valor": p[1]},
+                {"tipo": "DOT", "valor": "."},
+                {"tipo": "NEW", "valor": "new"},
+                {"tipo": "LPAREN", "valor": "("},
+                {"tipo": "RPAREN", "valor": ")"}
+            ]
+        }
         print(f"Instanciación del objeto de clase {p[1]} sin parámetros")
-    else:  # MyClass.new(param1, param2)
-        params_str = ', '.join(p[5])
-        p[0] = f"{p[1]}.new({params_str})"
-        print(f"Instanciación del objeto de clase {p[1]} con parámetros: {params_str}")
+    
+    # Caso 3: MyClass.new(param1, param2)
+    else:
+        p[0] = {
+            "tipo": "expresión",
+            "contenido": [
+                {"tipo": "CONSTANT", "valor": p[1]},
+                {"tipo": "DOT", "valor": "."},
+                {"tipo": "NEW", "valor": "new"},
+                {"tipo": "LPAREN", "valor": "("},
+                {"tipo": "elements", "valor": p[3]},
+                {"tipo": "RPAREN", "valor": ")"}
+            ]
+        }
+        print(f"Instanciación del objeto de clase {p[1]} con parámetros {p[3]}")
 # Fin Jonathan
 
 # Parte de Giovanni 
@@ -370,8 +401,10 @@ def p_array(p):
 # Elementos dentro del arreglo
 def p_elements(p):
     '''elements : statement
+                | expression
+                | factor
                 | elements COMMA  expression
-                | factor COMMA factor
+                | elements COMMA statement
                 | elements COMMA factor'''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo elemento
@@ -400,7 +433,16 @@ def p_method_with_return_declaration(p):
                 |  DEF IDENTIFIER statements RETURN statements END '''
     print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
 
-
+def p_return_statement(p):
+    '''statement : RETURN expression
+                 | RETURN factor
+                 | RETURN'''
+    if len(p) == 3:
+        p[0] = {"tipo": "return", "valor": p[2]}
+        print(f"Return con valor: {p[2]}")
+    else:
+        p[0] = {"tipo": "return", "valor": None}
+        print("Return sin valor")
 
 # Manejo de errores
 def p_error(p):

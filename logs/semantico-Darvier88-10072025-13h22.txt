@@ -1,0 +1,66 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 13:22:47
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+class Animal
+  def initialize(name)
+    @name = name
+  end
+
+  def speak()
+    puts "El animal hace un sonido."
+  end
+
+  def info()
+    puts @name
+  end
+end
+
+class Dog < Animal
+  def initialize(name, breed)
+    @breed = breed
+    super(name)
+  end
+  
+  def info()
+    puts @name
+    puts @breed
+  end
+end
+
+class Cat < Animal
+  def initialize(name)
+    super(name)
+  end
+
+  def info()
+    puts @name
+  end
+end
+
+dog = Dog.new("Rex", "Pastor Aleman")
+cat = Cat.new("Whiskers")
+
+dog.info
+cat.info
+
+TABLA DE SÍMBOLOS:
+--------------------
+  info: metodo (Inicializada)
+  dog: unknown (Inicializada)
+  cat: unknown (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  info
+
+ERRORES ENCONTRADOS (4):
+--------------------
+1. Variable 'name' usada sin ser declarada
+2. Método 'super' no está definido
+3. Variable 'name' usada sin ser declarada
+4. Variable '@name' usada sin ser declarada

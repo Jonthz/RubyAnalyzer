@@ -1,0 +1,19 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 10:43:50
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+arr = [1,2,3,4]
+index = 0
+pivot = arr[index]
+
+TABLA DE SÍMBOLOS:
+--------------------
+  arr: array (Inicializada)
+  index: integer (Inicializada)
+  pivot: array (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

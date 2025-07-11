@@ -1,3 +1,4 @@
 def sum(a,b) 
-return "Resultado:" + a + b
+    x = a + b
+return x
 end

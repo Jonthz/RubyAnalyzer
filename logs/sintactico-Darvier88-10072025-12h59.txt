@@ -1,0 +1,22 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 12:59:56
+Usuario: Darvier88
+
+--- Código Analizado ---
+def suma_mayores(arr, limite)
+  suma = 0
+  for i in 0..(arr.length - 1)
+    if arr[i] > limite
+      suma = suma + arr[i]
+    end
+  end
+  return suma
+end
+
+numeros = [1, 5, 10, 15, 20]
+resultado = suma_mayores(numeros, 10)
+puts resultado
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

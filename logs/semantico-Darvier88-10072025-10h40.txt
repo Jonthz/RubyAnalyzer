@@ -1,0 +1,17 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 10:40:10
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+arr = [1,2,3,4]
+pivot = arr[0]
+
+TABLA DE SÍMBOLOS:
+--------------------
+  arr: array (Inicializada)
+  pivot: array (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

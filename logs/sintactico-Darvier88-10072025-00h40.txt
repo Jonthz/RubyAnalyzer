@@ -1,0 +1,13 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 00:40:21
+Usuario: Darvier88
+
+--- Código Analizado ---
+def quick_sort(arr)
+left = left + [arr[i]]
+return left
+end
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

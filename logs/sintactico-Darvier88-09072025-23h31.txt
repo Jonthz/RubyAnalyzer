@@ -1,0 +1,17 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 09/07/2025
+Hora: 23:31:48
+Usuario: Darvier88
+
+--- Código Analizado ---
+def quick_sort(arr)
+  if arr <= 1
+    return arr
+  end
+
+arr1 = [12, 11, 13, 5, 6]
+sorted_arr1 = quick_sort(arr1)
+print_array(sorted_arr1)
+
+--- Resultados del Análisis ---
+Error sintáctico: Fin de archivo inesperado

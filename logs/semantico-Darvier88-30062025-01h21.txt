@@ -1,0 +1,48 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 30/06/2025 01:21:41
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+def quick_sort(arr)
+  if arr <= 1
+    return arr
+  end
+
+  pivot_index = arr
+  pivot = arr[pivot_index]
+  left = []
+  right = []
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  quick_sort: metodo (Inicializada)
+  pivot_index: undefined (Inicializada)
+  pivot: undefined (Inicializada)
+  left: array (Inicializada)
+  right: array (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  quick_sort
+
+ERRORES ENCONTRADOS (10):
+--------------------
+1. Variable 'arr' usada sin ser declarada
+2. Variable 'arr' usada sin ser declarada
+3. Variable 'arr' no está definida
+4. Comparación '<=' entre tipos incompatibles: 'undefined' y 'integer'
+5. 'return' solo puede usarse dentro de un método o estructura de control
+6. Variable 'arr' usada sin ser declarada
+7. Variable 'arr' usada sin ser declarada
+8. Variable 'arr' no está definida
+9. Variable 'arr' usada sin ser declarada
+10. Variable 'arr' no está definida
+
+ADVERTENCIAS (2):
+--------------------
+1. [JZ] Comparación de orden '<=' entre tipos diferentes: undefined y integer
+2. [JZ] Esto puede lanzar una excepción en tiempo de ejecución

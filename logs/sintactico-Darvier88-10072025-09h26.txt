@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 09:26:19
+Usuario: Darvier88
+
+--- Código Analizado ---
+def hola(arr,arr2)
+puts arr
+end
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

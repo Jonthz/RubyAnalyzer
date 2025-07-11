@@ -1,0 +1,18 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 10:39:45
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+pivot = arr[0]
+
+TABLA DE SÍMBOLOS:
+--------------------
+  pivot: undefined (Inicializada)
+
+ERRORES ENCONTRADOS (2):
+--------------------
+1. Variable 'arr' usada sin ser declarada
+2. Variable 'arr' no está definida

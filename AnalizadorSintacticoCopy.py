@@ -7,7 +7,6 @@ from AnalizadorLexico import get_github_username
 # CONFIGURACIÓN DE PRECEDENCIA
 # ==========================================================================
 precedence = (
-    ('right', 'RETURN'),           # Dar prioridad adecuada a return
     ('nonassoc', 'ELSE', 'ELSIF'),  # Resolver el dangling else (eliminado THEN)
      ('left', 'OR', 'AND'),         # Lógica, OR y AND tienen la misma precedencia
     ('left', 'PLUS', 'MINUS'),     # Aritmética, PLUS y MINUS tienen la misma precedencia
@@ -27,7 +26,7 @@ precedence = (
 # Regla de inicio
 def p_program(p):
     '''program : statements'''
-    p[0] = p[1]  # ← IMPORTANTE: Debe pasar el valor
+    p[0] = p[1]
     print(f"DEBUG PROGRAM: p[1] = {p[1]}")
     print(f"DEBUG PROGRAM: p[0] = {p[0]}")
 
@@ -60,17 +59,15 @@ def p_statement(p):
 # eliminado stament_block 
 
 # ==========================================================================
-# PARÁMETROS Y ELEMENTOS
+#  ELEMENTOS
 # ==========================================================================
 def p_params(p):
-    '''params : expression
-              | params COMMA expression'''
+    '''params : IDENTIFIER
+              | params COMMA IDENTIFIER'''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo argumento
     else:
         p[0] = p[1] + [p[3]]  # Varios argumentos
-
-
 
 def p_params_empty(p):
     '''params : empty'''
@@ -83,7 +80,8 @@ def p_optional_elements(p):
 
 def p_elements(p):
     '''elements : expression
-                | elements COMMA expression'''
+                | elements COMMA expression
+    '''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo elemento
     else:
@@ -280,28 +278,52 @@ def p_vars(p):
     print(f"DEBUG VARS: p[0] = {p[0]}")
 
 def p_method_call_conversion_jz(p):
-    '''expression : expression DOT IDENTIFIER
+    '''expression : IDENTIFIER DOT IDENTIFIER
+                  | IDENTIFIER DOT IDENTIFIER LPAREN RPAREN
+                  | IDENTIFIER DOT IDENTIFIER LPAREN elements RPAREN
+                  | expression DOT IDENTIFIER  
+                  | expression DOT IDENTIFIER LPAREN RPAREN
+                  | expression DOT IDENTIFIER LPAREN elements RPAREN
                   | factor DOT IDENTIFIER
-                  | IDENTIFIER DOT IDENTIFIER'''
+                  | factor DOT IDENTIFIER LPAREN RPAREN
+                  | factor DOT IDENTIFIER LPAREN elements RPAREN'''
     # Detectar métodos de conversión (Jonathan Zambrano)
     conversion_methods_jz = ["to_i", "to_f", "to_s", "to_a", "to_h", "to_sym", "chomp", "strip", "upcase", "downcase", "round", "floor", "ceil"]
     
-    if p[3] in conversion_methods_jz:
-        p[0] = {
-            "tipo": "llamada_metodo",
-            "nombre": p[3],
-            "objeto": p[1],
-            "argumentos": []
-        }
-        print(f"🔄 [JZ] Conversión de tipo detectada: {p[1]} -> {p[3]}")
+    # Determinar si hay argumentos
+    if len(p) == 4:  # objeto.metodo (sin paréntesis)
+        argumentos = []
+        print(f"📞 [JZ] Llamada sin paréntesis: {p[1]}.{p[3]}")
+        
+    elif len(p) == 6:  # objeto.metodo() (paréntesis vacíos)
+        argumentos = []
+        print(f"📞 [JZ] Llamada con paréntesis vacíos: {p[1]}.{p[3]}()")
+        
+    elif len(p) == 7:  # objeto.metodo(args) (con argumentos)
+        argumentos = p[5]  # Los elementos están en p[5]
+        print(f"📞 [JZ] Llamada con argumentos: {p[1]}.{p[3]}({len(argumentos)} args)")
+        
     else:
-        p[0] = {
-            "tipo": "llamada_metodo",
-            "nombre": p[3],
-            "objeto": p[1],
-            "argumentos": []
-        }
-        print(f"📞 [JZ] Llamada a método: {p[1]}.{p[3]}")
+        # Caso inesperado - debug
+        argumentos = []
+        print(f"⚠️ [JZ] Caso inesperado en llamada a método: len(p) = {len(p)}")
+        for i, item in enumerate(p):
+            print(f"  p[{i}] = {item}")
+    
+    p[0] = {
+        "tipo": "llamada_metodo",
+        "nombre": p[3],
+        "objeto": p[1],
+        "argumentos": argumentos
+    }
+    
+        
+    if p[3] in conversion_methods_jz:
+        print(f"🔄 [JZ] Conversión: {p[1]}.{p[3]}()")
+    else:
+        print(f"📞 [JZ] Llamada: {p[1]}.{p[3]}({len(argumentos)} args)")
+
+
 
 def p_local_var(p):
     '''p_local_var : IDENTIFIER ASSIGN statement
@@ -554,12 +576,33 @@ def p_for_inline_statement(p):
     }
     print(f"AST generado para estructura FORINLINE: {p[0]}")
 
+def p_return_statement(p):
+    '''statement : RETURN expression
+                 | RETURN factor
+                 | RETURN'''
+    print(f"Tamño de p: {len(p)}")
+    if len(p) == 3:
+        p[0] = {"tipo": "return", "valor": p[2]}
+        print(f"Return con valor: {p[2]}")
+    else:
+        p[0] = {"tipo": "return", "valor": None}
+        print("Return sin valor")
+    print(f"Tamño de p: {len(p)}")
+
 # ==========================================================================
 # COLECCIONES (ARRAYS, HASHES, SETS)
 # ==========================================================================
 def p_array(p):
-    '''expression : LBRACKET optional_elements RBRACKET'''
-    p[0] = p[2]  # Devuelve la lista de elementos dentro del arreglo
+    '''expression : LBRACKET optional_elements RBRACKET
+             | LBRACKET IDENTIFIER LBRACKET IDENTIFIER RBRACKET RBRACKET'''
+     # Caso 1: arreglo con elementos opcionales dentro
+    if len(p) == 4:  # LBRACKET optional_elements RBRACKET
+        p[0] = ('array', p[2])  # Devuelve el nodo 'array' con los elementos dentro
+        print(f"Array creado con {len(p[2])} elementos: {p[2]}")
+    # Caso 2: arreglo anidado
+    elif len(p) == 6:  # LBRACKET IDENTIFIER LBRACKET IDENTIFIER RBRACKET RBRACKET
+        p[0] = ('array_index', p[2], p[4])  # Nodo para representar 'arr[i]'
+        print(f"Array anidado: {p[2]}[{p[4]}]")
 
 def p_hash(p):
     '''expression : LBRACE key_value_pairs RBRACE'''
@@ -683,7 +726,7 @@ def p_method_call_simple(p):
         "argumentos": []
     }
 def p_method_call_with_params(p):
-    '''statement : IDENTIFIER LPAREN params RPAREN'''
+    '''statement : IDENTIFIER LPAREN elements RPAREN'''
     p[0] = {
         "tipo": "llamada_metodo",
         "nombre": p[1],
@@ -760,7 +803,7 @@ def p_initialize_method(p):
 def p_object_instantiation(p):
     '''expression : CONSTANT DOT NEW
                   | CONSTANT DOT NEW LPAREN RPAREN
-                  | CONSTANT DOT NEW LPAREN params RPAREN'''
+                  | CONSTANT DOT NEW LPAREN elements RPAREN'''
     if len(p) == 4:  # MyClass.new
         p[0] = {
             "tipo": "instanciacion_objeto",
@@ -816,6 +859,7 @@ def p_raise_statement(p):
         "tipo": "raise",
         "mensaje": p[2]
     }
+
 
 def p_error(p):
     if p:
