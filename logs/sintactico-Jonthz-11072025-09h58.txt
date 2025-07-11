@@ -1,3 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 09:58:24
+Usuario: Jonthz
+
+--- Código Analizado ---
 class Calculator
   def initialize(name)
     @name = name
@@ -66,3 +72,6 @@ $global_number = $global_string.to_i
 
 puts "Variable global convertida:"
 puts $global_number
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

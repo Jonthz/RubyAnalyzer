@@ -1,3 +1,11 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 09:58:24
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
 class Calculator
   def initialize(name)
     @name = name
@@ -66,3 +74,36 @@ $global_number = $global_string.to_i
 
 puts "Variable global convertida:"
 puts $global_number
+
+TABLA DE SÍMBOLOS:
+--------------------
+  Calculator: clase (Sin inicializar)
+  name: parameter (Inicializada)
+  @name: instance_variable (Inicializada)
+  add_numbers: metodo (Inicializada)
+  x: integer (Inicializada)
+  y: string_numeric (Inicializada)
+  result: numeric (Inicializada)
+  add_strings: metodo (Inicializada)
+  str1: parameter (Inicializada)
+  str2: parameter (Inicializada)
+  convert_test: metodo (Inicializada)
+  value: parameter (Inicializada)
+  converted: integer (Inicializada)
+  calc: unknown (Inicializada)
+  number_str: string_numeric (Inicializada)
+  result1: unknown (Inicializada)
+  sum_result: unknown (Inicializada)
+  good_sum: numeric (Inicializada)
+  text: string_numeric (Inicializada)
+  converted_number: string (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  add_numbers
+  add_strings
+  convert_test
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Variable '$global_number' usada sin ser declarada
