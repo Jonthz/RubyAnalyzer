@@ -1,0 +1,94 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 30/06/2025 00:39:10
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+# Algoritmo de Clases Intermedio - Compatible con Parser Actual
+
+class Calculator
+  def initialize
+    puts "Calculadora inicializada"
+  end
+
+  def add(a, b)
+    return a + b
+  end
+
+  def multiply(x, y)
+    result = x * y
+    return result
+  end
+
+  def divide(num, den)
+    if den == 0
+      puts "Error: División por cero"
+      return 0
+    else
+      return num / den
+    end
+  end
+end
+
+class Student
+  def initialize(name)
+    puts "Estudiante creado"
+  end
+
+  def study(hours)
+    if hours > 5
+      puts "Estudiando mucho"
+    else
+      puts "Estudiando poco"
+    end
+    return hours * 2
+  end
+
+  def grade(score)
+    if score >= 90
+      return "A"
+    elsif score >= 80
+      return "B" 
+    else
+      return "C"
+    end
+  end
+end
+
+# Crear instancias
+calc = Calculator.new
+student = Student.new("Juan")
+
+# Usar métodos con diferentes argumentos
+result1 = calc.add(10, 5)
+result2 = calc.multiply(3, 4) 
+result3 = calc.divide(20, 4)
+result4 = calc.divide(10, 0)
+
+# Probar errores de argumentos
+# calc.add(5)          # Error: falta 1 argumento
+# calc.multiply(2, 3, 4) # Error: sobra 1 argumento
+
+# Usar métodos del estudiante
+study_time = student.study(6)
+final_grade = student.grade(85)
+
+puts "Resultados calculados"
+puts result1
+puts result2
+puts result3
+
+TABLA DE SÍMBOLOS:
+--------------------
+  study_time: unknown (Inicializada)
+  final_grade: unknown (Inicializada)
+
+ERRORES ENCONTRADOS (5):
+--------------------
+1. Método 'study' no está definido
+2. Método 'grade' no está definido
+3. Variable 'result1' usada sin ser declarada
+4. Variable 'result2' usada sin ser declarada
+5. Variable 'result3' usada sin ser declarada

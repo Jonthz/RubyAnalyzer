@@ -12,59 +12,25 @@ class Calculator
     return result
   end
 
-  def add_strings(str1, str2)
-    puts "Sumando strings"
-    result = str1.to_i + str2.to_i
-    puts result
-    return result
-  end
-
-  def convert_test(value)
-    puts "Valor original:"
-    puts value
-    
-    converted = value.to_i
-    puts "Convertido a entero:"
-    puts converted
-    
-    return converted
+  def info()
+    puts @name
   end
 end
 
-# Crear calculadora
-calc = Calculator.new("MiCalculadora")
+class Cat < Animal
+  def initialize(name)
+    @name = name
+  end
+  
+  def speak
+    puts "#{@name} says: Meow!"
+  end
 
-# ===== PRUEBAS DE CONVERSIÓN .to_i =====
+end
 
-# 1. Conversión básica de string a entero
-number_str = "123"
-result1 = calc.convert_test(number_str)
+cat = Cat.new("Whiskers")
+animal = Animal.new("Generic Animal")
 
-# 2. Suma con conversiones explícitas
-sum_result = calc.add_strings("45", "55")
-
-# 3. Comparación sin conversión vs con conversión
-x = 10
-y = "20"
-
-# Esto debería generar error semántico (tipos incompatibles)
-# bad_sum = x + y
-
-# Esto debería ser válido (conversión explícita)
-good_sum = x + y.to_i
-
-puts "Suma válida con conversión:"
-puts good_sum
-
-# 4. Cadena de conversiones
-text = "100"
-converted_number = text.to_i.to_f.to_s
-puts "Cadena de conversiones:"
-puts converted_number
-
-# 5. Variables globales con conversiones
-$global_string = "999"
-$global_number = $global_string.to_i
-
-puts "Variable global convertida:"
-puts $global_number
+animal.speak("hola", 2, 3, "hola")
+animal.info
+cat.speak()
