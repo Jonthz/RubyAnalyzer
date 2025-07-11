@@ -1,0 +1,19 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 09:27:07
+Usuario: Darvier88
+
+--- Código Analizado ---
+if low < high
+	pivot_index = partition(arr, low, high)
+    quick_sort(arr, low, pivot_index - 1)  # Recursión en la sublista izquierda
+    quick_sort(arr, pivot_index + 1, high) # Recursión en la sublista derecha
+end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 75: Token inesperado ','
+Error sintáctico en línea 76: Token inesperado ','
+Error sintáctico en línea 76: Token inesperado ')'
+Error sintáctico en línea 77: Token inesperado ','
+Error sintáctico en línea 77: Token inesperado ','
+Error sintáctico en línea 78: Token inesperado 'end'

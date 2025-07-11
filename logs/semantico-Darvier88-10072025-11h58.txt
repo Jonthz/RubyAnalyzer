@@ -1,0 +1,56 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 11:58:59
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+def quick_sort(arr)
+  if arr.length <= 1
+    return arr
+  end
+
+  pivot_index = 0
+  pivot = arr[pivot_index]
+  left = []
+  right = []
+
+  i = 0
+  while i < arr.length
+    if i != pivot_index
+      if arr[i] < pivot
+        left = left + [arr[i]]
+      else
+        right = right + [arr[i]]
+      end
+    end
+    i = i + 1
+  end
+  sorted_left = quick_sort(left)
+  sorted_right = quick_sort(right)
+  return sorted_left + [pivot] + sorted_right
+end
+
+def print_array(arr)
+  puts arr
+end
+
+arr1 = [12, 11, 13, 5, 6]
+sorted_arr1 = quick_sort(arr1)
+print_array(sorted_arr1)
+
+TABLA DE SÍMBOLOS:
+--------------------
+  print_array: metodo (Inicializada)
+  arr: parameter (Inicializada)
+  arr1: array (Inicializada)
+  sorted_arr1: unknown (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  print_array
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Método 'quick_sort' no está definido

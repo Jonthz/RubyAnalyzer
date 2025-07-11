@@ -1,0 +1,25 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 29/06/2025 23:38:53
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+x = 10
+y = 20
+def sum(a,b)
+return "Resultado"
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  x: integer (Inicializada)
+  y: integer (Inicializada)
+  sum: metodo (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  sum
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

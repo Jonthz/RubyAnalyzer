@@ -1,0 +1,45 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 13:00:30
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+def suma_mayores(arr, limite)
+  suma = 0
+  for i in 0..(arr.length - 1)
+    if arr[i] > limite
+      suma = suma + arr[i]
+    end
+  end
+  return suma
+end
+
+numeros = [1, 5, 10, 15, 20]
+resultado = suma_mayores(numeros, 10)
+puts resultado
+
+TABLA DE SÍMBOLOS:
+--------------------
+  suma_mayores: metodo (Inicializada)
+  arr: parameter (Inicializada)
+  limite: parameter (Inicializada)
+  suma: numeric (Inicializada)
+  i: integer (Inicializada)
+  numeros: array (Inicializada)
+  resultado: unknown (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  suma_mayores
+
+ERRORES ENCONTRADOS (2):
+--------------------
+1. Comparación '>' entre tipos incompatibles: 'array' y 'parameter'
+2. Operación '+' entre tipos incompatibles: 'integer' y 'parameter'
+
+ADVERTENCIAS (2):
+--------------------
+1. [JZ] Comparación de orden '>' entre tipos diferentes: array y parameter
+2. [JZ] Esto puede lanzar una excepción en tiempo de ejecución

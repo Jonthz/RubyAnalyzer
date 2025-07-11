@@ -1,0 +1,43 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 07:41:41
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+class Animal
+  def initialize(name)
+    @name = name
+  end
+
+  def speak(var)
+    puts var
+    puts "El animal hace un sonido."
+  end
+
+  def info()
+    puts @name
+  end
+end
+
+
+
+cat = Cat.new("Whiskers")
+animal = Animal.new("Generic Animal")
+
+animal.speak
+animal.speak("Hola, soy un animal genérico.")
+animal.speak("hola", 3)
+animal.info
+cat.speak
+
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+ERRORES ENCONTRADOS (2):
+--------------------
+1. Método 'info' no está definido
+2. Método 'speak' no está definido

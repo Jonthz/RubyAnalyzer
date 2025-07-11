@@ -1,0 +1,14 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 30/06/2025
+Hora: 00:11:02
+Usuario: Darvier88
+
+--- Código Analizado ---
+x = 10
+y = 20
+def sum(a,b)
+return "Resultado"
+end
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

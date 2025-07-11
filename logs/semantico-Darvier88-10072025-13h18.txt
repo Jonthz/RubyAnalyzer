@@ -1,0 +1,66 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 13:18:34
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+def suma_mayores(arr, limite)
+  suma = 0
+  for i in 0..(arr.length - 1)
+    if arr[i] > limite
+      suma = suma + arr[i]
+    end
+  end
+  return suma
+end
+
+def suma_menores(arr, limite)
+  suma = 0
+  for i in 0..(arr.length - 1)
+    if arr[i] < limite
+      suma = suma + arr[i]
+    end
+  end
+  return suma
+end
+
+def imprimir_arreglo(arr)
+  for i in 0..(arr.length - 1)
+    puts arr[i]
+  end
+end
+
+numeros = [1, 5, 10, 15, 20, 25, 30, 2, 8, 50]
+limite = 10
+suma_may, mayores = suma_mayores(numeros, limite)
+suma_men, menores = suma_menores(numeros, limite)
+
+puts "Números mayores que el límite:"
+imprimir_arreglo(mayores)
+puts "Suma de los mayores:"
+puts suma_may
+
+puts "Números menores que el límite:"
+imprimir_arreglo(menores)
+puts "Suma de los menores:"
+puts suma_men
+
+TABLA DE SÍMBOLOS:
+--------------------
+  menores: unknown (Inicializada)
+
+ERRORES ENCONTRADOS (11):
+--------------------
+1. Variable 'numeros' usada sin ser declarada
+2. Variable 'limite' usada sin ser declarada
+3. Método 'suma_menores' no está definido
+4. Variable 'numeros' usada sin ser declarada
+5. Variable 'limite' usada sin ser declarada
+6. Variable 'mayores' usada sin ser declarada
+7. Método 'imprimir_arreglo' no está definido
+8. Variable 'mayores' usada sin ser declarada
+9. Variable 'suma_may' usada sin ser declarada
+10. Método 'imprimir_arreglo' no está definido
+11. Variable 'suma_men' usada sin ser declarada

@@ -1,0 +1,51 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 13:19:28
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+def suma_mayores(arr, limite)
+  suma = 0
+  for i in 0..(arr.length - 1)
+    if arr[i] > limite
+      suma = suma + arr[i]
+    end
+  end
+  return suma
+end
+
+def suma_menores(arr, limite)
+  suma = 0
+  for i in 0..(arr.length - 1)
+    if arr[i] < limite
+      suma = suma + arr[i]
+    end
+  end
+  return suma
+end
+
+def imprimir_arreglo(arr)
+  for i in 0..(arr.length - 1)
+    puts arr[i]
+  end
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  suma_mayores: metodo (Inicializada)
+  arr: parameter (Inicializada)
+  limite: parameter (Inicializada)
+  suma: numeric (Inicializada)
+  i: integer (Inicializada)
+  suma_menores: metodo (Inicializada)
+  imprimir_arreglo: metodo (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  suma_mayores
+  suma_menores
+  imprimir_arreglo
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

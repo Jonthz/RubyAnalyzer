@@ -1,0 +1,15 @@
+Tokens reconocidos:
+DEF: def
+IDENTIFIER: speak
+LPAREN: (
+IDENTIFIER: arg
+RPAREN: )
+PUTS: puts
+IDENTIFIER: arg
+END: end
+IDENTIFIER: speak
+LPAREN: (
+STRING: hola
+COMMA: ,
+INTEGER: 1
+RPAREN: )

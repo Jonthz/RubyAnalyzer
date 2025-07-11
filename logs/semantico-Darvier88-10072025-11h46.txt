@@ -1,0 +1,53 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 11:46:47
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+def quick_sort(arr)
+  if arr.length <= 1
+    return arr
+  end
+
+  pivot_index = 0
+  pivot = arr[pivot_index]
+  left = []
+  right = []
+
+  i = 0
+
+end
+
+arr1 = [12, 11, 13, 5, 6]
+sorted_arr1 = quick_sort(arr1)
+print_array(sorted_arr1)
+
+
+TABLA DE SÍMBOLOS:
+--------------------
+  quick_sort: metodo (Inicializada)
+  arr: parameter (Inicializada)
+  pivot_index: integer (Inicializada)
+  pivot: parameter (Inicializada)
+  left: empty_array (Inicializada)
+  right: empty_array (Inicializada)
+  i: integer (Inicializada)
+  arr1: array (Inicializada)
+  sorted_arr1: unknown (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  quick_sort
+
+ERRORES ENCONTRADOS (3):
+--------------------
+1. Método 'length' no está definido
+2. Comparación '<=' entre tipos incompatibles: 'unknown' y 'integer'
+3. Método 'print_array' no está definido
+
+ADVERTENCIAS (2):
+--------------------
+1. [JZ] Comparación de orden '<=' entre tipos diferentes: unknown y integer
+2. [JZ] Esto puede lanzar una excepción en tiempo de ejecución

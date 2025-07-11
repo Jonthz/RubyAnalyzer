@@ -1,0 +1,22 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 10/07/2025
+Hora: 12:02:13
+Usuario: Darvier88
+
+--- Código Analizado ---
+def quick_sort(arr)
+  if arr.length <= 1
+    return arr
+  end
+
+  pivot_index = 0
+  pivot = arr[pivot_index]
+  left = []
+  right = []
+
+  i = 0
+end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 104: Token inesperado 'left'
+Error sintáctico en línea 108: Token inesperado 'end'

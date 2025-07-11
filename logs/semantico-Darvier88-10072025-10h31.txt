@@ -1,0 +1,17 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 10/07/2025 10:31:18
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+arr[i]
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Variable 'arr' usada sin ser declarada

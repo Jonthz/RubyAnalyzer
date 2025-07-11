@@ -1,0 +1,25 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 30/06/2025 01:00:28
+Usuario: Darvier88
+
+CÓDIGO ANALIZADO:
+--------------------
+def sum(a,b) 
+    x = a + b
+return x
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  sum: metodo (Inicializada)
+  a: parameter (Inicializada)
+  b: parameter (Inicializada)
+  x: numeric (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  sum
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS
