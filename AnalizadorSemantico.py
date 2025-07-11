@@ -186,9 +186,6 @@ def declare_symbol(name, symbol_type, value=None, params=None, is_method=False, 
         # También mantener compatibilidad con defined_methods
         if name not in defined_methods:
             defined_methods.append(name)
-    if is_method and return_type:
-        method_return_types[name] = return_type
-        print(f"Método '{name}' registrado con tipo de retorno: {return_type}")
     else:
         print(f" Variable '{name}' declarada como {symbol_type}")
 
