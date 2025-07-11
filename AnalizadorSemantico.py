@@ -20,6 +20,9 @@ defined_methods = []
 # Pila para contexto de métodos y estructuras de control
 context_stack = []
 
+# Diccionario para almacenar información de tipos de retorno de métodos
+method_return_types = {}
+
 def add_semantic_error(message):
     """Agregar un error semántico a la lista"""
     semantic_errors.append(message)
@@ -93,11 +96,21 @@ def infer_type(expr):
             return "unknown"
         # Si es un array
     elif isinstance(expr, list):
-            if len(expr) == 0:
-                print("Array vacío detectado")
-                return "empty_array"
-            return "array"
+        if len(expr) == 0:
+            print("Array vacío detectado")
+            return "empty_array"
+        elif len(expr) == 1:
+            # Si es una lista con un solo elemento, inferir el tipo de ese elemento
+            print(f"Lista con un elemento detectada, infiriendo tipo del elemento")
+            return infer_type(expr[0])
+        return "array"
+    
     elif isinstance(expr, dict):
+        if expr.get("tipo") == "llamada_metodo":
+            # Delegar al análisis semántico para obtener el tipo de retorno
+            return_type = analizar_semantica(expr)
+            if return_type:
+                return return_type
         # Si es una operación
         if expr.get("tipo") == "operacion":
             op = expr.get("op")
@@ -153,7 +166,7 @@ def infer_type(expr):
     return "unknown"
 #Fin Parte Giovanni
 
-def declare_symbol(name, symbol_type, value=None, params=None, is_method=False):
+def declare_symbol(name, symbol_type, value=None, params=None, is_method=False, return_type=None):
     """Declarar un símbolo (variable o método) en la tabla de símbolos"""
     # Los parámetros se consideran "inicializados" porque reciben valores
     is_initialized = value is not None or is_method or symbol_type == "parameter"
@@ -164,7 +177,8 @@ def declare_symbol(name, symbol_type, value=None, params=None, is_method=False):
         'initialized': is_initialized,  # ← CAMBIO AQUÍ
         'is_method': is_method,
         'params': params if params else [],
-        'param_count': len(params) if params else 0
+        'param_count': len(params) if params else 0,
+        'return_type': return_type
     }
     
     if is_method:
@@ -454,12 +468,16 @@ def analizar_semantica(ast):
             if cuerpo:
                 print(f"Analizando cuerpo del método {method_name}")
                 analizar_semantica(cuerpo)
-                
-            # Analizar retorno del método
+            
+            return_type = "unknown"
             if retorno is not None:
                 print(f"Analizando retorno del método {method_name}")
                 analizar_semantica(retorno)
+                return_type = infer_type(retorno)
+                print(f"Método '{method_name}' retorna tipo: {return_type}")
             
+            # Declarar el método con el tipo de retorno
+            declare_symbol(method_name, "metodo", None, param_names, True, return_type)
             # ===== SALIR DEL CONTEXTO DEL MÉTODO =====
             context_stack.pop()
             print(f"[CONTEXT] Saliendo de método '{method_name}' - Stack: {context_stack}")
@@ -584,6 +602,18 @@ def analizar_semantica(ast):
             if method_name in conversion_methods_jz:
                 print(f"[JZ] Método de conversión integrado '{method_name}' reconocido")
                 # Los métodos de conversión no necesitan verificación de argumentos
+            elif method_name in method_return_types:
+                return_type = method_return_types[method_name]
+                print(f"Llamada a método '{method_name}' retorna tipo: {return_type}")
+                return return_type
+            
+            elif method_name in symbol_table:
+                method_info = symbol_table[method_name]
+                if method_info.get('is_method', False):
+                    return_type = method_info.get('return_type')
+                    if return_type:
+                        print(f"Método '{method_name}' tiene tipo de retorno definido: {return_type}")
+                        return return_type
             else:
                 # Buscar el método en la tabla de símbolos
                 method_info = lookup_variable(method_name)
@@ -604,7 +634,7 @@ def analizar_semantica(ast):
             # Analizar los argumentos (siempre necesario)
             for arg in args:
                 analizar_semantica(arg)
-                
+           
         # Puts statement
         elif tipo == "puts":
             print(f" Analizando puts")
@@ -1010,3 +1040,11 @@ def analyze_method_call_jz(method_name, arguments):
     print(f"[JZ] === FIN ANÁLISIS DE LLAMADA ===\n")
     
     return result
+def infer_type_by_method_name(method_name):
+    """Inferir tipo por nombre de método (heurística)"""
+    if method_name.startswith(("get_", "obtener_")):
+        if "numero" in method_name or "num" in method_name:
+            return "numeric"
+        elif "string" in method_name or "texto" in method_name:
+            return "string"
+    return "unknown"
