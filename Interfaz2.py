@@ -32,15 +32,15 @@ class AnalysisWorker(QThread):
             with redirect_stdout(output_buffer), redirect_stderr(error_buffer):
                 # Análisis léxico
                 self.emit_progress("Ejecutando análisis léxico...")
-                self.analyze_lexical(self.code)
+                self.analyze_lexical()
                 
                 # Análisis sintáctico
                 self.emit_progress("Ejecutando análisis sintáctico...")
-                self.analyze_syntactic(self.code)
+                self.analyze_syntactic()
                 
                 # Análisis semántico
                 self.emit_progress("Ejecutando análisis semántico...")
-                self.analyze_semantic(self.code)
+                self.analyze_semantic()
             
             # Capturar salidas
             stdout_content = output_buffer.getvalue()
