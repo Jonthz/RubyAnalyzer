@@ -26,7 +26,7 @@ precedence = (
 # Regla de inicio
 def p_program(p):
     '''program : statements'''
-    p[0] = p[1]  # ← IMPORTANTE: Debe pasar el valor
+    p[0] = p[1]
     print(f"DEBUG PROGRAM: p[1] = {p[1]}")
     print(f"DEBUG PROGRAM: p[0] = {p[0]}")
 
@@ -278,28 +278,52 @@ def p_vars(p):
     print(f"DEBUG VARS: p[0] = {p[0]}")
 
 def p_method_call_conversion_jz(p):
-    '''expression : expression DOT IDENTIFIER
+    '''expression : IDENTIFIER DOT IDENTIFIER
+                  | IDENTIFIER DOT IDENTIFIER LPAREN RPAREN
+                  | IDENTIFIER DOT IDENTIFIER LPAREN elements RPAREN
+                  | expression DOT IDENTIFIER  
+                  | expression DOT IDENTIFIER LPAREN RPAREN
+                  | expression DOT IDENTIFIER LPAREN elements RPAREN
                   | factor DOT IDENTIFIER
-                  | IDENTIFIER DOT IDENTIFIER'''
+                  | factor DOT IDENTIFIER LPAREN RPAREN
+                  | factor DOT IDENTIFIER LPAREN elements RPAREN'''
     # Detectar métodos de conversión (Jonathan Zambrano)
     conversion_methods_jz = ["to_i", "to_f", "to_s", "to_a", "to_h", "to_sym", "chomp", "strip", "upcase", "downcase", "round", "floor", "ceil"]
     
-    if p[3] in conversion_methods_jz:
-        p[0] = {
-            "tipo": "llamada_metodo",
-            "nombre": p[3],
-            "objeto": p[1],
-            "argumentos": []
-        }
-        print(f"🔄 [JZ] Conversión de tipo detectada: {p[1]} -> {p[3]}")
+    # Determinar si hay argumentos
+    if len(p) == 4:  # objeto.metodo (sin paréntesis)
+        argumentos = []
+        print(f"📞 [JZ] Llamada sin paréntesis: {p[1]}.{p[3]}")
+        
+    elif len(p) == 6:  # objeto.metodo() (paréntesis vacíos)
+        argumentos = []
+        print(f"📞 [JZ] Llamada con paréntesis vacíos: {p[1]}.{p[3]}()")
+        
+    elif len(p) == 7:  # objeto.metodo(args) (con argumentos)
+        argumentos = p[5]  # Los elementos están en p[5]
+        print(f"📞 [JZ] Llamada con argumentos: {p[1]}.{p[3]}({len(argumentos)} args)")
+        
     else:
-        p[0] = {
-            "tipo": "llamada_metodo",
-            "nombre": p[3],
-            "objeto": p[1],
-            "argumentos": []
-        }
-        print(f"📞 [JZ] Llamada a método: {p[1]}.{p[3]}")
+        # Caso inesperado - debug
+        argumentos = []
+        print(f"⚠️ [JZ] Caso inesperado en llamada a método: len(p) = {len(p)}")
+        for i, item in enumerate(p):
+            print(f"  p[{i}] = {item}")
+    
+    p[0] = {
+        "tipo": "llamada_metodo",
+        "nombre": p[3],
+        "objeto": p[1],
+        "argumentos": argumentos
+    }
+    
+        
+    if p[3] in conversion_methods_jz:
+        print(f"🔄 [JZ] Conversión: {p[1]}.{p[3]}()")
+    else:
+        print(f"📞 [JZ] Llamada: {p[1]}.{p[3]}({len(argumentos)} args)")
+
+
 
 def p_local_var(p):
     '''p_local_var : IDENTIFIER ASSIGN statement

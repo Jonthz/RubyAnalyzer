@@ -1,0 +1,14 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 08:28:16
+Usuario: Jonthz
+
+--- Código Analizado ---
+def speak(arg)
+ puts arg
+end
+
+speak("hola", 1)
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

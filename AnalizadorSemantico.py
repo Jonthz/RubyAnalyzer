@@ -370,6 +370,19 @@ def analizar_semantica(ast):
             # Actualizar tabla de símbolos
             declare_symbol(var_name, value_type, valor)
             print(f" DEBUG: Tabla de símbolos actualizada: {symbol_table}")
+
+        elif tipo == "asignacion_instancia":
+            var_name = ast.get("variable")  # @name
+            valor = ast.get("valor")
+            
+            print(f"Procesando variable de instancia: {var_name}")
+            
+            # Analizar el valor asignado
+            analizar_semantica(valor)
+            
+            # Declarar variable de instancia
+            declare_symbol(var_name, "instance_variable", valor, None, False)
+            print(f"📋 Variable de instancia '{var_name}' declarada")
             
         # Uso de variable
         elif tipo == "uso_variable":
@@ -451,6 +464,22 @@ def analizar_semantica(ast):
             context_stack.pop()
             print(f"[CONTEXT] Saliendo de método '{method_name}' - Stack: {context_stack}")
             print(f"Método {method_name} completamente procesado")
+
+        elif tipo == "constructor":
+            params_raw = ast.get("parametros", [])
+            cuerpo = ast.get("cuerpo")
+            
+            print(f"Analizando constructor con parámetros: {params_raw}")
+            
+            # Declarar parámetros del constructor como variables locales
+            for param_name in params_raw:
+                if isinstance(param_name, str):
+                    declare_symbol(param_name, "parameter", None, None, False)
+                    print(f"📋 Parámetro del constructor '{param_name}' declarado")
+            
+            # Analizar cuerpo del constructor
+            if cuerpo:
+                analizar_semantica(cuerpo)
             
         # Estructuras de control con bucles
         elif tipo in ["for", "while", "for_inline", "while_inline"]:
@@ -582,6 +611,20 @@ def analizar_semantica(ast):
             # Analizar el valor que se va a imprimir
             if "valor" in ast:
                 analizar_semantica(ast["valor"])
+
+        elif tipo == "clase":
+            class_name = ast.get("nombre")
+            cuerpo = ast.get("cuerpo", [])
+            
+            print(f"Analizando clase: {class_name}")
+            
+            # Declarar la clase
+            declare_symbol(class_name, "clase", None, [], False)
+            
+            # Analizar contenido de la clase
+            if cuerpo:
+                analizar_semantica(cuerpo)
+        
                 
         else:
             # Analiza recursivamente cualquier otro diccionario
@@ -819,28 +862,40 @@ def check_method_arguments_jz(method_name, provided_args, call_location="método
             excess = actual_args - expected_params
             print(f"[JZ] Sobran {excess} argumento(s)")
         
-        return result
-    
+        #return result
+    max_args_to_analyze = min(len(provided_args), len(method_params))
+
     # ===== VERIFICACIÓN DE TIPOS DE ARGUMENTOS =====
-    print(f"[JZ] Cantidad de argumentos correcta ({actual_args})")
-    
-    # Analizar tipos de cada argumento
-    for i, arg in enumerate(provided_args):
+    print(f"Analizando {max_args_to_analyze} argumentos de {len(provided_args)} proporcionados")    # Analizar tipos de cada argumento
+    # REEMPLAZAR el bucle for completo (línea 875):
+
+# Analizar argumentos que corresponden a parámetros definidos
+    for i in range(max_args_to_analyze):
+        arg = provided_args[i]
         arg_type = infer_type(arg)
-        param_name = method_params[i] if i < len(method_params) else f"param_{i+1}"
+        param_name = method_params[i]
         
         print(f"Argumento {i+1} ({param_name}): tipo '{arg_type}'")
         
-        # ===== VERIFICACIONES DE TIPO ESPECÍFICAS JZ =====
+        # Verificaciones de tipo (como antes)...
+
+    # Analizar argumentos extra (si los hay)
+    if len(provided_args) > len(method_params):
+        print(f"Analizando {len(provided_args) - len(method_params)} argumentos extra...")
         
-        # 1. Verificar argumentos no definidos
-        if arg_type == "undefined":
-            error_msg = f"Argumento {i+1} para '{method_name}' usa variable no definida"
-            result["errors"].append(error_msg)
-            result["valid"] = False
-            add_semantic_error(error_msg)
-            print(f" {error_msg}")
-        
+        for i in range(len(method_params), len(provided_args)):
+            arg = provided_args[i]
+            arg_type = infer_type(arg)
+            
+            print(f"Argumento EXTRA {i+1}: tipo '{arg_type}'")
+            
+            # Solo verificar errores básicos en argumentos extra
+            if arg_type == "undefined":
+                error_msg = f"Argumento extra {i+1} usa variable no definida"
+                result["errors"].append(error_msg)
+                add_semantic_error(error_msg)
+                print(f" {error_msg}")
+    ''' 
         # 2. Verificar tipos problemáticos
         elif arg_type == "unknown":
             warning_msg = f"[Argumento {i+1} para '{method_name}' tiene tipo desconocido"
@@ -889,9 +944,9 @@ def check_method_arguments_jz(method_name, provided_args, call_location="método
                 # Sugerencias específicas
                 suggest_argument_conversion_jz(arg1_pos, type1, type2)
                 suggest_argument_conversion_jz(arg2_pos, type2, type1)
-    
+    '''
     if result["valid"]:
-        success_msg = f"✅ [JZ] Llamada a método '{method_name}' válida: {actual_args} argumentos correctos"
+        success_msg = f"Llamada a método '{method_name}' válida: {actual_args} argumentos correctos"
         print(success_msg)
     
     return result

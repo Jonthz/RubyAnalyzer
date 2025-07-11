@@ -1,0 +1,35 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 07:41:41
+Usuario: Jonthz
+
+--- Código Analizado ---
+class Animal
+  def initialize(name)
+    @name = name
+  end
+
+  def speak(var)
+    puts var
+    puts "El animal hace un sonido."
+  end
+
+  def info()
+    puts @name
+  end
+end
+
+
+
+cat = Cat.new("Whiskers")
+animal = Animal.new("Generic Animal")
+
+animal.speak
+animal.speak("Hola, soy un animal genérico.")
+animal.speak("hola", 3)
+animal.info
+cat.speak
+
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 48: Token inesperado ','

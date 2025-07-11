@@ -1,0 +1,53 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 09:28:06
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+class Animal
+  def initialize(name)
+    @name = name
+  end
+
+  def speak(var)
+    puts var
+    puts "El animal hace un sonido."
+  end
+
+  def info()
+    puts @name
+  end
+end
+
+
+
+cat = Cat.new("Whiskers")
+animal = Animal.new("Generic Animal")
+
+animal.speak("hola", 2, 3, "hola")
+animal.info
+cat.speak()
+
+
+TABLA DE SÍMBOLOS:
+--------------------
+  Animal: clase (Sin inicializar)
+  @name: instance_variable (Inicializada)
+  speak: metodo (Inicializada)
+  var: parameter (Inicializada)
+  info: metodo (Inicializada)
+  cat: unknown (Inicializada)
+  animal: unknown (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  speak
+  info
+
+ERRORES ENCONTRADOS (3):
+--------------------
+1. Variable 'name' usada sin ser declarada
+2. Método 'speak' espera 1 parámetros, pero recibió 4
+3. Método 'speak' espera 1 parámetros, pero recibió 0

@@ -1,3 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 09:30:43
+Usuario: Jonthz
+
+--- Código Analizado ---
 class Animal
   def initialize(name)
     @name = name
@@ -29,4 +35,8 @@ animal = Animal.new("Generic Animal")
 
 animal.speak("hola", 2, 3, "hola")
 animal.info
-cat.speak()
+cat.info()
+
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos
