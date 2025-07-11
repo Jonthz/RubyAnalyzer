@@ -1,3 +1,4 @@
+
 # Algoritmo de Clases Intermedio - Compatible con Parser Actual
 
 class Calculator
@@ -22,7 +23,7 @@ class Calculator
       return num / den
     end
   end
-end
+
 
 class Student
   def initialize(name)

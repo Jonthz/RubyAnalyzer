@@ -385,6 +385,22 @@ def analizar_semantica(ast):
             declare_symbol(var_name, value_type, valor)
             print(f" DEBUG: Tabla de símbolos actualizada: {symbol_table}")
 
+        # AGREGAR en analizar_semantica() después de elif tipo == "asignacion":
+
+        elif tipo == "asignacion_global":
+            var_name = ast.get("variable")  # $global_string
+            valor = ast.get("valor")
+            
+            print(f"Procesando variable global: {var_name}")
+            
+            # Analizar el valor asignado
+            analizar_semantica(valor)
+            
+            # Declarar variable global
+            value_type = infer_type(valor)
+            declare_symbol(var_name, value_type, valor, None, False)
+            print(f"📋 Variable global '{var_name}' declarada como {value_type}")
+
         elif tipo == "asignacion_instancia":
             var_name = ast.get("variable")  # @name
             valor = ast.get("valor")
