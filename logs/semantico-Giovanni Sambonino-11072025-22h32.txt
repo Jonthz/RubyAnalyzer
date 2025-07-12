@@ -1,0 +1,94 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 22:32:50
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+# Algoritmo de Prueba - Probando todas las características implementadas
+
+def sum(a, b)
+  resultado = a + b
+  return resultado
+end
+
+def verificar_numero(num)
+  if num > 0
+    return true
+  end
+  return false
+end
+
+# Probando cadenas de texto - Giovanni Sambonino
+puts "Hola mundo"
+puts 'Ruby'
+
+# Variable de instancia
+@x = 10
+
+# Tipos de datos válidos - Giovanni Sambonino
+a = 5
+b = 10
+c = a + b
+
+# Validación de variables inicializadas - Giovanni Sambonino
+x = 10
+y = x + 5
+
+# While loop - Giovanni Sambonino
+contador = 0
+while contador < 3
+  puts contador
+  contador = contador + 1
+end
+
+# Método con parámetros - Giovanni Sambonino
+suma_resultado = sum(5, 10)
+numero_valido = verificar_numero(suma_resultado)
+
+# Probando arrays básicos
+numeros = [64, 34, 25, 12, 22]
+primer_numero = numeros[0]
+ultimo_numero = numeros[4]
+
+# Probando for loop
+for i in 0..4
+  puts numeros[i]
+end
+
+puts "Variable de instancia:"
+puts @x
+puts "Suma de 5 + 10:"
+puts suma_resultado
+puts "Primer numero del array:"
+puts primer_numero
+puts "Ultimo numero del array:"
+puts ultimo_numero
+
+TABLA DE SÍMBOLOS:
+--------------------
+  sum: metodo (Inicializada)
+  a: integer (Inicializada)
+  b: integer (Inicializada)
+  resultado: numeric (Inicializada)
+  verificar_numero: metodo (Inicializada)
+  num: parameter (Inicializada)
+  @x: instance_variable (Inicializada)
+  c: numeric (Inicializada)
+  x: integer (Inicializada)
+  y: numeric (Inicializada)
+  contador: numeric (Inicializada)
+  suma_resultado: numeric (Inicializada)
+  numero_valido: string (Inicializada)
+  numeros: array (Inicializada)
+  primer_numero: array (Inicializada)
+  ultimo_numero: array (Inicializada)
+  i: integer (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  sum
+  verificar_numero
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

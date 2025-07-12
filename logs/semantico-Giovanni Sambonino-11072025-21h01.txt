@@ -1,3 +1,11 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 21:01:36
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
 # Algoritmo de Ordenamiento por Inserción Mejorado
 def insertion_sort(arr)
   # Verificar si el array está vacío
@@ -39,3 +47,22 @@ puts "Array original:"
 puts numeros
 puts "Array ordenado:"
 puts resultado
+
+TABLA DE SÍMBOLOS:
+--------------------
+  verificar_ordenamiento: metodo (Inicializada)
+  arr: parameter (Inicializada)
+  i: integer (Inicializada)
+  numeros: array (Inicializada)
+  copia_numeros: array (Inicializada)
+  resultado: unknown (Inicializada)
+  es_correcto: string (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  verificar_ordenamiento
+
+ERRORES ENCONTRADOS (2):
+--------------------
+1. Método 'insertion_sort' no está definido
+2. Método 'insertion_sort' no está definido

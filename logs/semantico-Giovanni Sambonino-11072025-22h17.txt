@@ -1,0 +1,47 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 22:17:51
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+def analizar_numero(num, key)
+  j = 0
+  suma = 0
+  arr = nil  # variable usada solo para cumplir requisito, no es un arreglo
+
+  while num > 0
+    dig = num %% 10
+
+    if dig > key
+      j += 1
+      suma += dig
+    elsif dig == key
+      suma += 1
+    end
+
+    num = num / 10
+  end
+
+  for i in 1..j
+    suma += i
+  end
+
+  return suma
+end
+
+# Ejemplo de uso
+key = 5
+resultado = analizar_numero(9834512, key)
+puts "Resultado: #{resultado}"
+
+TABLA DE SÍMBOLOS:
+--------------------
+  key: integer (Inicializada)
+  resultado: unknown (Inicializada)
+
+ERRORES ENCONTRADOS (2):
+--------------------
+1. Método 'analizar_numero' no está definido
+2. Método 'analizar_numero' no está definido

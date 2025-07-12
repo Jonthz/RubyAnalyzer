@@ -1,0 +1,52 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 20:53:36
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+def insertion_sort(arr)
+  return arr if arr.length <= 1
+
+  for i in 1...arr.length
+    key = arr[i]
+
+    # Encontrar la posición correcta
+    pos = 0
+    while pos < i && arr[pos] <= key
+      pos += 1
+    end
+
+    if pos < i
+      # Elimina el elemento y lo inserta en la posición correcta
+      arr.delete_at(i)
+      arr.insert(pos, key)
+    end
+  end
+
+  return arr
+end
+
+def verificar_ordenamiento(arr)
+  for i in 1...arr.length
+    return false if arr[i - 1] > arr[i]
+  end
+  true
+end
+
+# Prueba del algoritmo
+numeros = [64, 34, 25, 12, 22, 11, 90, 5]
+copia_numeros = numeros.dup
+resultado = insertion_sort(copia_numeros)
+es_correcto = verificar_ordenamiento(resultado)
+
+puts "Array original:"
+p numeros
+puts "Array ordenado:"
+p resultado
+puts "¿Ordenado correctamente?: #{es_correcto}"
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 2056: Token inesperado '.'
+Error sintáctico en línea 2070: Token inesperado 'end'
+Error sintáctico en línea 2076: Token inesperado '.'
+Error sintáctico en línea 2080: Token inesperado 'end'

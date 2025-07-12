@@ -1,0 +1,70 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 22:35:21
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+# Algoritmo Completamente Unificado - Todas las características en uno
+
+def sum(a, b)
+  resultado = a + b
+  return resultado
+end
+
+def verificar_numero(num)
+  if num > 0
+    return true
+  end
+  return false
+end
+
+def procesar_array(arr)
+  total = 0
+  for i in 0..(arr.length - 1)
+    total = total + arr[i]
+  end
+  return total
+end
+
+# Todo integrado en el programa principal
+puts "Hola mundo"
+puts 'Ruby'
+@x = 10
+a = 5
+b = 10
+c = a + b
+x = 10
+y = x + 5
+contador = 0
+while contador < 3
+  puts contador
+  contador = contador + 1
+end
+suma_resultado = sum(5, 10)
+numero_valido = verificar_numero(suma_resultado)
+numeros = [64, 34, 25, 12, 22]
+primer_numero = numeros[0]
+ultimo_numero = numeros[4]
+for i in 0..4
+  puts numeros[i]
+end
+total_suma = procesar_array(numeros)
+puts "Variable de instancia:"
+puts @x
+puts "Suma de 5 + 10:"
+puts suma_resultado
+puts "Primer numero del array:"
+puts primer_numero
+puts "Ultimo numero del array:"
+puts ultimo_numero
+puts "Suma total del array:"
+puts total_suma
+puts "Numero es valido:"
+puts numero_valido
+puts "Variable c vale:"
+puts c
+puts "Variable y vale:"
+puts y
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

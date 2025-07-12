@@ -1,0 +1,72 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 22:12:38
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+# Algoritmo de búsqueda de elementos - Compatible con tokens específicos
+def buscar_elemento(arr, key)
+  for i in 0..(arr.length - 1)
+    if arr[i] == key
+      return i
+    end
+  end
+  return -1
+end
+
+def contar_mayores(arr, key)
+  contador = 0
+  j = 0
+  while j < arr.length
+    if arr[j] > key
+      contador += 1
+    elsif arr[j] == key
+      contador += 1
+    end
+    j += 1
+  end
+  return contador
+end
+
+# Programa principal
+numeros = [5, 10, 15, 20, 25, 30, 8, 12]
+key = 15
+resultado1 = buscar_elemento(numeros, key)
+resultado2 = contar_mayores(numeros, key)
+
+puts "Buscando elemento:"
+puts key
+puts "Posición encontrada:"
+puts resultado1
+puts "Elementos mayores o iguales:"
+puts resultado2
+
+TABLA DE SÍMBOLOS:
+--------------------
+  contar_mayores: metodo (Inicializada)
+  arr: parameter (Inicializada)
+  key: integer (Inicializada)
+  contador: integer (Inicializada)
+  j: integer (Inicializada)
+  numeros: array (Inicializada)
+  resultado1: unknown (Inicializada)
+  resultado2: integer (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  contar_mayores
+
+ERRORES ENCONTRADOS (5):
+--------------------
+1. Método 'length' no está definido
+2. Método 'length' no está definido
+3. Comparación '<' entre tipos incompatibles: 'integer' y 'unknown'
+4. Método 'buscar_elemento' no está definido
+5. Método 'buscar_elemento' no está definido
+
+ADVERTENCIAS (2):
+--------------------
+1. [JZ] Comparación de orden '<' entre tipos diferentes: integer y unknown
+2. [JZ] Esto puede lanzar una excepción en tiempo de ejecución

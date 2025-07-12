@@ -478,9 +478,6 @@ class RubyExpressionValidator(QWidget):
                     padding: 5px;
                     background-color: white;
                 """)
-                
-                print("✅ Imagen del logo cargada exitosamente")
-                
             else:
                 # Si no se puede cargar la imagen, usar texto como respaldo
                 self.image_label.setText("💎 RUBY")

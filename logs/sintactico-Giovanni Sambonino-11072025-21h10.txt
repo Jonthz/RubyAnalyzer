@@ -1,0 +1,28 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 21:10:52
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+def verificar_ordenamiento(arr)
+  for i in 1..(arr.length - 1)
+    if arr[i - 1] > arr[i]
+      return false
+    end
+  end
+  return true
+end
+
+# Programa principal - igual que sum_max_min.rb
+numeros = [64, 34, 25, 12, 22, 11, 90, 5]
+copia_numeros = numeros
+resultado = insertion_sort(copia_numeros)
+es_correcto = verificar_ordenamiento(resultado)
+
+puts "Array original:"
+puts numeros
+puts "Array ordenado:"
+puts resultado
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos
