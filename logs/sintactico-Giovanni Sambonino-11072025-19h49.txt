@@ -1,3 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 19:49:54
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
 # Ejemplo de código Ruby - Jonathan Zambrano
 # Clase Calculator con validaciones
 
@@ -59,7 +65,7 @@ begin
   sum2 = calc.add_strings("15", "25")
   
   # Mostrar resultados
-  puts "\\nResultados:"
+  puts "\nResultados:"
   puts "Suma 1: #{sum1}"
   puts "Suma 2: #{sum2}"
   
@@ -72,3 +78,19 @@ begin
 rescue => e
   puts "Error: #{e.message}"
 end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 171: Token inesperado ','
+Error sintáctico en línea 173: Token inesperado ')'
+Error sintáctico en línea 177: Token inesperado 'end'
+Error sintáctico en línea 182: Token inesperado ','
+Error sintáctico en línea 186: Token inesperado '<'
+Error sintáctico en línea 189: Token inesperado 'end'
+Error sintáctico en línea 197: Token inesperado '<'
+Error sintáctico en línea 200: Token inesperado 'rescue'
+Error sintáctico en línea 203: Token inesperado 'end'
+Error sintáctico en línea 208: Token inesperado ','
+Error sintáctico en línea 210: Token inesperado 'end'
+Error sintáctico en línea 217: Token inesperado 'end'
+Error sintáctico en línea 238: Token inesperado '=>'
+Error sintáctico en línea 240: Token inesperado 'end'

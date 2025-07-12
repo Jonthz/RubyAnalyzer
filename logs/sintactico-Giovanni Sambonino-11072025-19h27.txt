@@ -1,0 +1,40 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 19:27:49
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+suma = 0
+  for i in 0..(arr.length - 1)
+    if arr[i] > limite
+      suma = suma + arr[i]
+    end
+  end
+  return suma
+end
+
+
+def suma_menores(arr, limite)
+  suma = 0
+  for i in 0..(arr.length - 1)
+    if arr[i] < limite
+      suma = suma + arr[i]
+    end
+  end
+  return suma
+end
+
+
+numeros = [1, 5, 10, 15, 20, 25, 30, 2, 8, 50]
+limite = 10
+resultado1 = suma_mayores(numeros, limite)
+resultado2 = suma_menores(numeros, limite)
+
+
+puts "Suma de los mayores:"
+puts resultado1
+puts "Suma de los menores:" 
+puts resultado2
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 683: Token inesperado 'end'

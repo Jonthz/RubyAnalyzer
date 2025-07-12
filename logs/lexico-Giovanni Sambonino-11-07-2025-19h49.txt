@@ -1,0 +1,178 @@
+Tokens reconocidos:
+CLASS: class
+CONSTANT: Calculator
+IDENTIFIER: attr_reader
+IDENTIFIER: name
+COMMA: ,
+IDENTIFIER: history
+DEF: def
+INITIALIZE: initialize
+LPAREN: (
+IDENTIFIER: name
+ASSIGN: =
+STRING: DefaultCalculator
+RPAREN: )
+INSTANCE_VAR: @name
+ASSIGN: =
+IDENTIFIER: name
+INSTANCE_VAR: @history
+ASSIGN: =
+LBRACKET: [
+RBRACKET: ]
+PUTS: puts
+STRING: Calculadora '#{@name}' inicializada
+END: end
+DEF: def
+IDENTIFIER: add_numbers
+LPAREN: (
+IDENTIFIER: x
+COMMA: ,
+IDENTIFIER: y
+RPAREN: )
+IDENTIFIER: unless
+IDENTIFIER: x
+DOT: .
+IDENTIFIER: is_a?
+LPAREN: (
+CONSTANT: Numeric
+RPAREN: )
+AND: &&
+IDENTIFIER: y
+DOT: .
+IDENTIFIER: is_a?
+LPAREN: (
+CONSTANT: Numeric
+RPAREN: )
+RAISE: raise
+CONSTANT: ArgumentError
+COMMA: ,
+STRING: Los argumentos deben ser números
+END: end
+IDENTIFIER: result
+ASSIGN: =
+IDENTIFIER: x
+PLUS: +
+IDENTIFIER: y
+INSTANCE_VAR: @history
+LESS: <
+LESS: <
+STRING: #{x} + #{y} = #{result}
+PUTS: puts
+STRING: Suma: #{result}
+IDENTIFIER: result
+END: end
+DEF: def
+IDENTIFIER: add_strings
+LPAREN: (
+IDENTIFIER: str1
+COMMA: ,
+IDENTIFIER: str2
+RPAREN: )
+BEGIN: begin
+IDENTIFIER: num1
+ASSIGN: =
+IDENTIFIER: str1
+DOT: .
+IDENTIFIER: to_i
+IDENTIFIER: num2
+ASSIGN: =
+IDENTIFIER: str2
+DOT: .
+IDENTIFIER: to_i
+IDENTIFIER: result
+ASSIGN: =
+IDENTIFIER: num1
+PLUS: +
+IDENTIFIER: num2
+INSTANCE_VAR: @history
+LESS: <
+LESS: <
+STRING: #{str1} + #{str2} = #{result}
+PUTS: puts
+STRING: Suma de strings: #{result}
+IDENTIFIER: result
+RESCUE: rescue
+HASH_ROCKET: =>
+IDENTIFIER: e
+PUTS: puts
+STRING: Error al procesar strings: #{e.message}
+NIL: nil
+END: end
+END: end
+DEF: def
+IDENTIFIER: show_history
+PUTS: puts
+STRING: Historial de operaciones:
+INSTANCE_VAR: @history
+DOT: .
+IDENTIFIER: each_with_index
+IDENTIFIER: do
+IDENTIFIER: operation
+COMMA: ,
+IDENTIFIER: index
+PUTS: puts
+STRING: #{index + 1}. #{operation}
+END: end
+END: end
+DEF: def
+IDENTIFIER: clear_history
+INSTANCE_VAR: @history
+DOT: .
+IDENTIFIER: clear
+PUTS: puts
+STRING: Historial limpiado
+END: end
+END: end
+BEGIN: begin
+IDENTIFIER: calc
+ASSIGN: =
+CONSTANT: Calculator
+DOT: .
+NEW: new
+LPAREN: (
+STRING: MiCalculadora
+RPAREN: )
+IDENTIFIER: sum1
+ASSIGN: =
+IDENTIFIER: calc
+DOT: .
+IDENTIFIER: add_numbers
+LPAREN: (
+INTEGER: 10
+COMMA: ,
+INTEGER: 20
+RPAREN: )
+IDENTIFIER: sum2
+ASSIGN: =
+IDENTIFIER: calc
+DOT: .
+IDENTIFIER: add_strings
+LPAREN: (
+STRING: 15
+COMMA: ,
+STRING: 25
+RPAREN: )
+PUTS: puts
+STRING: \nResultados:
+PUTS: puts
+STRING: Suma 1: #{sum1}
+PUTS: puts
+STRING: Suma 2: #{sum2}
+IDENTIFIER: calc
+DOT: .
+IDENTIFIER: show_history
+IDENTIFIER: calc
+DOT: .
+IDENTIFIER: clear_history
+RESCUE: rescue
+HASH_ROCKET: =>
+IDENTIFIER: e
+PUTS: puts
+STRING: Error: #{e.message}
+END: end
+
+Errores léxicos:
+Error léxico: : en la línea 98
+Error léxico: : en la línea 98
+Error léxico: | en la línea 135
+Error léxico: | en la línea 135
