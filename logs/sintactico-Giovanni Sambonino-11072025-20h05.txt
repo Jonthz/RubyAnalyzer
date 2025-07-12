@@ -1,3 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 20:05:26
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
 # Algoritmo de Ordenamiento por Inserción Mejorado
 def insertion_sort(arr)
   # Verificar si el array está vacío
@@ -39,3 +45,8 @@ puts "Array original:"
 puts numeros
 puts "Array ordenado:"
 puts resultado
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 15: Token inesperado '='
+Error sintáctico en línea 17: Token inesperado 'end'
+Error sintáctico en línea 18: Token inesperado '='

@@ -1,3 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 19:12:01
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
 # Ejemplo de código Ruby - Jonathan Zambrano
 # Clase Calculator con validaciones
 
@@ -72,3 +78,19 @@ begin
 rescue => e
   puts "Error: #{e.message}"
 end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 151: Token inesperado ','
+Error sintáctico en línea 153: Token inesperado ')'
+Error sintáctico en línea 157: Token inesperado 'end'
+Error sintáctico en línea 162: Token inesperado ','
+Error sintáctico en línea 166: Token inesperado '<'
+Error sintáctico en línea 169: Token inesperado 'end'
+Error sintáctico en línea 177: Token inesperado '<'
+Error sintáctico en línea 180: Token inesperado 'rescue'
+Error sintáctico en línea 183: Token inesperado 'end'
+Error sintáctico en línea 188: Token inesperado ','
+Error sintáctico en línea 190: Token inesperado 'end'
+Error sintáctico en línea 197: Token inesperado 'end'
+Error sintáctico en línea 218: Token inesperado '=>'
+Error sintáctico en línea 220: Token inesperado 'end'

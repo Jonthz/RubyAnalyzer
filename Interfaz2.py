@@ -84,7 +84,7 @@ class AnalysisWorker(QThread):
             if not isinstance(tokens, list):
                 tokens = [str(tokens)] if tokens else []
             if not isinstance(error_tokens, list):
-                error_tokens = [str(error_tokens)] if error_tokens else []
+                error_tokens = [str(errorTokens)] if errorTokens else []
             
             self.results.append("\n[1] ANÁLISIS LÉXICO")
             self.results.append("-" * 25)
@@ -457,13 +457,44 @@ class RubyExpressionValidator(QWidget):
         # Header layout with logo and title
         header_layout = QHBoxLayout()
         
-        # Ruby Logo placeholder
+        # Ruby Logo desde archivo de imagen
         self.image_label = QLabel(self)
-        self.image_label.setText("💎 RUBY")
-        self.image_label.setStyleSheet("font-size: 24px; font-weight: bold; color: #e74c3c; margin-right: 15px;")
+        try:
+            # Cargar imagen desde la carpeta assets
+            pixmap = QPixmap("assets/ruby_logo.png")  # Cambia por el nombre real de tu imagen
+            
+            # Verificar si la imagen se cargó correctamente
+            if not pixmap.isNull():
+                # Redimensionar la imagen manteniendo la proporción
+                scaled_pixmap = pixmap.scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                self.image_label.setPixmap(scaled_pixmap)
+                self.image_label.setAlignment(Qt.AlignCenter)
+                
+                # Estilos para la imagen
+                self.image_label.setStyleSheet("""
+                    margin-right: 15px; 
+                    border: 2px solid #e74c3c; 
+                    border-radius: 8px; 
+                    padding: 5px;
+                    background-color: white;
+                """)
+                
+                print("✅ Imagen del logo cargada exitosamente")
+                
+            else:
+                # Si no se puede cargar la imagen, usar texto como respaldo
+                self.image_label.setText("💎 RUBY")
+                self.image_label.setStyleSheet("font-size: 24px; font-weight: bold; color: #e74c3c; margin-right: 15px;")
+                print("⚠️ No se pudo cargar la imagen, usando texto como respaldo")
+                
+        except Exception as e:
+            # Si hay error, usar texto como respaldo
+            self.image_label.setText("💎 RUBY")
+            self.image_label.setStyleSheet("font-size: 24px; font-weight: bold; color: #e74c3c; margin-right: 15px;")
+            print(f"⚠️ Error al cargar imagen: {e}")
         
         # Title label
-        self.title_label = QLabel('RUBY ANALYZER v2.0\nJonathan Zambrano', self)
+        self.title_label = QLabel('RUBY ANALYZER v2.0', self)
         self.title_label.setObjectName("title_label")
         
         header_layout.addWidget(self.image_label)
@@ -511,7 +542,7 @@ class RubyExpressionValidator(QWidget):
 
         # Status label
         self.status_label = QLabel('Listo para analizar código Ruby', self)
-        self.status_label.setObjectName("status_label")
+        self.status_label.setObjectName("text_expression_label")
         main_layout.addWidget(self.status_label)
 
         # Content layout with splitter
@@ -772,4 +803,4 @@ if __name__ == '__main__':
     ex = RubyExpressionValidator()
     ex.show()
     
-    sys.exit(app.exec_()) 
+    sys.exit(app.exec_())
