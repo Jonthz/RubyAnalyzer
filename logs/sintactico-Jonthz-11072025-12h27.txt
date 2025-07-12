@@ -1,14 +1,30 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 12:27:11
+Usuario: Jonthz
+
+--- Código Analizado ---
 class Calculator
   def initialize(name)
     @name = name
   end
 
+
+  def add_numbers(x, y)
+    puts "Sumando números"
+    result = x + y
+    puts result
+    return result
+  end
+
+
   def add_strings(str1, str2)
     puts "Sumando strings"
     result = str1.to_i + str2.to_i
-      puts result
+    puts result
     return result
   end
+
 
   def convert_test(value)
     puts "Valor original:"
@@ -22,30 +38,39 @@ class Calculator
   end
 end
 
+
 # Crear calculadora
 calc = Calculator.new("MiCalculadora")
 
+
 # ===== PRUEBAS DE CONVERSIÓN .to_i =====
+
 
 # 1. Conversión básica de string a entero
 number_str = "123"
 result1 = calc.convert_test(number_str)
 
+
 # 2. Suma con conversiones explícitas
 sum_result = calc.add_strings("45", "55")
+
 
 # 3. Comparación sin conversión vs con conversión
 x = 10
 y = "20"
 
+
 # Esto debería generar error semántico (tipos incompatibles)
 # bad_sum = x + y
+
 
 # Esto debería ser válido (conversión explícita)
 good_sum = x + y.to_i
 
+
 puts "Suma válida con conversión:"
 puts good_sum
+
 
 # 4. Cadena de conversiones
 text = "100"
@@ -53,9 +78,14 @@ converted_number = text.to_i.to_f.to_s
 puts "Cadena de conversiones:"
 puts converted_number
 
+
 # 5. Variables globales con conversiones
 $global_string = "999"
 $global_number = $global_string.to_i
 
+
 puts "Variable global convertida:"
-puts $global_numbers
+puts $global_numeros
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

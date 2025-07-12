@@ -1,0 +1,48 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 15:14:54
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+# Ejemplo de código Ruby - Jonathan Zambrano
+class Calculator
+  def initialize(name)
+    @name = name
+  end
+
+  def add_numbers(x, y)
+    result = x % y
+    puts "Suma: #{result}"
+    return result
+  end
+
+  def add_strings(str1, str2)
+    result = str1.to_i + str2.to_i
+    puts "Suma de strings: #{result}"
+    return result
+  end
+end
+
+# Crear instancia y probar
+calc = Calculator.new("MiCalculadora")
+sum1 = calc.add_numbers(10, 20)
+sum2 = calc.add_strings("15", "25")
+
+puts "Resultados:"
+puts sum1
+puts sum2
+
+TABLA DE SÍMBOLOS:
+--------------------
+  calc: unknown (Inicializada)
+  sum1: unknown (Inicializada)
+  sum2: unknown (Inicializada)
+
+ERRORES ENCONTRADOS (4):
+--------------------
+1. Método 'add_numbers' no está definido
+2. Método 'add_numbers' no está definido
+3. Método 'add_strings' no está definido
+4. Método 'add_strings' no está definido

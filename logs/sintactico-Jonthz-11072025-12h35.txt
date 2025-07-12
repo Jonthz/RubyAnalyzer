@@ -1,3 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 12:35:57
+Usuario: Jonthz
+
+--- Código Analizado ---
 class Calculator
   def initialize(name)
     @name = name
@@ -6,7 +12,7 @@ class Calculator
   def add_strings(str1, str2)
     puts "Sumando strings"
     result = str1.to_i + str2.to_i
-      puts result
+    puts result
     return result
   end
 
@@ -59,3 +65,6 @@ $global_number = $global_string.to_i
 
 puts "Variable global convertida:"
 puts $global_numbers
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

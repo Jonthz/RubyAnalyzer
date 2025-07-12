@@ -756,6 +756,7 @@ def generar_reporte_semantico():
     
     print("\n" + "="*50)
 
+
 def log_semantic_analysis(codigo, errores, warnings):
     """Registrar el análisis semántico en logs de forma simple"""
     try:
@@ -859,6 +860,7 @@ def analizar_codigo(codigo):
         add_semantic_error(f"Error interno durante análisis: {e}")
         print(f" Error durante análisis semántico: {e}")
 
+    return semantic_errors, semantic_warnings, symbol_table, defined_methods
 # Agregar después de la línea 659 en AnalizadorSemantico.py:
 
 # ==========================================================================

@@ -1,0 +1,125 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 12:27:11
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+class Calculator
+  def initialize(name)
+    @name = name
+  end
+
+
+  def add_numbers(x, y)
+    puts "Sumando números"
+    result = x + y
+    puts result
+    return result
+  end
+
+
+  def add_strings(str1, str2)
+    puts "Sumando strings"
+    result = str1.to_i + str2.to_i
+    puts result
+    return result
+  end
+
+
+  def convert_test(value)
+    puts "Valor original:"
+    puts value
+    
+    converted = value.to_i
+    puts "Convertido a entero:"
+    puts converted
+    
+    return converted
+  end
+end
+
+
+# Crear calculadora
+calc = Calculator.new("MiCalculadora")
+
+
+# ===== PRUEBAS DE CONVERSIÓN .to_i =====
+
+
+# 1. Conversión básica de string a entero
+number_str = "123"
+result1 = calc.convert_test(number_str)
+
+
+# 2. Suma con conversiones explícitas
+sum_result = calc.add_strings("45", "55")
+
+
+# 3. Comparación sin conversión vs con conversión
+x = 10
+y = "20"
+
+
+# Esto debería generar error semántico (tipos incompatibles)
+# bad_sum = x + y
+
+
+# Esto debería ser válido (conversión explícita)
+good_sum = x + y.to_i
+
+
+puts "Suma válida con conversión:"
+puts good_sum
+
+
+# 4. Cadena de conversiones
+text = "100"
+converted_number = text.to_i.to_f.to_s
+puts "Cadena de conversiones:"
+puts converted_number
+
+
+# 5. Variables globales con conversiones
+$global_string = "999"
+$global_number = $global_string.to_i
+
+
+puts "Variable global convertida:"
+puts $global_numeros
+
+TABLA DE SÍMBOLOS:
+--------------------
+  Calculator: clase (Sin inicializar)
+  name: parameter (Inicializada)
+  @name: instance_variable (Inicializada)
+  add_numbers: metodo (Inicializada)
+  x: integer (Inicializada)
+  y: string_numeric (Inicializada)
+  result: numeric (Inicializada)
+  add_strings: metodo (Inicializada)
+  str1: parameter (Inicializada)
+  str2: parameter (Inicializada)
+  convert_test: metodo (Inicializada)
+  value: parameter (Inicializada)
+  converted: integer (Inicializada)
+  calc: unknown (Inicializada)
+  number_str: string_numeric (Inicializada)
+  result1: integer (Inicializada)
+  sum_result: numeric (Inicializada)
+  good_sum: numeric (Inicializada)
+  text: string_numeric (Inicializada)
+  converted_number: string (Inicializada)
+  $global_string: string_numeric (Inicializada)
+  $global_number: integer (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  add_numbers
+  add_strings
+  convert_test
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Variable '$global_numeros' usada sin ser declarada

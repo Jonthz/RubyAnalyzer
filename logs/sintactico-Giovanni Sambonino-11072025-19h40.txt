@@ -1,0 +1,88 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 19:40:59
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+# Algoritmo de Ordenamiento por Inserción
+def insertion_sort(arr)
+  # Verificar si el parámetro es un arreglo válido
+  if arr.nil? || !arr.is_a?(Array)
+    puts "Error: Debe ser un arreglo válido"
+    return nil
+  end
+  
+  puts "Arreglo original: #{arr}"
+  
+  for i in 1..arr.length - 1
+    key = arr[i]
+    j = i - 1
+    
+    # Mover elementos mayores que key hacia adelante
+    while j >= 0 && arr[j] > key
+      arr[j + 1] = arr[j]
+      j = j - 1
+    end
+    
+    arr[j + 1] = key
+  end
+  
+  puts "Arreglo ordenado: #{arr}"
+  return arr
+end
+
+
+def validate_array(arr)
+  # Validar que contenga solo números
+  for element in arr
+    unless element.is_a?(Numeric)
+      puts "Error: '#{element}' no es un número"
+      return false
+    end
+  end
+  return true
+end
+
+
+# Casos de prueba
+puts "=== INSERTION SORT ==="
+
+
+# Caso 1: Arreglo normal
+numeros1 = [64, 34, 25, 12, 22, 11]
+puts "Caso 1:"
+if validate_array(numeros1)
+  insertion_sort(numeros1)
+end
+puts ""
+
+
+# Caso 2: Con números negativos
+numeros2 = [-5, 10, -3, 8, -1, 0]
+puts "Caso 2:"
+if validate_array(numeros2)
+  insertion_sort(numeros2)
+end
+puts ""
+
+
+# Caso 3: Ya ordenado
+numeros3 = [1, 2, 3, 4, 5]
+puts "Caso 3:"
+if validate_array(numeros3)
+  insertion_sort(numeros3)
+end
+puts ""
+
+
+puts "Algoritmo completado"
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 1492: Token inesperado 'arr'
+Error sintáctico en línea 1498: Token inesperado '='
+Error sintáctico en línea 1500: Token inesperado 'end'
+Error sintáctico en línea 1502: Token inesperado '='
+Error sintáctico en línea 1507: Token inesperado 'end'
+Error sintáctico en línea 1513: Token inesperado 'unless'
+Error sintáctico en línea 1516: Token inesperado 'end'
+Error sintáctico en línea 1536: Token inesperado '-'
