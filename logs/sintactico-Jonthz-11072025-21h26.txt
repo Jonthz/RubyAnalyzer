@@ -1,0 +1,64 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 21:26:53
+Usuario: Jonthz
+
+--- Código Analizado ---
+# ==========================================================================
+# CALCULADORA BÁSICA - Jonathan Zambrano  
+# Enfoque: Clase + Métodos + Llamadas simples
+# ==========================================================================
+
+# ===== 1. CLASE AL INICIO =====
+class Calculator
+  def initialize(name)
+    @name = name
+    puts "Calculadora creada"
+  end
+
+  def add_numbers(num1, num2)
+    result = num1.to_i + num2.to_i
+    puts "Suma realizada"
+    return result
+  end
+
+  def multiply_values(val1, val2)
+    product = val1.to_i * val2.to_i
+    puts "Multiplicación completada"
+    return product
+  end
+
+  def get_memory
+    puts "Memoria actual"
+    return @name
+  end
+end
+
+# ===== 2. ELEMENTOS BÁSICOS (Jonathan Zambrano) =====
+$calculator_active = true
+calc_config = {"mode" => "basic", "precision" => "2"}
+debug_mode = false
+
+puts "Sistema iniciado"
+puts $calculator_active
+
+# ===== 3. INSTANCIACIÓN =====
+my_calc = Calculator.new("MiCalc")
+
+# ===== 4. LLAMADAS A MÉTODOS CON ARGUMENTOS CORRECTOS =====
+result1 = my_calc.add_numbers("10", "20")
+result2 = my_calc.multiply_values("5", "4")
+
+# ===== 5. LLAMADAS SIN PARÁMETROS =====
+memory_data = my_calc.get_memory
+
+# ===== 6. CONVERSIONES SIMPLES =====
+number_str = "42"
+converted = number_str.to_i
+
+puts "Cálculo completado"
+puts converted
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 63: Token inesperado 'puts'
+Error sintáctico en línea 82: Token inesperado 'end'

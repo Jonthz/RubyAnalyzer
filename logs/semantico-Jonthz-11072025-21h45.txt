@@ -1,0 +1,106 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 21:45:43
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+# ==========================================================================
+# CALCULADORA BÁSICA - Jonathan Zambrano  
+# Enfoque: Clase + Métodos + Llamadas simples
+# ==========================================================================
+
+# ===== 1. CLASE SIMPLE Y DIRECTA =====
+class Calculator
+  def initialize(name)
+    @name = name
+    puts "Calculadora creada"
+  end
+
+  def add_numbers(num1, num2)
+    result = num1.to_i + num2.to_i
+    puts "Suma realizada"
+    puts result
+    return result
+  end
+
+  def multiply_values(val1, val2)
+    product = val1.to_i * val2.to_i
+    puts "Multiplicación completada"
+    puts product
+    return product
+  end
+
+  def get_memory
+    puts "Memoria actual"
+    puts @name
+    return @name
+  end
+end
+
+# ===== 2. INSTANCIACIÓN DIRECTA =====
+my_calc = Calculator.new("MiCalc")
+
+# ===== 3. VARIABLES BÁSICAS =====
+$calculator_active = true
+debug_mode = false
+calc_config = {"mode" => "basic", "precision" => "2"}
+
+puts "Sistema iniciado"
+puts $calculator_active
+
+# ===== 4. LLAMADAS A MÉTODOS =====
+result1 = my_calc.add_numbers("10", "20")
+result2 = my_calc.multiply_values("5", "4")
+memory_data = my_calc.get_memory
+
+# ===== 5. CONVERSIONES SIMPLES =====
+number_str = "42"
+converted = number_str.to_i
+
+puts "Resultado de conversión:"
+puts converted
+
+# ===== 6. OPERACIONES CON CONVERSIONES =====
+x = 15
+y = "25"
+good_sum = x + y.to_i
+
+puts "Suma válida con conversión:"
+puts good_sum
+
+# ===== 7. VARIABLES GLOBALES CON CONVERSIONES =====
+$global_string = "999"
+$global_number = $global_string.to_i
+
+puts "Variable global convertida:"
+puts $global_number
+
+puts "Cálculo completado"
+
+TABLA DE SÍMBOLOS:
+--------------------
+  my_calc: unknown (Inicializada)
+  $calculator_active: string (Inicializada)
+  debug_mode: string (Inicializada)
+  calc_config: unknown (Inicializada)
+  result1: unknown (Inicializada)
+  result2: unknown (Inicializada)
+  memory_data: unknown (Inicializada)
+  number_str: string_numeric (Inicializada)
+  converted: integer (Inicializada)
+  x: integer (Inicializada)
+  y: string_numeric (Inicializada)
+  good_sum: numeric (Inicializada)
+  $global_string: string_numeric (Inicializada)
+  $global_number: integer (Inicializada)
+
+ERRORES ENCONTRADOS (6):
+--------------------
+1. Método 'add_numbers' no está definido
+2. Método 'add_numbers' no está definido
+3. Método 'multiply_values' no está definido
+4. Método 'multiply_values' no está definido
+5. Método 'get_memory' no está definido
+6. Método 'get_memory' no está definido

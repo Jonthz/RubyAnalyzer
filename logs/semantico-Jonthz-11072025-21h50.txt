@@ -1,0 +1,75 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 21:50:17
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+# ==========================================================================
+# CALCULADORA BÁSICA - Jonathan Zambrano  
+# Enfoque: Clase + Métodos + Llamadas simples
+# ==========================================================================
+
+# ===== 1. CLASE SIMPLE Y DIRECTA =====
+class Calculator
+  def initialize(name)
+    @name = name
+  end
+
+  def add_numbers(num1, num2)
+    result = num1.to_i + num2.to_i
+
+    puts "Suma realizada"
+    puts result
+    return result
+  end
+
+  def multiply_values(val1, val2)
+    product = val1.to_i * val2.to_i
+    puts "Multiplicación completada"
+    puts product
+    return product
+  end
+
+  def get_memory
+    puts "Memoria actual"
+    puts @name
+    return @name
+  end
+end
+
+# ===== 2. INSTANCIACIÓN DIRECTA =====
+my_calc = Calculator.new("MiCalc")
+
+
+# ===== 4. LLAMADAS A MÉTODOS =====
+my_calc.add_numbers("10", "20")
+my_calc.multiply_values("5", "4")
+my_calc.get_memory
+
+
+
+TABLA DE SÍMBOLOS:
+--------------------
+  Calculator: clase (Sin inicializar)
+  name: parameter (Inicializada)
+  @name: instance_variable (Inicializada)
+  add_numbers: metodo (Inicializada)
+  num1: parameter (Inicializada)
+  num2: parameter (Inicializada)
+  result: numeric (Inicializada)
+  multiply_values: metodo (Inicializada)
+  val1: parameter (Inicializada)
+  val2: parameter (Inicializada)
+  product: numeric (Inicializada)
+  get_memory: metodo (Inicializada)
+  my_calc: unknown (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  add_numbers
+  multiply_values
+  get_memory
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

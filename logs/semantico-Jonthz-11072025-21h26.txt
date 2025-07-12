@@ -1,0 +1,83 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 21:26:53
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+# ==========================================================================
+# CALCULADORA BÁSICA - Jonathan Zambrano  
+# Enfoque: Clase + Métodos + Llamadas simples
+# ==========================================================================
+
+# ===== 1. CLASE AL INICIO =====
+class Calculator
+  def initialize(name)
+    @name = name
+    puts "Calculadora creada"
+  end
+
+  def add_numbers(num1, num2)
+    result = num1.to_i + num2.to_i
+    puts "Suma realizada"
+    return result
+  end
+
+  def multiply_values(val1, val2)
+    product = val1.to_i * val2.to_i
+    puts "Multiplicación completada"
+    return product
+  end
+
+  def get_memory
+    puts "Memoria actual"
+    return @name
+  end
+end
+
+# ===== 2. ELEMENTOS BÁSICOS (Jonathan Zambrano) =====
+$calculator_active = true
+calc_config = {"mode" => "basic", "precision" => "2"}
+debug_mode = false
+
+puts "Sistema iniciado"
+puts $calculator_active
+
+# ===== 3. INSTANCIACIÓN =====
+my_calc = Calculator.new("MiCalc")
+
+# ===== 4. LLAMADAS A MÉTODOS CON ARGUMENTOS CORRECTOS =====
+result1 = my_calc.add_numbers("10", "20")
+result2 = my_calc.multiply_values("5", "4")
+
+# ===== 5. LLAMADAS SIN PARÁMETROS =====
+memory_data = my_calc.get_memory
+
+# ===== 6. CONVERSIONES SIMPLES =====
+number_str = "42"
+converted = number_str.to_i
+
+puts "Cálculo completado"
+puts converted
+
+TABLA DE SÍMBOLOS:
+--------------------
+  $calculator_active: string (Inicializada)
+  calc_config: unknown (Inicializada)
+  debug_mode: string (Inicializada)
+  my_calc: unknown (Inicializada)
+  result1: unknown (Inicializada)
+  result2: unknown (Inicializada)
+  memory_data: unknown (Inicializada)
+  number_str: string_numeric (Inicializada)
+  converted: integer (Inicializada)
+
+ERRORES ENCONTRADOS (6):
+--------------------
+1. Método 'add_numbers' no está definido
+2. Método 'add_numbers' no está definido
+3. Método 'multiply_values' no está definido
+4. Método 'multiply_values' no está definido
+5. Método 'get_memory' no está definido
+6. Método 'get_memory' no está definido

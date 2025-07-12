@@ -1,0 +1,53 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 21:46:28
+Usuario: Jonthz
+
+--- Código Analizado ---
+# ==========================================================================
+# CALCULADORA BÁSICA - Jonathan Zambrano  
+# Enfoque: Clase + Métodos + Llamadas simples
+# ==========================================================================
+
+# ===== 1. CLASE SIMPLE Y DIRECTA =====
+class Calculator
+  def initialize(name)
+    @name = name
+    puts "Calculadora creada"
+  end
+
+  def add_numbers(num1, num2)
+    result = num1.to_i + num2.to_i
+    puts "Suma realizada"
+    puts result
+    return result
+  end
+
+  def multiply_values(val1, val2)
+    product = val1.to_i * val2.to_i
+    puts "Multiplicación completada"
+    puts product
+    return product
+  end
+
+  def get_memory
+    puts "Memoria actual"
+    puts @name
+    return @name
+  end
+end
+
+# ===== 2. INSTANCIACIÓN DIRECTA =====
+my_calc = Calculator.new("MiCalc")
+
+
+# ===== 4. LLAMADAS A MÉTODOS =====
+result1 = my_calc.add_numbers("10", "20")
+result2 = my_calc.multiply_values("5", "4")
+memory_data = my_calc.get_memory
+
+
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 265: Token inesperado 'puts'
+Error sintáctico en línea 287: Token inesperado 'end'

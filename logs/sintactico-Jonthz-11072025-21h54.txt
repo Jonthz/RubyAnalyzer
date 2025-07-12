@@ -1,3 +1,13 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 21:54:42
+Usuario: Jonthz
+
+--- Código Analizado ---
+# ==========================================================================
+# CALCULADORA BÁSICA - Jonathan Zambrano  
+# Enfoque: Clase + Métodos + Llamadas simples
+# ==========================================================================
 
 # ===== 1. CLASE SIMPLE Y DIRECTA =====
 class Calculator
@@ -50,19 +60,5 @@ converted = number_str.to_i
 puts "Resultado de conversión:"
 puts converted
 
-# ===== 6. OPERACIONES CON CONVERSIONES =====
-x = 15
-y = "25"
-good_sum = x + y.to_i
-
-puts "Suma válida con conversión:"
-puts good_sum
-
-# ===== 7. VARIABLES GLOBALES CON CONVERSIONES =====
-$global_string = "999"
-$global_number = $global_string.to_i
-
-puts "Variable global convertida:"
-puts $global_number
-
-puts "Cálculo completado"
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

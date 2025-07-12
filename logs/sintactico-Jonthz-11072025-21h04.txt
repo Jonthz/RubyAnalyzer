@@ -1,0 +1,101 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 21:04:39
+Usuario: Jonthz
+
+--- Código Analizado ---
+# ==========================================================================
+# SISTEMA VETERINARIO DIGITAL - Jonathan Zambrano
+# Algoritmo de prueba temático: Clínica de Animales
+# ==========================================================================
+
+# ===== 1. VARIABLES GLOBALES Y BOOLEANOS (Jonathan Zambrano) =====
+$clinic_open = true
+$total_animals = 0
+is_emergency = false
+
+puts "Veterinaria Digital iniciada"
+puts "Clínica abierta:"
+puts $clinic_open
+
+# ===== 2. HASHES: INFORMACIÓN DE ANIMALES (Jonathan Zambrano) =====
+dog_info = {"name" => "Max", "age" => "3", "species" => "Canino"}
+cat_info = {"name" => "Luna", "age" => "2", "weight" => "4"}
+
+puts "Mascotas registradas en el sistema"
+
+# ===== 3. CLASE PRINCIPAL: ANIMAL =====
+class Animal
+  def initialize(name, age)
+    @name = name
+    @age = age
+    puts "Animal registrado en la clínica"
+  end
+
+  def get_age_in_human_years()
+    converted_age = @age.to_i * 7
+    puts "Edad en años humanos:"
+    puts converted_age
+    return converted_age
+  end
+
+  def check_weight_status(weight_str)
+    weight = weight_str.to_i
+    if weight > 30
+      status = "Sobrepeso"
+    else
+      status = "Normal"
+    end
+    puts status
+    return status
+  end
+end
+
+# ===== 4. MÉTODOS SIN PARÁMETROS (Jonathan Zambrano) =====
+def show_clinic_status
+  puts "Estado de la clínica: Operacional"
+end
+
+def get_emergency_number
+  puts "Número de emergencia: 911"
+  return "911"
+end
+
+# ===== 5. INSTANCIACIÓN Y USO =====
+max_dog = Animal.new("Max", "3")
+luna_cat = Animal.new("Luna", "2")
+
+# ===== 6. COMPATIBILIDAD DE TIPOS Y CONVERSIONES (Jonathan Zambrano) =====
+dog_weight = "25"
+cat_weight = "4"
+
+# Conversión válida: string a entero para cálculos
+total_weight = dog_weight.to_i + cat_weight.to_i
+puts "Peso total de mascotas:"
+puts total_weight
+
+# ===== 7. COMPROBACIÓN DE ARGUMENTOS (Jonathan Zambrano) =====
+dog_human_age = max_dog.get_age_in_human_years
+dog_status = max_dog.check_weight_status("25")
+
+cat_human_age = luna_cat.get_age_in_human_years  
+cat_status = luna_cat.check_weight_status("4")
+
+# ===== 8. LLAMADAS A MÉTODOS SIN PARÁMETROS =====
+show_clinic_status
+emergency_contact = get_emergency_number
+
+# ===== 9. VARIABLES GLOBALES CON CONVERSIONES =====
+$total_animals = "2"
+$converted_total = $total_animals.to_i
+
+puts "Total de animales registrados:"
+puts $converted_total
+
+puts "Sistema veterinario completado"
+
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 570: Token inesperado '@age'
+Error sintáctico en línea 572: Token inesperado 'end'
+Error sintáctico en línea 591: Token inesperado 'end'

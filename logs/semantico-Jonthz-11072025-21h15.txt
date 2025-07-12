@@ -1,0 +1,179 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 21:15:05
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+# ==========================================================================
+# CALCULADORA AVANZADA DE MATEMÁTICAS - Jonathan Zambrano
+# Algoritmo de prueba temático: Sistema de Cálculos Científicos
+# ==========================================================================
+
+# ===== 1. CLASE PRINCIPAL: CALCULADORA (AL INICIO) =====
+class Calculator
+  def initialize(name)
+    @name = name
+    @memory = "0"
+    puts "Calculadora creada"
+  end
+
+  def add_numbers(num1, num2)
+    result = num1.to_i + num2.to_i
+    puts "Suma realizada"
+    puts result
+    return result
+  end
+
+  def multiply_values(val1, val2)
+    product = val1.to_i * val2.to_i
+    puts "Multiplicación completada"
+    puts product
+    return product
+  end
+
+  def convert_to_integer(value)
+    converted = value.to_i
+    puts "Conversión a entero:"
+    puts converted
+    return converted
+  end
+
+  def get_memory
+    puts "Memoria actual:"
+    puts @memory
+    return @memory
+  end
+end
+
+# ===== 2. MÉTODOS SIN PARÁMETROS (Jonathan Zambrano) =====
+def show_calculator_info
+  puts "Calculadora Científica v1.0"
+end
+
+def get_help_message
+  puts "Ayuda: Use los métodos add, multiply, convert"
+  return "help_displayed"
+end
+
+def clear_screen
+  puts "Pantalla limpia"
+end
+
+# ===== 3. VARIABLES GLOBALES Y BOOLEANOS (Jonathan Zambrano) =====
+$calculator_active = true
+$total_operations = 0
+debug_mode = false
+
+puts "Calculadora Avanzada iniciada"
+puts "Estado activo:"
+puts $calculator_active
+
+# ===== 4. HASHES: CONFIGURACIÓN DE CALCULADORA (Jonathan Zambrano) =====
+calc_config = {"precision" => "4", "mode" => "scientific", "units" => "metric"}
+math_constants = {"pi" => "3.14159", "e" => "2.71828", "golden" => "1.618"}
+
+puts "Configuración de calculadora cargada"
+
+# ===== 5. INSTANCIACIÓN Y USO DE OBJETOS =====
+my_calc = Calculator.new("ScientificCalc")
+backup_calc = Calculator.new("BackupCalc")
+
+# ===== 6. COMPATIBILIDAD DE TIPOS Y CONVERSIONES (Jonathan Zambrano) =====
+first_number = "25"
+second_number = "15"
+
+# Conversión válida: string a entero para cálculos matemáticos
+sum_result = first_number.to_i + second_number.to_i
+puts "Resultado de suma:"
+puts sum_result
+
+# Más conversiones válidas
+decimal_str = "3.14"
+converted_pi = decimal_str.to_f
+scientific_calc = converted_pi * 2
+
+puts "Cálculo científico:"
+puts scientific_calc
+
+# ===== 7. COMPROBACIÓN DE ARGUMENTOS (Jonathan Zambrano) =====
+# Llamadas con argumentos correctos
+addition_result = my_calc.add_numbers("10", "20")
+multiplication_result = my_calc.multiply_values("5", "8")
+
+# Conversiones individuales
+converted_value1 = my_calc.convert_to_integer("42")
+converted_value2 = backup_calc.convert_to_integer("78")
+
+# Métodos sin parámetros
+memory_check = my_calc.get_memory
+backup_memory = backup_calc.get_memory
+
+# ===== 8. LLAMADAS A MÉTODOS SIN PARÁMETROS =====
+show_calculator_info
+help_status = get_help_message
+clear_screen
+
+# ===== 9. OPERACIONES CON VARIABLES GLOBALES (Jonathan Zambrano) =====
+$total_operations = "5"
+$converted_operations = $total_operations.to_i
+
+puts "Total de operaciones realizadas:"
+puts $converted_operations
+
+# ===== 10. VALIDACIONES FINALES =====
+final_calculation = addition_result + multiplication_result
+puts "Cálculo final:"
+puts final_calculation
+
+puts "Calculadora completada exitosamente"
+
+TABLA DE SÍMBOLOS:
+--------------------
+  show_calculator_info: metodo (Inicializada)
+  get_help_message: metodo (Inicializada)
+  clear_screen: metodo (Inicializada)
+  $calculator_active: string (Inicializada)
+  $total_operations: string_numeric (Inicializada)
+  debug_mode: string (Inicializada)
+  calc_config: unknown (Inicializada)
+  math_constants: unknown (Inicializada)
+  my_calc: unknown (Inicializada)
+  backup_calc: unknown (Inicializada)
+  first_number: string_numeric (Inicializada)
+  second_number: string_numeric (Inicializada)
+  sum_result: numeric (Inicializada)
+  decimal_str: string_numeric (Inicializada)
+  converted_pi: float (Inicializada)
+  scientific_calc: float (Inicializada)
+  addition_result: unknown (Inicializada)
+  multiplication_result: unknown (Inicializada)
+  converted_value1: unknown (Inicializada)
+  converted_value2: unknown (Inicializada)
+  memory_check: unknown (Inicializada)
+  backup_memory: unknown (Inicializada)
+  help_status: metodo (Inicializada)
+  $converted_operations: integer (Inicializada)
+  final_calculation: numeric (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  show_calculator_info
+  get_help_message
+  clear_screen
+
+ERRORES ENCONTRADOS (12):
+--------------------
+1. Método 'add_numbers' no está definido
+2. Método 'add_numbers' no está definido
+3. Método 'multiply_values' no está definido
+4. Método 'multiply_values' no está definido
+5. Método 'convert_to_integer' no está definido
+6. Método 'convert_to_integer' no está definido
+7. Método 'convert_to_integer' no está definido
+8. Método 'convert_to_integer' no está definido
+9. Método 'get_memory' no está definido
+10. Método 'get_memory' no está definido
+11. Método 'get_memory' no está definido
+12. Método 'get_memory' no está definido
