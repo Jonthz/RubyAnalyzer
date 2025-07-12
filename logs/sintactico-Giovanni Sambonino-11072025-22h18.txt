@@ -1,0 +1,38 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 22:18:59
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+def calcular(key)
+  j = 0
+  suma = 0
+
+  for i in 1..key
+    if i > 5
+      j += 1
+      suma += i
+    elsif i == 5
+      suma += i - 1
+    end
+  end
+
+  contador = key
+  while contador > 0
+    if contador > 3
+      suma += 1
+    end
+    contador -= 1
+  end
+
+  return "Suma: #{suma}, j: #{j}, key: #{key}"
+end
+
+# Ejemplo de uso
+key = 7
+puts calcular(key)
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 598: Token inesperado 'key'
+Error sintáctico en línea 605: Token inesperado 'end'
+Error sintáctico en línea 616: Token inesperado 'end'

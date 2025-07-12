@@ -1,0 +1,42 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 20:56:47
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+def insertion_sort(array)
+  # Recorremos el arreglo desde el segundo elemento
+  (1...array.length).each do |i|
+    valor_actual = array[i]
+    posicion = i
+
+    # Mientras el valor anterior sea mayor que el actual, lo desplazamos a la derecha
+    while posicion > 0 && array[posicion - 1] > valor_actual
+      array[posicion] = array[posicion - 1]
+      posicion -= 1
+    end
+
+    # Insertamos el valor actual en la posición correcta
+    array[posicion] = valor_actual
+  end
+
+  array
+end
+
+# Ejemplo de uso:
+numeros = [5, 3, 8, 4, 2]
+ordenado = insertion_sort(numeros)
+puts ordenado.inspect
+
+TABLA DE SÍMBOLOS:
+--------------------
+  numeros: array (Inicializada)
+  ordenado: unknown (Inicializada)
+
+ERRORES ENCONTRADOS (3):
+--------------------
+1. Método 'insertion_sort' no está definido
+2. Método 'insertion_sort' no está definido
+3. Método 'inspect' no está definido

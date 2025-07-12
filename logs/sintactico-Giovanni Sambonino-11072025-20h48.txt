@@ -1,0 +1,89 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 20:48:02
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+# Algoritmo de Ordenamiento por Inserción Mejorado
+def insertion_sort(arr)
+  # Verificar si el array está vacío
+  if arr.length == 0
+    return arr
+  end
+
+  for i in 1..(arr.length - 1)
+    key = arr[i]
+    pos = i
+    
+    # Buscar la posición correcta para insertar el elemento
+    for j in 0..(i - 1)
+      if arr[j] > key
+        pos = j
+        break
+      end
+    end
+    
+    # Crear nuevo array temporal con el elemento insertado
+    temp_arr = []
+    contador = 0
+    
+    # Copiar elementos hasta la posición de inserción
+    for m in 0..(pos - 1)
+      temp_arr[contador] = arr[m]
+      contador = contador + 1
+    end
+    
+    # Insertar el elemento clave
+    temp_arr[contador] = key
+    contador = contador + 1
+    
+    # Copiar el resto de elementos
+    for n in pos..(i - 1)
+      temp_arr[contador] = arr[n]
+      contador = contador + 1
+    end
+    
+    # Copiar elementos restantes
+    for o in (i + 1)..(arr.length - 1)
+      temp_arr[contador] = arr[o]
+      contador = contador + 1
+    end
+    
+    # Actualizar el array original
+    for p in 0..(arr.length - 1)
+      arr[p] = temp_arr[p]
+    end
+  end
+  return arr
+end
+
+def verificar_ordenamiento(arr)
+  for i in 1..(arr.length - 1)
+    if arr[i - 1] > arr[i]
+      return false
+    end
+  end
+  return true
+end
+
+# Programa principal - igual que sum_max_min.rb
+numeros = [64, 34, 25, 12, 22, 11, 90, 5]
+copia_numeros = numeros
+resultado = insertion_sort(copia_numeros)
+es_correcto = verificar_ordenamiento(resultado)
+
+puts "Array original:"
+puts numeros
+puts "Array ordenado:"
+puts resultado
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 26: Token inesperado '='
+Error sintáctico en línea 28: Token inesperado 'end'
+Error sintáctico en línea 31: Token inesperado '='
+Error sintáctico en línea 36: Token inesperado '='
+Error sintáctico en línea 38: Token inesperado 'end'
+Error sintáctico en línea 42: Token inesperado '='
+Error sintáctico en línea 44: Token inesperado 'end'
+Error sintáctico en línea 48: Token inesperado '='
+Error sintáctico en línea 49: Token inesperado 'end'

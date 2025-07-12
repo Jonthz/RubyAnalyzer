@@ -13,7 +13,7 @@ def suma_menores(arr, limite)
   for i in 0..(arr.length - 1)
     if arr[i] < limite
       suma = suma + arr[i]
-    end
+    end 
   end
   return suma
 end

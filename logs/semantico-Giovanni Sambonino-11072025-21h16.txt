@@ -1,0 +1,65 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 21:16:16
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+# Algoritmo de Ordenamiento por Inserción Mejorado sin uso de arr[j+1] = arr[j]
+def insertion_sort(arr)
+  return arr if arr.empty?
+
+  for i in 1...arr.length
+    key = arr[i]
+    j = i - 1
+
+    # Buscar la posición correcta para insertar key
+    while j >= 0 && arr[j] > key
+      j -= 1
+    end
+
+    # Insertar y eliminar key para evitar desplazamientos manuales
+    arr.insert(j + 1, key)
+    arr.delete_at(i + 1) if j + 1 != i
+  end
+
+  arr
+end
+
+def verificar_ordenamiento(arr)
+  for i in 1...(arr.length)
+    return false if arr[i - 1] > arr[i]
+  end
+  true
+end
+
+# Programa principal
+numeros = [64, 34, 25, 12, 22, 11, 90, 5]
+copia_numeros = numeros.dup
+resultado = insertion_sort(copia_numeros)
+es_correcto = verificar_ordenamiento(resultado)
+
+puts "Array original:"
+puts numeros.inspect
+puts "Array ordenado:"
+puts resultado.inspect
+puts "Ordenamiento correcto: #{es_correcto}"
+
+TABLA DE SÍMBOLOS:
+--------------------
+  numeros: array (Inicializada)
+  copia_numeros: unknown (Inicializada)
+  resultado: unknown (Inicializada)
+  es_correcto: unknown (Inicializada)
+
+ERRORES ENCONTRADOS (8):
+--------------------
+1. Método 'dup' no está definido
+2. Método 'dup' no está definido
+3. Método 'insertion_sort' no está definido
+4. Método 'insertion_sort' no está definido
+5. Método 'verificar_ordenamiento' no está definido
+6. Método 'verificar_ordenamiento' no está definido
+7. Método 'inspect' no está definido
+8. Método 'inspect' no está definido

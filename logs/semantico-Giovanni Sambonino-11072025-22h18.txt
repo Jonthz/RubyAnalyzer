@@ -1,0 +1,43 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 22:18:59
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+def calcular(key)
+  j = 0
+  suma = 0
+
+  for i in 1..key
+    if i > 5
+      j += 1
+      suma += i
+    elsif i == 5
+      suma += i - 1
+    end
+  end
+
+  contador = key
+  while contador > 0
+    if contador > 3
+      suma += 1
+    end
+    contador -= 1
+  end
+
+  return "Suma: #{suma}, j: #{j}, key: #{key}"
+end
+
+# Ejemplo de uso
+key = 7
+puts calcular(key)
+
+TABLA DE SÍMBOLOS:
+--------------------
+  key: integer (Inicializada)
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Método 'calcular' no está definido

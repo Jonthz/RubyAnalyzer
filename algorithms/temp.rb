@@ -1,74 +1,20 @@
-# Ejemplo de código Ruby - Jonathan Zambrano
-# Clase Calculator con validaciones
-
-class Calculator
-  attr_reader :name, :history
-  
-  def initialize(name = "DefaultCalculator")
-    @name = name
-    @history = []
-    puts "Calculadora '#{@name}' inicializada"
-  end
-
-  def add_numbers(x, y)
-    # Validación de tipos
-    unless x.is_a?(Numeric) && y.is_a?(Numeric)
-      raise ArgumentError, "Los argumentos deben ser números"
-    end
-    
-    result = x + y
-    @history << "#{x} + #{y} = #{result}"
-    puts "Suma: #{result}"
-    result
-  end
-
-  def add_strings(str1, str2)
-    # Conversión segura de strings
-    begin
-      num1 = str1.to_i
-      num2 = str2.to_i
-      result = num1 + num2
-      @history << "#{str1} + #{str2} = #{result}"
-      puts "Suma de strings: #{result}"
-      result
-    rescue => e
-      puts "Error al procesar strings: #{e.message}"
-      nil
-    end
-  end
-  
-  def show_history
-    puts "Historial de operaciones:"
-    @history.each_with_index do |operation, index|
-      puts "#{index + 1}. #{operation}"
-    end
-  end
-  
-  def clear_history
-    @history.clear
-    puts "Historial limpiado"
-  end
+# Manipulación y recorrido de arreglos con funciones básicas en Ruby
+def sum(a, b)
+  resultado = a + b
+  return resultado
 end
 
-# Crear instancia y probar funcionalidad
-begin
-  calc = Calculator.new("MiCalculadora")
-  
-  # Operaciones válidas
-  sum1 = calc.add_numbers(10, 20)
-  sum2 = calc.add_strings("15", "25")
-  
-  # Mostrar resultados
-  puts "\\nResultados:"
-  puts "Suma 1: #{sum1}"
-  puts "Suma 2: #{sum2}"
-  
-  # Mostrar historial
-  calc.show_history
-  
-  # Limpiar historial
-  calc.clear_history
-  
-rescue => e
-  puts "Error: #{e.message}"
+def verificar_numero(num)
+  if num > 0
+    return true
+  end
+  return false
+end
+
+def procesar_array(arr)
+  total = 0
+  for i in 0..(arr.length - 1)
+    total = total + arr[i]
+  end
+  return total
 end

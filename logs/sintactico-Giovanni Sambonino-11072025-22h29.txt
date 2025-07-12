@@ -1,0 +1,85 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 22:29:11
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+# Algoritmo de Ordenamiento por Inserción - Versión de Prueba Completa
+# Probando todas las características implementadas
+
+def insertion_sort(arr)
+  # Verificar si el array está vacío
+  if arr.length == 0
+    return arr
+  end
+
+  for i in 1..(arr.length - 1)
+    key = arr[i]
+    j = i - 1
+
+    # Mover elementos mayores hacia adelante
+    while j >= 0 && arr[j] > key
+      arr[j + 1] = arr[j]
+      j -= 1
+    end
+    arr[j + 1] = key
+  end
+  return arr
+end
+
+def verificar_ordenamiento(arr)
+  for i in 1..(arr.length - 1)
+    if arr[i - 1] > arr[i]
+      return false
+    end
+  end
+  return true
+end
+
+# Método con parámetros - Giovanni Sambonino
+def sum(a, b)
+  return a + b
+end
+
+# Programa principal probando todas las características
+puts "Hola mundo"
+puts 'Ruby'
+
+# Variable de instancia
+@x = 10
+
+# Tipos de datos válidos - Giovanni Sambonino
+a = 5
+b = 10
+c = a + b
+
+# Validación de variables inicializadas - Giovanni Sambonino
+x = 10
+y = x + 5
+
+# While loop - Giovanni Sambonino
+contador = 0
+while contador < 3
+  contador += 1
+end
+
+# Algoritmo principal
+numeros = [64, 34, 25, 12, 22, 11, 90, 5]
+copia_numeros = numeros
+resultado = insertion_sort(copia_numeros)
+es_correcto = verificar_ordenamiento(resultado)
+
+# Llamada a método con parámetros - Giovanni Sambonino
+suma_resultado = sum(5, 10)
+
+puts "Array original:"
+puts numeros
+puts "Array ordenado:"
+puts resultado
+puts "Suma de 5 + 10:"
+puts suma_resultado
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 734: Token inesperado '='
+Error sintáctico en línea 736: Token inesperado 'end'
+Error sintáctico en línea 737: Token inesperado '='

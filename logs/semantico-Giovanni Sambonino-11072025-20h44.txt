@@ -1,0 +1,76 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 20:44:57
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+# Algoritmo de Ordenamiento por Inserción Mejorado
+def insertion_sort(arr)
+  # Verificar si el array está vacío
+  if arr.length == 0
+    return arr
+  end
+
+  for i in 1..(arr.length - 1)
+    key = arr[i]
+    pos = i
+    
+    # Buscar la posición correcta para insertar el elemento
+    for j in 0..(i - 1)
+      if arr[j] > key
+        pos = j
+        break
+      end
+    end
+    
+    # Desplazar elementos hacia la derecha
+    for k in i..(pos + 1)
+      arr[k] = arr[k - 1]
+    end
+    
+    # Insertar el elemento en su posición correcta
+    arr[pos] = key
+  end
+  return arr
+end
+
+def verificar_ordenamiento(arr)
+  for i in 1..(arr.length - 1)
+    if arr[i - 1] > arr[i]
+      return false
+    end
+  end
+  return true
+end
+
+# Programa principal - igual que sum_max_min.rb
+numeros = [64, 34, 25, 12, 22, 11, 90, 5]
+copia_numeros = numeros
+resultado = insertion_sort(copia_numeros)
+es_correcto = verificar_ordenamiento(resultado)
+
+puts "Array original:"
+puts numeros
+puts "Array ordenado:"
+puts resultado
+
+TABLA DE SÍMBOLOS:
+--------------------
+  verificar_ordenamiento: metodo (Inicializada)
+  arr: parameter (Inicializada)
+  i: integer (Inicializada)
+  numeros: array (Inicializada)
+  copia_numeros: array (Inicializada)
+  resultado: unknown (Inicializada)
+  es_correcto: string (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  verificar_ordenamiento
+
+ERRORES ENCONTRADOS (2):
+--------------------
+1. Método 'insertion_sort' no está definido
+2. Método 'insertion_sort' no está definido

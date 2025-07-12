@@ -1,0 +1,77 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 22:00:41
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+# Algoritmo para contar elementos y calcular promedio
+def contar_elementos(arr)
+  contador = 0
+  for i in 0..(arr.length - 1)
+    contador += 1
+  end
+  return contador
+end
+
+def calcular_suma(arr)
+  suma = 0
+  j = 0
+  while j < arr.length
+    suma += arr[j]
+    j += 1
+  end
+  return suma
+end
+
+def calcular_promedio(arr)
+  total = calcular_suma(arr)
+  cantidad = contar_elementos(arr)
+  promedio = total - cantidad
+  return promedio
+end
+
+# Programa principal
+numeros = [10, 20, 30, 40, 50, 15, 25, 35]
+key = calcular_promedio(numeros)
+j = contar_elementos(numeros)
+arr = numeros
+
+puts "Total de elementos:"
+puts j
+puts "Promedio calculado:"
+puts key
+
+TABLA DE SÍMBOLOS:
+--------------------
+  contar_elementos: metodo (Inicializada)
+  arr: array (Inicializada)
+  contador: integer (Inicializada)
+  i: integer (Inicializada)
+  calcular_suma: metodo (Inicializada)
+  suma: parameter (Inicializada)
+  j: integer (Inicializada)
+  calcular_promedio: metodo (Inicializada)
+  total: parameter (Inicializada)
+  cantidad: integer (Inicializada)
+  promedio: numeric (Inicializada)
+  numeros: array (Inicializada)
+  key: numeric (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  contar_elementos
+  calcular_suma
+  calcular_promedio
+
+ERRORES ENCONTRADOS (3):
+--------------------
+1. Método 'length' no está definido
+2. Método 'length' no está definido
+3. Comparación '<' entre tipos incompatibles: 'integer' y 'unknown'
+
+ADVERTENCIAS (2):
+--------------------
+1. [JZ] Comparación de orden '<' entre tipos diferentes: integer y unknown
+2. [JZ] Esto puede lanzar una excepción en tiempo de ejecución

@@ -1,0 +1,34 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 21:08:14
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+def insertion_sort(arr)
+  (1...arr.length).each do |i|
+    key = arr[i]
+    j = i - 1
+
+    while j >= 0 && arr[j] > key
+      arr[j + 1] = arr[j]
+      j -= 1
+    end
+
+    arr[j + 1] = key
+  end
+
+  arr
+end
+
+# Ejemplo
+puts insertion_sort([5, 3, 8, 4, 2]).inspect  # => [2, 3, 4, 5, 8]
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Variable 'inspect' usada sin ser declarada
