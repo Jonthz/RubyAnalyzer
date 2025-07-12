@@ -1,3 +1,13 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 21:58:20
+Usuario: Jonthz
+
+--- Código Analizado ---
+# ==========================================================================
+# CALCULADORA BÁSICA - Jonathan Zambrano  
+# Enfoque: Clase + Métodos + Llamadas simples
+# ==========================================================================
 
 # ===== 1. CLASE SIMPLE Y DIRECTA =====
 class Calculator
@@ -66,3 +76,6 @@ puts "Variable global convertida:"
 puts $global_number
 
 puts "Cálculo completado"
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos
