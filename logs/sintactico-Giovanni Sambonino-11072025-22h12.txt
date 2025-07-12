@@ -1,0 +1,45 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 22:12:38
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+# Algoritmo de búsqueda de elementos - Compatible con tokens específicos
+def buscar_elemento(arr, key)
+  for i in 0..(arr.length - 1)
+    if arr[i] == key
+      return i
+    end
+  end
+  return -1
+end
+
+def contar_mayores(arr, key)
+  contador = 0
+  j = 0
+  while j < arr.length
+    if arr[j] > key
+      contador += 1
+    elsif arr[j] == key
+      contador += 1
+    end
+    j += 1
+  end
+  return contador
+end
+
+# Programa principal
+numeros = [5, 10, 15, 20, 25, 30, 8, 12]
+key = 15
+resultado1 = buscar_elemento(numeros, key)
+resultado2 = contar_mayores(numeros, key)
+
+puts "Buscando elemento:"
+puts key
+puts "Posición encontrada:"
+puts resultado1
+puts "Elementos mayores o iguales:"
+puts resultado2
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 253: Token inesperado '-'

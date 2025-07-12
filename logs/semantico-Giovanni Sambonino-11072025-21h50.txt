@@ -1,0 +1,61 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 21:50:13
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+# Algoritmo para contar elementos mayores y menores que un valor clave
+def contar_mayores(arr, key)
+  contador = 0
+  for i in 0..(arr.length - 1)
+    if arr[i] > key
+      contador += 1
+    end
+  end
+  return contador
+end
+
+def contar_menores(arr, key)
+  contador = 0
+  j = 0
+  while j < arr.length
+    if arr[j] < key
+      contador += 1
+    elsif arr[j] = key
+      contador = contador
+    end
+    j += 1
+  end
+  return contador
+end
+
+# Programa principal
+numeros = [12, 8, 25, 15, 3, 20, 9, 18, 6, 14]
+key = 12
+resultado_mayores = contar_mayores(numeros, key)
+resultado_menores = contar_menores(numeros, key)
+diferencia = resultado_mayores - resultado_menores
+
+puts "Elementos mayores que la clave:"
+puts resultado_mayores
+puts "Elementos menores que la clave:"
+puts resultado_menores
+puts "Diferencia:"
+puts diferencia
+
+TABLA DE SÍMBOLOS:
+--------------------
+  numeros: array (Inicializada)
+  key: integer (Inicializada)
+  resultado_mayores: unknown (Inicializada)
+  resultado_menores: unknown (Inicializada)
+  diferencia: numeric (Inicializada)
+
+ERRORES ENCONTRADOS (4):
+--------------------
+1. Método 'contar_mayores' no está definido
+2. Método 'contar_mayores' no está definido
+3. Método 'contar_menores' no está definido
+4. Método 'contar_menores' no está definido

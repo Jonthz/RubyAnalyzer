@@ -1,0 +1,47 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 21:54:51
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+# Algoritmo para encontrar el mayor y menor valor en un array
+def encontrar_mayor(arr)
+  mayor = arr[0]
+  for i in 1..(arr.length - 1)
+    if arr[i] > mayor
+      mayor = arr[i]
+    end
+  end
+  return mayor
+end
+
+def encontrar_menor(arr)
+  menor = arr[0]
+  for i in 1..(arr.length - 1)
+    if arr[i] < menor
+      menor = arr[i]
+    end
+  end
+  return menor
+end
+
+def calcular_diferencia(mayor, menor)
+  diferencia = mayor - menor
+  return diferencia
+end
+
+# Programa principal
+numeros = [15, 8, 23, 42, 4, 16, 19, 35, 7, 12]
+resultado_mayor = encontrar_mayor(numeros)
+resultado_menor = encontrar_menor(numeros)
+diferencia_total = calcular_diferencia(resultado_mayor, resultado_menor)
+
+puts "Valor mayor:"
+puts resultado_mayor
+puts "Valor menor:"
+puts resultado_menor
+puts "Diferencia entre mayor y menor:"
+puts diferencia_total
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

@@ -1,0 +1,45 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 21:56:39
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+# Algoritmo para contar elementos y calcular promedio
+def contar_elementos(arr)
+  contador = 0
+  for i in 0..(arr.length - 1)
+    contador += 1
+  end
+  return contador
+end
+
+def calcular_suma(arr)
+  suma = 0
+  j = 0
+  while j < arr.length
+    suma += arr[j]
+    j += 1
+  end
+  return suma
+end
+
+def calcular_promedio(arr)
+  total = calcular_suma(arr)
+  cantidad = contar_elementos(arr)
+  promedio = total - cantidad
+  return promedio
+end
+
+# Programa principal
+numeros = [10, 20, 30, 40, 50, 15, 25, 35]
+key = calcular_promedio(numeros)
+j = contar_elementos(numeros)
+arr = numeros
+
+puts "Total de elementos:"
+puts j
+puts "Promedio calculado:"
+puts key
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

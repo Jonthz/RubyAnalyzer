@@ -1,0 +1,41 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 22:17:51
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+def analizar_numero(num, key)
+  j = 0
+  suma = 0
+  arr = nil  # variable usada solo para cumplir requisito, no es un arreglo
+
+  while num > 0
+    dig = num %% 10
+
+    if dig > key
+      j += 1
+      suma += dig
+    elsif dig == key
+      suma += 1
+    end
+
+    num = num / 10
+  end
+
+  for i in 1..j
+    suma += i
+  end
+
+  return suma
+end
+
+# Ejemplo de uso
+key = 5
+resultado = analizar_numero(9834512, key)
+puts "Resultado: #{resultado}"
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 518: Token inesperado '%'
+Error sintáctico en línea 528: Token inesperado 'end'
+Error sintáctico en línea 530: Token inesperado 'j'
+Error sintáctico en línea 532: Token inesperado 'end'

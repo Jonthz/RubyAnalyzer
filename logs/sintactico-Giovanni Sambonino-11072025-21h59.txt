@@ -1,0 +1,57 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 21:59:19
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+# Algoritmo de búsqueda de elementos en array
+def buscar_mayores(arr, limite)
+  encontrados = []
+  for i in 0..(arr.length - 1)
+    if arr[i] > limite
+      encontrados[encontrados.length] = arr[i]
+    end
+  end
+  return encontrados
+end
+
+def buscar_menores(arr, limite)
+  encontrados = []
+  for i in 0..(arr.length - 1)
+    if arr[i] < limite
+      encontrados[encontrados.length] = arr[i]
+    end
+  end
+  return encontrados
+end
+
+def contar_elementos(arr, limite)
+  mayores = 0
+  menores = 0
+  for i in 0..(arr.length - 1)
+    if arr[i] > limite
+      mayores = mayores + 1
+    end
+    if arr[i] < limite
+      menores = menores + 1
+    end
+  end
+  return mayores, menores
+end
+
+numeros = [3, 8, 12, 5, 18, 2, 15, 7, 20, 1]
+limite = 10
+resultado1 = buscar_mayores(numeros, limite)
+resultado2 = buscar_menores(numeros, limite)
+
+puts "Elementos mayores:"
+puts resultado1
+puts "Elementos menores:"
+puts resultado2
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 8569: Token inesperado '='
+Error sintáctico en línea 8570: Token inesperado 'end'
+Error sintáctico en línea 8579: Token inesperado '='
+Error sintáctico en línea 8580: Token inesperado 'end'
+Error sintáctico en línea 8596: Token inesperado ','

@@ -1,8 +1,15 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 22:39:08
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
 # Manipulación y recorrido de arreglos con funciones básicas en Ruby
 def sum(a, b)
   resultado = a + b
   return resultado
 end
+
 
 def verificar_numero(num)
   if num > 0
@@ -11,6 +18,7 @@ def verificar_numero(num)
   return false
 end
 
+
 def procesar_array(arr)
   total = 0
   for i in 0..(arr.length - 1)
@@ -18,6 +26,7 @@ def procesar_array(arr)
   end
   return total
 end
+
 
 # Todo integrado en el programa principal
 puts "Hola mundo"
@@ -58,3 +67,6 @@ puts "Variable c vale:"
 puts c
 puts "Variable y vale:"
 puts y
+
+--- Resultados del Análisis ---
+No se encontraron errores sintácticos

@@ -1,0 +1,32 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 21:08:14
+Usuario: Giovanni Sambonino
+
+--- Código Analizado ---
+def insertion_sort(arr)
+  (1...arr.length).each do |i|
+    key = arr[i]
+    j = i - 1
+
+    while j >= 0 && arr[j] > key
+      arr[j + 1] = arr[j]
+      j -= 1
+    end
+
+    arr[j + 1] = key
+  end
+
+  arr
+end
+
+# Ejemplo
+puts insertion_sort([5, 3, 8, 4, 2]).inspect  # => [2, 3, 4, 5, 8]
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 3601: Token inesperado '..'
+Error sintáctico en línea 3601: Token inesperado ')'
+Error sintáctico en línea 3606: Token inesperado '='
+Error sintáctico en línea 3608: Token inesperado 'end'
+Error sintáctico en línea 3610: Token inesperado '='
+Error sintáctico en línea 3617: Token inesperado '.'

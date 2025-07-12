@@ -1,8 +1,17 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 22:39:08
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
 # Manipulación y recorrido de arreglos con funciones básicas en Ruby
 def sum(a, b)
   resultado = a + b
   return resultado
 end
+
 
 def verificar_numero(num)
   if num > 0
@@ -11,6 +20,7 @@ def verificar_numero(num)
   return false
 end
 
+
 def procesar_array(arr)
   total = 0
   for i in 0..(arr.length - 1)
@@ -18,6 +28,7 @@ def procesar_array(arr)
   end
   return total
 end
+
 
 # Todo integrado en el programa principal
 puts "Hola mundo"
@@ -58,3 +69,35 @@ puts "Variable c vale:"
 puts c
 puts "Variable y vale:"
 puts y
+
+TABLA DE SÍMBOLOS:
+--------------------
+  sum: metodo (Inicializada)
+  a: integer (Inicializada)
+  b: integer (Inicializada)
+  resultado: numeric (Inicializada)
+  verificar_numero: metodo (Inicializada)
+  num: parameter (Inicializada)
+  procesar_array: metodo (Inicializada)
+  arr: parameter (Inicializada)
+  total: numeric (Inicializada)
+  i: integer (Inicializada)
+  @x: instance_variable (Inicializada)
+  c: numeric (Inicializada)
+  x: integer (Inicializada)
+  y: numeric (Inicializada)
+  contador: numeric (Inicializada)
+  suma_resultado: numeric (Inicializada)
+  numero_valido: string (Inicializada)
+  numeros: array (Inicializada)
+  primer_numero: array (Inicializada)
+  ultimo_numero: array (Inicializada)
+  total_suma: numeric (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  sum
+  verificar_numero
+  procesar_array
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

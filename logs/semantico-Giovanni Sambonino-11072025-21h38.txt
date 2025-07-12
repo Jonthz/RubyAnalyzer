@@ -1,0 +1,95 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 11/07/2025 21:38:08
+Usuario: Giovanni Sambonino
+
+CÓDIGO ANALIZADO:
+--------------------
+# Algoritmo de Ordenamiento por Inserción - Compatible con RubyAnalyzer
+def insertion_sort(arr)
+  # Verificar si el array está vacío
+  if arr.length == 0
+    return arr
+  end
+
+  for i in 1..(arr.length - 1)
+    key = arr[i]
+    pos = i
+    
+    # Buscar la posición correcta para insertar el elemento
+    for j in 0..(i - 1)
+      if arr[j] > key
+        pos = j
+        break
+      end
+    end
+    
+    # Crear array temporal para reorganizar
+    temp_arr = []
+    
+    # Construir array reorganizado
+    for m in 0..(arr.length - 1)
+      if m < pos
+        temp_arr[m] = arr[m]
+      end
+      if m == pos
+        temp_arr[m] = key
+      end
+      if m > pos && m <= i
+        temp_arr[m] = arr[m - 1]
+      end
+      if m > i
+        temp_arr[m] = arr[m]
+      end
+    end
+    
+    # Copiar resultado de vuelta
+    for n in 0..(arr.length - 1)
+      arr[n] = temp_arr[n]
+    end
+  end
+  
+  return arr
+end
+
+def verificar_ordenamiento(arr)
+  for i in 1..(arr.length - 1)
+    if arr[i - 1] > arr[i]
+      return false
+    end
+  end
+  return true
+end
+
+# Programa principal
+numeros = [64, 34, 25, 12, 22, 11, 90, 5]
+copia_numeros = numeros
+resultado = insertion_sort(copia_numeros)
+es_correcto = verificar_ordenamiento(resultado)
+
+puts "Array original:"
+puts numeros
+puts "Array ordenado:"
+puts resultado
+puts "Ordenamiento correcto:"
+puts es_correcto
+
+TABLA DE SÍMBOLOS:
+--------------------
+  verificar_ordenamiento: metodo (Inicializada)
+  arr: parameter (Inicializada)
+  i: integer (Inicializada)
+  numeros: array (Inicializada)
+  copia_numeros: array (Inicializada)
+  resultado: unknown (Inicializada)
+  es_correcto: string (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  verificar_ordenamiento
+
+ERRORES ENCONTRADOS (2):
+--------------------
+1. Método 'insertion_sort' no está definido
+2. Método 'insertion_sort' no está definido
