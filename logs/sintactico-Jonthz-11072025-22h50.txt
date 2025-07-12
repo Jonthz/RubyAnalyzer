@@ -1,4 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 11/07/2025
+Hora: 22:50:19
+Usuario: Jonthz
 
+--- Código Analizado ---
 class Calculator
   def initialize(name)
     @name = name
@@ -65,3 +70,5 @@ puts "Variable global convertida:"
 puts $global_number
 
 puts "Cálculo completado"
+
+--- Resultados del Análisis ---

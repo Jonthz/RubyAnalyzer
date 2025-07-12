@@ -926,8 +926,8 @@ def test_parser(input_code):
     # Realizar el análisis
     try:
         result = parser.parse(input_code)
-        if not had_errors[0]:
-            syntax_errors.append("No se encontraron errores sintácticos")
+        #if not had_errors[0]:
+          #  syntax_errors.append("No se encontraron errores sintácticos")
     except Exception as e:
         syntax_errors.append(f"Error durante el análisis: {str(e)}")
     
