@@ -1,0 +1,13 @@
+Tokens reconocidos:
+SET: Set
+DOT: .
+NEW: new
+LPAREN: (
+INTEGER: 42
+RPAREN: )
+SET: Set
+DOT: .
+NEW: new
+LPAREN: (
+TRUE: true
+RPAREN: )

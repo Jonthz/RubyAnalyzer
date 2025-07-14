@@ -1,0 +1,19 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 14:26:58
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+{"key1" => "value1", "key2" => "value2"}
+
+x = 11
+
+if x > 10; puts "Mayor"; end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  x: integer (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

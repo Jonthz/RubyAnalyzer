@@ -1,0 +1,10 @@
+Tokens reconocidos:
+IDENTIFIER: a
+ASSIGN: =
+LBRACKET: [
+INTEGER: 1
+COMMA: ,
+STRING: Hola
+COMMA: ,
+IDENTIFIER: x
+RBRACKET: ]

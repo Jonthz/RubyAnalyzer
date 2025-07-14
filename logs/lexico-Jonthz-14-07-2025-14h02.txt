@@ -1,0 +1,18 @@
+Tokens reconocidos:
+IDENTIFIER: hora
+ASSIGN: =
+INTEGER: 14
+IF: if
+IDENTIFIER: hora
+LESS: <
+INTEGER: 12
+SEMICOLON: ;
+PUTS: puts
+STRING: Buenos días
+SEMICOLON: ;
+ELSE: else
+SEMICOLON: ;
+PUTS: puts
+STRING: Buenas tardes
+SEMICOLON: ;
+END: end

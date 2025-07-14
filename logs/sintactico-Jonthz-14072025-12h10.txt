@@ -1,0 +1,14 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 12:10:59
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Código problemático:
+result = (undefined_var * 2) + 10
+# 'undefined_var' no existe
+
+# Tu función validar_operacion() detecta esto:
+left_type = infer_type(izq)  # Retorna "undefined"
+
+--- Resultados del Análisis ---

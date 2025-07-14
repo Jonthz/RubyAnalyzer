@@ -1,0 +1,13 @@
+Tokens reconocidos:
+IDENTIFIER: x
+ASSIGN: =
+INTEGER: 2
+IF: if
+IDENTIFIER: x
+GREATER: >
+INTEGER: 10
+SEMICOLON: ;
+PUTS: puts
+STRING: Mayor
+SEMICOLON: ;
+END: end

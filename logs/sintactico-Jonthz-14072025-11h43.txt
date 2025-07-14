@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 11:43:53
+Usuario: Jonthz
+
+--- Código Analizado ---
+[1, 2, 3] + [4, 5, 6]   # Ruby permite concatenar, pero tu parser puede no soportarlo
+[1, 2, 3] - [2]         # Ruby permite diferencia, pero tu parser puede no soportarlo
+[1, 2, 3] * 2           # Ruby repite el array, pero tu parser puede no soportarlo
+[1, 2, 3] / [1]         # Ruby NO permite esto, debería ser error
+
+--- Resultados del Análisis ---

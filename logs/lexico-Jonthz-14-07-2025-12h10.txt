@@ -1,0 +1,16 @@
+Tokens reconocidos:
+IDENTIFIER: result
+ASSIGN: =
+LPAREN: (
+IDENTIFIER: undefined_var
+TIMES: *
+INTEGER: 2
+RPAREN: )
+PLUS: +
+INTEGER: 10
+IDENTIFIER: left_type
+ASSIGN: =
+IDENTIFIER: infer_type
+LPAREN: (
+IDENTIFIER: izq
+RPAREN: )

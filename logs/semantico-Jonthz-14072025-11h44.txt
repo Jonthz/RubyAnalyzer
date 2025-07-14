@@ -1,0 +1,19 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 11:44:42
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+arr[0] = 5              # ❌ No soportado por tu parser
+valor = arr[1]          # ❌ Solo soporta [arr[i]] como expresión, no como asignación o acceso directo
+
+TABLA DE SÍMBOLOS:
+--------------------
+  valor: undefined (Inicializada)
+
+ERRORES ENCONTRADOS (2):
+--------------------
+1. Variable 'arr' usada sin ser declarada
+2. Variable 'arr' no está definida

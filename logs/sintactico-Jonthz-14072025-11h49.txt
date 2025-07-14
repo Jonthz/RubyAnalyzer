@@ -1,0 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 11:49:51
+Usuario: Jonthz
+
+--- Código Analizado ---
+a = "Hola"; b = 10; c = a + b #(operación no válida entre un string y un número) .
+
+--- Resultados del Análisis ---

@@ -1,83 +1,607 @@
 import ply.yacc as yacc
 from AnalizadorLexico import tokens
-
-# Inicio de Pacheco
+import os
+import datetime
+from AnalizadorLexico import get_github_username
+# ==========================================================================
+# CONFIGURACIÓN DE PRECEDENCIA
+# ==========================================================================
 precedence = (
-    ('right', 'RETURN'),           # Dar prioridad adecuada a return
-    ('nonassoc', 'THEN', 'ELSE', 'ELSIF'),  # Resolver el dangling else
-    ('left', 'OR'),                # Operadores lógicos
-    ('left', 'AND'),
+    ('nonassoc', 'ELSE', 'ELSIF'),  # Resolver el dangling else (eliminado THEN)
+     ('left', 'OR', 'AND'),         # Lógica, OR y AND tienen la misma precedencia
+    ('left', 'PLUS', 'MINUS'),     # Aritmética, PLUS y MINUS tienen la misma precedencia
+    ('left', 'TIMES', 'DIVIDE'),   # Aritmética, TIMES y DIVIDE tienen la misma precedencia,
     ('nonassoc', 'LESS', 'GREATER', 'LESS_EQUAL', 'GREATER_EQUAL', 'EQUALS', 'NOT_EQUALS'),
-    ('left', 'PLUS', 'MINUS'),
-    ('left', 'TIMES', 'DIVIDE'),
-    ('right', 'POWER'),
+    ('right', 'POWER', 'MOD'),  # Exponentiation y módulo tienen mayor precedencia
     ('right', 'NOT'),              # Negación lógica
     ('nonassoc', 'HASH_ROCKET'),
-    ('nonassoc', 'RANGE'),         # Para expresiones de rango
+    ('nonassoc', 'RANGE'), 
+    ('left', 'DOT'),  # El DOT tiene mayor precedencia
+    ('left', 'LPAREN')        # Para expresiones de rango
 )
 
-
+# ==========================================================================
+# ESTRUCTURA BÁSICA DEL PROGRAMA
+# ==========================================================================
 # Regla de inicio
 def p_program(p):
-    '''program : statements END
-               | statements'''
-    print("Programa sintácticamente correcto.")
+    '''program : statements'''
+    p[0] = p[1]
+    print(f"DEBUG PROGRAM: p[1] = {p[1]}")
+    print(f"DEBUG PROGRAM: p[0] = {p[0]}")
 
-# Definición de los parámetros de un método
+def p_statements(p):
+    '''statements : statement
+                  | statements statement
+                  | statements SEMICOLON statement''' 
+    if len(p) == 2:
+        p[0] = [p[1]]  # Un solo statement
+    elif len(p) == 3:
+        if p[1] is None:
+            p[0] = [p[2]]
+        else:
+            p[0] = p[1] + [p[2]]  # Varias declaraciones, agregamos el nuevo
+    else:  # len(p) == 4, con SEMICOLON
+        if p[1] is None:
+            p[0] = [p[3]]
+        else:
+            p[0] = p[1] + [p[3]]  # Varias declaraciones con separador
+    print(f"DEBUG STATEMENTS: len(p) = {len(p)}")
+    print(f"DEBUG STATEMENTS: p[0] = {p[0]}")
+
+def p_statement(p):
+    '''statement :  expression'''
+    print(f"Declaración: {p[1]}")
+    p[0] = p[1]  # Retorna la expresión como declaración
+    print(f"DEBUG STATEMENT: p[1] = {p[1]}")
+    print(f"DEBUG STATEMENT: p[0] = {p[0]}")
+
+# eliminado stament_block 
+
+# ==========================================================================
+#  ELEMENTOS
+# ==========================================================================
 def p_params(p):
-    '''params : expression
-              | params COMMA expression'''
+    '''params : IDENTIFIER
+              | params COMMA IDENTIFIER'''
     if len(p) == 2:
         p[0] = [p[1]]  # Un solo argumento
     else:
         p[0] = p[1] + [p[3]]  # Varios argumentos
 
-def p_params_declaration(p):
-    '''params : IDENTIFIER
-              | params COMMA IDENTIFIER
-              | params COMMA STRING'''
+def p_params_empty(p):
+    '''params : empty'''
+    p[0] = []  # Parámetros vacíos
+
+def p_optional_elements(p):
+    '''optional_elements : elements
+                         | empty'''
+    p[0] = p[1]
+
+def p_elements(p):
+    '''elements : expression
+                | elements COMMA expression
+    '''
     if len(p) == 2:
-        p[0] = [p[1]]  # Un solo parámetro
+        p[0] = [p[1]]  # Un solo elemento
     else:
-        p[0] = p[1] + [p[3]]  # Varios parámetros, agregamos el nuevo
+        p[0] = p[1] + [p[3]]  # Lista con más elementos
 
-def p_statements(p):
-    '''statements : statement
-                  | statements statement'''
-    if len(p) == 2:
-        p[0] = [p[1]]  # Un solo statement
-    else:
-        p[0] = p[1] + [p[2]]  # Varias declaraciones, agregamos el nuevo
+def p_empty(p):
+    '''empty :'''
+    p[0] = []
 
-# Definición de una declaración
-def p_statement(p):
-    '''statement :  expression'''
-    print(f"Declaración: {p[1]}")
-    p[0] = p[1]  # Retorna la expresión como declaración
+# ==========================================================================
+# EXPRESIONES Y TÉRMINOS ARITMÉTICOS
+# ==========================================================================
+def p_expression_term(p):
+    '''expression : term'''
+    p[0] = p[1]
+    print(f"Expresión: {p[1]}")
 
-# Declaración de variables locales y asignación de objetos
-def p_local_var(p):
-    '''statement : IDENTIFIER ASSIGN STRING
-                | IDENTIFIER ASSIGN  expression
-                | IDENTIFIER ASSIGN factor'''
-    p[0] = f"{p[1]} = {p[3]}" 
-    print(f"Variable local {p[1]} asignada con el valor {p[3]}")
+def p_expression_var(p):
+    '''expression : IDENTIFIER
+                  | GLOBAL_VAR
+                  | INSTANCE_VAR
+                  | CLASS_VAR
+                  | CONSTANT'''
+    p[0] = {
+        "tipo": "uso_variable",
+        "nombre": p[1]
+    }
+    print(f"Expresión de variable: {p[1]}")
 
-# Comienzo Jonathan
-def p_global_var(p):
-    '''statement : GLOBAL_VAR ASSIGN STRING
-                 | GLOBAL_VAR ASSIGN expression
-                 | GLOBAL_VAR ASSIGN factor'''
-    print(f"Variable global {p[1]} asignada con el valor {p[3]}")
-    p[0] = f"{p[1]} = {p[3]}"
+def p_term_single_factor(p):
+    '''term : factor'''
+    p[0] = p[1]
+    print(f"Término: {p[1]}")
 
-def p_factor_power(p):
-    'factor : factor POWER factor'
-    p[0] = p[1] ** p[3]
+def p_term_div(p):
+    '''term : expression DIVIDE expression'''
+    p[0] = {
+        "tipo": "operacion",
+        "op": "/",
+        "izq": p[1],
+        "der": p[3]
+    }
+
+def p_term_times(p):
+    '''term : expression TIMES expression'''
+    p[0] = {
+        "tipo": "operacion",
+        "op": "*",
+        "izq": p[1],
+        "der": p[3]
+    }
+
+def p_expression_plus(p):
+    '''term : expression PLUS expression'''
+    p[0] = {
+        "tipo": "operacion",
+        "op": "+",
+        "izq": p[1],
+        "der": p[3]
+    }
+
+def p_expression_minus(p):
+    '''term : expression MINUS expression'''
+    p[0] = {
+        "tipo": "operacion",
+        "op": "-",
+        "izq": p[1],
+        "der": p[3]
+    }
+
+def p_factor_num(p):
+    '''factor : INTEGER
+              | FLOAT '''
+    p[0] = p[1]
 
 def p_factor_string(p):
     'factor : STRING'
     p[0] = p[1]
+
+def p_factor_power(p):
+    'factor : factor POWER factor'
+    p[0] = {
+        "tipo": "operacion",
+        "op": "**",
+        "izq": p[1],
+        "der": p[3]
+    }
+
+def p_factor_mod(p):
+    '''factor : factor MOD factor'''
+    p[0] = p[1] % p[3]
+    p[0] = {
+        "tipo": "operacion",
+        "op": "%",
+        "izq": p[1],
+        "der": p[3]
+    }
+
+def p_factor_expr(p):
+    'factor : LPAREN expression RPAREN'
+    p[0] = p[2]
+
+def p_factor_boolean(p):
+    '''factor : TRUE
+              | FALSE'''
+    p[0] = p[1]
+    print(f"Valor booleano: {p[1]}")
+
+def p_factor_nil(p):
+    '''factor : NIL'''
+    p[0] = 'nil'
+    print("Valor nil")
+
+# ==========================================================================
+# EXPRESIONES LÓGICAS Y DE COMPARACIÓN
+# ==========================================================================
+def p_expression_and(p):
+    '''expression : expression AND expression'''
+    p[0] = {
+        "tipo": "operacion",
+        "op": "&&",
+        "izq": p[1],
+        "der": p[3]
+    }
+
+def p_expression_or(p):
+    '''expression : expression OR expression'''
+    p[0] = {
+        "tipo": "operacion",
+        "op": "||",
+        "izq": p[1],
+        "der": p[3]
+    }
+
+def p_expression_not(p):
+    '''expression : NOT expression'''
+    p[0] = {
+        "tipo": "operacion",
+        "op": "!",
+        "der": p[2]
+    }
+    print(f"Expresión lógica NOT: {p[2]} negada")
+# Revisar si factor comparacion factor es necesario o podriamos reducirlo a statement comparacion statement
+
+def p_expression_simbols(p):
+    '''comparisonSimbol : GREATER
+                     | LESS
+                     | GREATER_EQUAL
+                     | LESS_EQUAL
+                     | EQUALS
+                     | NOT_EQUALS'''
+    p[0] = p[1]  # Devolver el símbolo de comparación
+
+def p_expression_comparison(p):
+    '''expression : expression comparisonSimbol expression
+                  | LPAREN structureControl RPAREN comparisonSimbol LPAREN structureControl RPAREN
+                  | p_vars comparisonSimbol p_vars'''
+                
+    operators = {
+        '>': 'mayor que',
+        '<': 'menor que',
+        '>=': 'mayor o igual que',
+        '<=': 'menor o igual que',
+        '==': 'igual a',
+        '!=': 'diferente de'
+    }
+    op_text = operators.get(p[2], p[2])
+    p[0] = {
+        "tipo": "operacion",
+        "op": p[2],
+        "izq": p[1],
+        "der": p[3]
+    }
+    print(f"Expresión de comparación: {p[1]} {op_text} {p[3]}")
+
+# ==========================================================================
+# VARIABLES Y ASIGNACIONES
+# ==========================================================================
+def p_vars_statement(p):
+    '''statement : p_vars
+                 | p_gets_statement'''
+    p[0] = p[1]  # Retorna la variable o la asignación
+
+
+def p_vars(p):
+    '''p_vars : p_local_var
+    | p_global_var
+    | p_instance_var
+    | p_class_var
+    | p_constant_var'''
+    p[0] = p[1]  # Retorna la variable o la asignación
+    print(f"DEBUG VARS: p[1] = {p[1]}")
+    print(f"DEBUG VARS: p[0] = {p[0]}")
+
+def p_method_call_conversion_jz(p):
+    '''expression : IDENTIFIER DOT IDENTIFIER
+                  | IDENTIFIER DOT IDENTIFIER LPAREN RPAREN
+                  | IDENTIFIER DOT IDENTIFIER LPAREN elements RPAREN
+                  | expression DOT IDENTIFIER  
+                  | expression DOT IDENTIFIER LPAREN RPAREN
+                  | expression DOT IDENTIFIER LPAREN elements RPAREN
+                  | factor DOT IDENTIFIER
+                  | factor DOT IDENTIFIER LPAREN RPAREN
+                  | factor DOT IDENTIFIER LPAREN elements RPAREN'''
+    # Detectar métodos de conversión (Jonathan Zambrano)
+    conversion_methods_jz = ["to_i", "to_f", "to_s", "to_a", "to_h", "to_sym", "chomp", "strip", "upcase", "downcase", "round", "floor", "ceil"]
+    
+    # Determinar si hay argumentos
+    if len(p) == 4:  # objeto.metodo (sin paréntesis)
+        argumentos = []
+        print(f"📞 [JZ] Llamada sin paréntesis: {p[1]}.{p[3]}")
+        
+    elif len(p) == 6:  # objeto.metodo() (paréntesis vacíos)
+        argumentos = []
+        print(f"📞 [JZ] Llamada con paréntesis vacíos: {p[1]}.{p[3]}()")
+        
+    elif len(p) == 7:  # objeto.metodo(args) (con argumentos)
+        argumentos = p[5]  # Los elementos están en p[5]
+        print(f"📞 [JZ] Llamada con argumentos: {p[1]}.{p[3]}({len(argumentos)} args)")
+        
+    else:
+        # Caso inesperado - debug
+        argumentos = []
+        print(f"⚠️ [JZ] Caso inesperado en llamada a método: len(p) = {len(p)}")
+        for i, item in enumerate(p):
+            print(f"  p[{i}] = {item}")
+    
+    p[0] = {
+        "tipo": "llamada_metodo",
+        "nombre": p[3],
+        "objeto": p[1],
+        "argumentos": argumentos
+    }
+    
+        
+    if p[3] in conversion_methods_jz:
+        print(f"🔄 [JZ] Conversión: {p[1]}.{p[3]}()")
+    else:
+        print(f"📞 [JZ] Llamada: {p[1]}.{p[3]}({len(argumentos)} args)")
+
+
+
+def p_local_var(p):
+    '''p_local_var : IDENTIFIER ASSIGN statement
+                 | IDENTIFIER PLUS_ASSIGN expression
+                 | IDENTIFIER MINUS_ASSIGN expression
+                 | IDENTIFIER TIMES_ASSIGN expression
+                 | IDENTIFIER DIVIDE_ASSIGN INTEGER
+                 | IDENTIFIER DIVIDE_ASSIGN FLOAT
+                 | IDENTIFIER POWER_ASSIGN INTEGER
+                 | IDENTIFIER POWER_ASSIGN FLOAT
+                 | IDENTIFIER MOD_ASSIGN INTEGER
+                 | IDENTIFIER MOD_ASSIGN FLOAT
+                 '''
+    p[0] = {
+        "tipo": "asignacion",
+        "variable": p[1],
+        "valor": p[3]
+    }
+    print(f"Variable local {p[1]} asignada con el valor {p[3]}")
+
+def p_global_var(p):
+    '''p_global_var : GLOBAL_VAR ASSIGN statement
+                   | GLOBAL_VAR PLUS_ASSIGN expression
+                   | GLOBAL_VAR MINUS_ASSIGN expression
+                   | GLOBAL_VAR TIMES_ASSIGN expression
+                   | GLOBAL_VAR DIVIDE_ASSIGN expression
+                   | GLOBAL_VAR POWER_ASSIGN expression
+                   | GLOBAL_VAR MOD_ASSIGN expression
+    '''
+    print(f"Variable global {p[1]} asignada con el valor {p[3]}")
+    p[0] = {
+        "tipo": "asignacion_global",
+        "variable": p[1],
+        "operador": p[2],
+        "valor": p[3]
+    }
+
+def p_instance_var(p):
+    '''p_instance_var : INSTANCE_VAR ASSIGN statement
+                     | INSTANCE_VAR PLUS_ASSIGN expression
+                     | INSTANCE_VAR MINUS_ASSIGN expression
+                     | INSTANCE_VAR TIMES_ASSIGN expression
+                     | INSTANCE_VAR DIVIDE_ASSIGN expression
+                     | INSTANCE_VAR POWER_ASSIGN expression
+                     | INSTANCE_VAR MOD_ASSIGN expression
+    '''
+    print(f"Instance variable {p[1]} assigned with value {p[3]}")
+    p[0] = {
+        "tipo": "asignacion_instancia",
+        "variable": p[1],
+        "operador": p[2],
+        "valor": p[3]
+    }
+
+def p_class_var(p):
+    '''p_class_var : CLASS_VAR ASSIGN statement
+                  | CLASS_VAR PLUS_ASSIGN expression
+                  | CLASS_VAR MINUS_ASSIGN expression
+                  | CLASS_VAR TIMES_ASSIGN expression
+                  | CLASS_VAR DIVIDE_ASSIGN expression
+                  | CLASS_VAR POWER_ASSIGN expression
+                  | CLASS_VAR MOD_ASSIGN expression
+    '''
+    print(f"Variable de clase {p[1]} asignada con el valor {p[3]}")
+    p[0] = {
+        "tipo": "asignacion_clase",
+        "variable": p[1],
+        "operador": p[2],
+        "valor": p[3]
+    }
+
+def p_constant_var(p):
+    '''p_constant_var : CONSTANT ASSIGN statement'''
+    print(f"Constante {p[1]} asignada con el valor {p[3]}")
+    p[0] = f"{p[1]} = {p[3]}"
+
+def p_gets_statement(p):
+    '''p_gets_statement : IDENTIFIER ASSIGN GETS'''
+    p[0] = f"{p[1]} = gets"
+    print(f"Entrada del usuario almacenada en la variable {p[1]}")
+
+# ==========================================================================
+# ESTRUCTURAS DE CONTROL
+# ==========================================================================
+def p_structure_control(p):
+    '''statement : structureControl'''
+    p[0] = p[1]  # Retorna la estructura de control
+
+def p_structure_control_expression(p):
+    '''structureControl : structureControlIf
+    | structureControlWhile
+    | structureControlFor
+    | structureControlIfLine
+    | structureControlWhileLine
+    | structureControlForLine'''
+    p[0] = p[1]  
+
+def p_if_statement(p):
+    '''structureControlIf : IF expression statements END
+                 | IF expression statements ELSE statements END
+                 | IF expression statements ELSIF expression statements END
+                 | IF expression statements ELSIF expression statements ELSE statements END'''
+    print(f"Condición IF: {p[1]}  {p[2]}  {p[3]} con cuerpo {p[3]}")
+    if len(p) == 5:  # if ... end
+        p[0] = {
+            "tipo": "if",
+            "condic ion": p[2],
+            "cuerpo": p[3]
+        }
+    elif len(p) == 7:  # if ... else ... end
+        p[0] = {
+            "tipo": "if_else",
+            "condicion": p[2],
+            "cuerpo_if": p[3],
+            "cuerpo_else": p[5]
+        }
+    elif len(p) == 8:  # if ... elsif ... end
+        p[0] = {
+            "tipo": "if_elsif",
+            "condicion": p[2],
+            "cuerpo_if": p[3],
+            "condicion_elsif": p[5],
+            "cuerpo_elsif": p[6]
+        }
+    else:  # if ... elsif ... else ... end
+        p[0] = {
+            "tipo": "if_elsif_else",
+            "condicion": p[2],
+            "cuerpo_if": p[3],
+            "condicion_elsif": p[5],
+            "cuerpo_elsif": p[6],
+            "cuerpo_else": p[8]
+        }
+    print(f"AST generado para estructura IF: {p[0]}")
+
+def p_while_statement(p):
+    '''structureControlWhile : WHILE expression statements END'''
+    p[0] = f"while ({p[2]}) {{{p[3]}}}"
+    p[0] = {
+        "tipo": "while",
+        "condicion": p[2],
+        "cuerpo": p[3]
+    }
+    print(f"AST generado para estructura WHILE: {p[0]}")
+
+def p_for_statement(p):
+    '''structureControlFor : FOR IDENTIFIER IN range statements END'''
+    print(f"Estructura For: Iterando de {p[3]} con la variable {p[2]} ejecutando {p[5]}")
+    p[0] = {
+        "tipo": "for",
+        "variable": p[2],
+        "rango": p[4],
+        "cuerpo": p[5]
+    }
+    print(f"AST generado para estructura FOR: {p[0]}")
+
+def p_range(p):
+    '''range : factor RANGE factor'''
+    p[0] = {
+        "tipo": "rango",
+        "inicio": p[1],
+        "fin": p[3]
+    }
+
+def p_range_expr(p):
+    '''range : expression RANGE expression'''
+    p[0] = {
+        "tipo": "rango",
+        "inicio": p[1],
+        "fin": p[3]
+    }
+def p_break_statement(p):
+    '''statement : BREAK'''
+    p[0] = {"tipo": "break"}
+    print("Break encontrado")
+
+def p_break_if_statement(p):
+    '''statement : BREAK IF expression 
+                 | BREAK IF expression SEMICOLON'''
+    p[0] = {
+        "tipo": "break_if",
+        "condicion": p[3]
+    }
+    print(f"Break condicional encontrado con condición: {p[3]}")
+
+
+# ver si nos ponemos a hacer los en linea
+def p_if_inline_statement(p):
+    '''structureControlIfLine : IF expression SEMICOLON statements SEMICOLON END
+                              | IF expression SEMICOLON statements SEMICOLON ELSE statements SEMICOLON END
+                              | IF expression SEMICOLON statements SEMICOLON ELSIF expression SEMICOLON statements SEMICOLON END
+                              | IF expression SEMICOLON statements SEMICOLON ELSIF expression SEMICOLON statements SEMICOLON ELSE statements SEMICOLON END'''
+    
+    print(f"DEBUG IF INLINE: len(p) = {len(p)}")
+    for i, item in enumerate(p):
+        print(f"DEBUG IF INLINE: p[{i}] = {item}")
+    
+    # Corregir las longitudes:
+    if len(p) == 7:  # IF expr SEMICOLON statements SEMICOLON END
+        p[0] = {
+            "tipo": "if_inline",
+            "condicion": p[2],
+            "cuerpo": p[4]
+        }
+    elif len(p) == 9:  # IF expr SEMICOLON statements SEMICOLON ELSE statements SEMICOLON END
+        p[0] = {
+            "tipo": "if_else_inline",
+            "condicion": p[2],
+            "cuerpo_if": p[4],
+            "cuerpo_else": p[7]
+        }
+    elif len(p) == 11:  # IF expr SEMICOLON statements SEMICOLON ELSIF expr SEMICOLON statements SEMICOLON END
+        p[0] = {
+            "tipo": "if_elsif_inline",
+            "condicion": p[2],
+            "cuerpo_if": p[4],
+            "condicion_elsif": p[7],
+            "cuerpo_elsif": p[9]
+        }
+    elif len(p) == 13:  # IF expr SEMICOLON statements SEMICOLON ELSIF expr SEMICOLON statements SEMICOLON ELSE statements SEMICOLON END
+        p[0] = {
+            "tipo": "if_elsif_else_inline",
+            "condicion": p[2],
+            "cuerpo_if": p[4],
+            "condicion_elsif": p[7],
+            "cuerpo_elsif": p[9],
+            "cuerpo_else": p[11]
+        }
+    
+    print(f"AST generado para estructura IFLine: {p[0]}")
+    
+def p_while_inline_statement(p):
+    '''structureControlWhileLine : WHILE expression SEMICOLON statements SEMICOLON END'''
+    p[0] = f"while ({p[2]}) {{{p[4]}}}"
+    p[0] = {
+        "tipo": "while_inline",
+        "condicion": p[2],
+        "cuerpo": p[4]
+    }
+    print(f"AST generado para estructura WHILEINLINE: {p[0]}")
+
+def p_for_inline_statement(p):
+    '''structureControlForLine : FOR IDENTIFIER IN range SEMICOLON statement SEMICOLON END'''
+    print(f"Estructura For: Iterando de {p[3]} con la variable {p[2]} ejecutando {p[6]}")
+    p[0] = {
+        "tipo": "for_inline",
+        "variable": p[2],
+        "rango": p[4],
+        "cuerpo": p[6]
+    }
+    print(f"AST generado para estructura FORINLINE: {p[0]}")
+
+def p_return_statement(p):
+    '''statement : RETURN expression
+                 | RETURN factor
+                 | RETURN'''
+    print(f"Tamño de p: {len(p)}")
+    if len(p) == 3:
+        p[0] = {"tipo": "return", "valor": p[2]}
+        print(f"Return con valor: {p[2]}")
+    else:
+        p[0] = {"tipo": "return", "valor": None}
+        print("Return sin valor")
+    print(f"Tamño de p: {len(p)}")
+
+# ==========================================================================
+# COLECCIONES (ARRAYS, HASHES, SETS)
+# ==========================================================================
+def p_array(p):
+    '''expression : LBRACKET optional_elements RBRACKET
+             | LBRACKET IDENTIFIER LBRACKET IDENTIFIER RBRACKET RBRACKET'''
+     # Caso 1: arreglo con elementos opcionales dentro
+    if len(p) == 4:  # LBRACKET optional_elements RBRACKET
+        p[0] = ('array', p[2])  # Devuelve el nodo 'array' con los elementos dentro
+        print(f"Array creado con {len(p[2])} elementos: {p[2]}")
+    # Caso 2: arreglo anidado
+    elif len(p) == 6:  # LBRACKET IDENTIFIER LBRACKET IDENTIFIER RBRACKET RBRACKET
+        p[0] = ('array_index', p[2], p[4])  # Nodo para representar 'arr[i]'
+        print(f"Array anidado: {p[2]}[{p[4]}]")
 
 def p_hash(p):
     '''expression : LBRACE key_value_pairs RBRACE'''
@@ -98,367 +622,289 @@ def p_key_value_pairs(p):
         p[0] = p[1] + [p[3]]  # Varios pares clave-valor
 
 def p_key_value(p):
-    '''key_value : STRING HASH_ROCKET expression
-                 | STRING HASH_ROCKET STRING
-                 | STRING HASH_ROCKET factor
-                 | expression HASH_ROCKET expression'''
+    '''key_value : expression HASH_ROCKET statement'''
     p[0] = (p[1], p[3])  # El par clave-valor es un tuple (clave, valor)
     print(f"Par clave-valor: {p[1]} => {p[3]}")
 
-def p_expression_var(p):
-    '''expression : IDENTIFIER
-                  | GLOBAL_VAR
-                  | INSTANCE_VAR'''
-    p[0] = p[1]
-    print(f"Expresión de variable: {p[1]}")
+def p_set_empty(p):
+    '''expression : SET DOT NEW'''
+    p[0] = set()  # Set vacío
+    print("Empty set created")
 
-def p_if_statement(p):
-    '''statement : IF expression statements END
-                 | IF expression statements ELSE statements END
-                 | IF expression statements ELSIF expression statements END
-                 | IF expression statements ELSIF expression statements ELSE statements END'''
-    print(f"Condición IF: {p[1]}  {p[2]}  {p[3]} con cuerpo {p[3]}")
-    if len(p) == 5:  # if ... end
-        p[0] = f"if ({p[2]}) {{{p[3]}}}"
-        print(f"Condición IF: Si {p[2]} entonces {p[3]}")
-    elif len(p) == 6:  # if ... then statement end
-        p[0] = f"if ({p[2]}) {{{p[4]}}}"
-        print(f"Condición IF con THEN: Si {p[2]} entonces {p[4]}")
-    elif len(p) == 7:  # if ... else ... end
-        p[0] = f"if ({p[2]}) {{{p[3]}}} else {{{p[5]}}}"
-        print(f"Condición IF-ELSE: Si {p[2]} entonces {p[3]} sino {p[5]}")
-    elif len(p) == 8:  # if ... elsif ... end
-        p[0] = f"if ({p[2]}) {{{p[3]}}} else if ({p[5]}) {{{p[6]}}}"
-        print(f"Condición IF-ELSIF: Si {p[2]} entonces {p[3]} sino si {p[5]} entonces {p[6]}")
-    else:  # if ... elsif ... else ... end
-        p[0] = f"if ({p[2]}) {{{p[3]}}} else if ({p[5]}) {{{p[6]}}} else {{{p[8]}}}"
-        print(f"Condición IF-ELSIF-ELSE: Si {p[2]} entonces {p[3]} sino si {p[5]} entonces {p[6]} sino {p[8]}")
+def p_set_elements(p):
+    '''expression : SET DOT NEW LPAREN expression RPAREN'''    
+    # Verificar que p[5] sea un iterable válido
+    if isinstance(p[5], (list, tuple)):
+        # Convertir listas anidadas en tuplas para hacerlas hashables
+        try:
+            processed_elements = []
+            for x in p[5]:
+                if isinstance(x, list):
+                    processed_elements.append(tuple(x))
+                else:
+                    processed_elements.append(x)
+            
+            # Crear el AST del Set
+            p[0] = {
+                "tipo": "set",
+                "elementos": processed_elements
+            }
+            
+        except Exception as e:
+            # En lugar de TypeError, crear AST con error
+            p[0] = {
+                "tipo": "error_set",
+                "mensaje": f"Error procesando elementos del Set: {e}",
+                "elementos_originales": p[5]
+            }
+            print(f"❌ Error creando Set: {e}")
+    else:
+        # En lugar de TypeError, crear AST con error
+        p[0] = {
+            "tipo": "error_set", 
+            "mensaje": f"Set.new() espera un iterable, recibió {type(p[5]).__name__}",
+            "valor_recibido": p[5]
+        }
+        print(f"❌ Tipo inválido para Set: {type(p[5]).__name__}")
 
-# Para permitir expresiones de comparación
-def p_expression_comparison(p):
-    '''expression : statement GREATER statement
-                  | statement LESS statement
-                  | statement GREATER_EQUAL statement
-                  | statement LESS_EQUAL statement
-                  | statement EQUALS statement
-                  | statement NOT_EQUALS statement
-                  | statement GREATER factor
-                  | statement LESS factor
-                  | statement GREATER_EQUAL factor
-                  | statement LESS_EQUAL factor
-                  | statement EQUALS factor
-                  | statement NOT_EQUALS factor'''
-    operators = {
-        '>': 'mayor que',
-        '<': 'menor que',
-        '>=': 'mayor o igual que',
-        '<=': 'menor o igual que',
-        '==': 'igual a',
-        '!=': 'diferente de'
+
+
+# ==========================================================================
+# MÉTODOS Y CLASES
+# ==========================================================================
+
+
+def p_method_with_params_declaration(p):
+    '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
+    print(f"Método con parámetros declarado: {p[2]} con parámetros {p[4]} y cuerpo {p[6]}")
+    print(f"DEBUG MÉTODO CON PARAMS:")
+    print(f"  Nombre: {p[2]}")
+    print(f"  Parámetros: {p[4]}")
+    print(f"  Tipo de parámetros: {type(p[4])}")
+    print(f"  Cuerpo: {p[6]}")
+    p[0] = {
+        "tipo": "metodo",
+        "nombre": p[2],
+        "parametros": p[4],
+        "cuerpo": p[6]
     }
-    op_text = operators.get(p[2], p[2])
-    p[0] = f"{p[1]} {p[2]} {p[3]}"
-    print(f"Expresión de comparación: {p[1]} {op_text} {p[3]}")
+    print(f"Método con parámetros declarado: {p[2]} con parámetros {p[4]} y cuerpo {p[6]}")
+    
+def p_method_with_return_declaration(p):
+    '''statement : DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
+                 | DEF IDENTIFIER LPAREN params RPAREN RETURN statements END
+                 | DEF IDENTIFIER statements RETURN statements END'''
+    
+    print(f"DEBUG MÉTODO CON RETURN:")
+    for i, item in enumerate(p):
+        print(f"  p[{i}] = {item}")
+    
+    if len(p) == 10:  # DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
+        p[0] = {
+            "tipo": "metodo",
+            "nombre": p[2],
+            "parametros": p[4],
+            "cuerpo": p[6],
+            "retorno": p[8]
+        }
+        print(f"Método con parámetros y cuerpo: {p[2]}, params: {p[4]}")
+        
+    elif len(p) == 9:  # DEF IDENTIFIER LPAREN params RPAREN RETURN statements END
+        p[0] = {
+            "tipo": "metodo",
+            "nombre": p[2],
+            "parametros": p[4],  # ← AQUÍ ESTABA EL ERROR
+            "cuerpo": [],
+            "retorno": p[7]      # ← AQUÍ ESTABA EL ERROR
+        }
+        print(f"Método con parámetros sin cuerpo: {p[2]}, params: {p[4]}")
+        
+    else:  # len(p) == 7: DEF IDENTIFIER statements RETURN statements END
+        p[0] = {
+            "tipo": "metodo",
+            "nombre": p[2],
+            "parametros": [],
+            "cuerpo": p[3],
+            "retorno": p[5]
+        }
+        print(f"Método sin parámetros: {p[2]}")
+    
+    print(f"Method with return declared: {p[2]}")
 
-# Declaración de método sin parámetros
 def p_method_without_params_declaration(p):
     '''statement : DEF IDENTIFIER statements END'''
-    p[0] = f"def {p[2]} con cuerpo {p[3]}"
+    p[0] = {
+        "tipo": "metodo",
+        "nombre": p[2],
+        "parametros": [],
+        "cuerpo": p[3]
+    }
     print(f"Método sin parámetros declarado: {p[2]} con cuerpo {p[3]}")
 
-# Llamada a métodos sin parámetros
 def p_method_call_without_params(p):
-    '''statement : IDENTIFIER'''  # Elimina la línea | expression
-    if isinstance(p[1], str) and p[1] not in ['puts', 'gets', 'print']:
-        # Solo identificadores que no sean palabras reservadas
-        p[0] = p[1]
-        print(f"Llamada al método sin parámetros: {p[1]}")
-    else:
-        p[0] = p[1]
+    '''statement : IDENTIFIER'''
+    p[0] = {
+        "tipo": "uso_identificador",
+        "nombre": p[1]
+    }
 
-# Soporte para variables de clase
-def p_class_var(p):
-    '''statement : CLASS_VAR ASSIGN expression
-                 | CLASS_VAR ASSIGN factor'''
-    print(f"Variable de clase {p[1]} asignada con el valor {p[3]}")
-    p[0] = f"{p[1]} = {p[3]}"
-
-# Soporte para constantes
-def p_constant_var(p):
-    '''statement : CONSTANT ASSIGN expression
-                 | CONSTANT ASSIGN factor'''
-    print(f"Constante {p[1]} asignada con el valor {p[3]}")
-    p[0] = f"{p[1]} = {p[3]}"
-
-# Soporte para valores booleanos
-def p_factor_boolean(p):
-    '''factor : TRUE
-              | FALSE'''
-    p[0] = p[1]
-    print(f"Valor booleano: {p[1]}")
-
-# Soporte para nil
-def p_factor_nil(p):
-    '''factor : NIL'''
-    p[0] = 'nil'
-    print("Valor nil")
-
+def p_method_call_simple(p):
+    '''statement : IDENTIFIER LPAREN RPAREN'''
+    p[0] = {
+        "tipo": "llamada_metodo",
+        "nombre": p[1],
+        "argumentos": []
+    }
+def p_method_call_with_params(p):
+    '''statement : IDENTIFIER LPAREN elements RPAREN'''
+    p[0] = {
+        "tipo": "llamada_metodo",
+        "nombre": p[1],
+        "argumentos": p[3]
+    }
+    print(f"Llamada a método '{p[1]}' con argumentos {p[3]}")
 def p_class_definition(p):
     '''statement : CLASS CONSTANT statements END
                  | CLASS CONSTANT LESS CONSTANT statements END
                  | CLASS CONSTANT SEMICOLON END'''
     if len(p) == 5 and p[3] == ';':  # Clase vacía con punto y coma
-        p[0] = f"class {p[2]}; end"
+        p[0] = {
+            "tipo": "clase",
+            "nombre": p[2],
+            "hereda": None,
+            "cuerpo": []
+        }
         print(f"Definición de clase vacía: {p[2]}")
     elif len(p) == 5:  # Clase normal
-        p[0] = f"class {p[2]} {{{p[3]}}}"
+        p[0] = {
+            "tipo": "clase",
+            "nombre": p[2],
+            "hereda": None,
+            "cuerpo": p[3]
+        }
         print(f"Definición de clase: {p[2]} con contenido {p[3]}")
     else:  # Clase con herencia
-        p[0] = f"class {p[2]} < {p[4]} {{{p[5]}}}"
+        p[0] = {
+            "tipo": "clase",
+            "nombre": p[2],
+            "hereda": p[4],
+            "cuerpo": p[5]
+        }
         print(f"Definición de clase con herencia: {p[2]} hereda de {p[4]} con contenido {p[5]}")
 
 def p_class_method(p):
     '''statement : DEF SELF DOT IDENTIFIER statement END
                  | DEF SELF DOT IDENTIFIER LPAREN params RPAREN statement END'''
     if len(p) == 7:  # Sin parámetros
-        p[0] = f"def self.{p[4]} {{{p[5]}}}"
+        p[0] = {
+            "tipo": "metodo_clase",
+            "nombre": p[4],
+            "parametros": [],
+            "cuerpo": p[5]
+        }
         print(f"Método de clase declarado: {p[4]} con cuerpo {p[5]}")
     else:  # Con parámetros
-        p[0] = f"def self.{p[4]}({', '.join(p[6])}) {{{p[8]}}}"
-        print(f"Método de clase con parámetros declarado: {p[4]} con parámetros {p[6]} y cuerpo {p[8]}")
+        p[0] = {
+            "tipo": "metodo_clase",
+            "nombre": p[4],
+            "parametros": p[6],
+            "cuerpo": p[8]
+        }
+    print(f"Método de clase con parámetros declarado: {p[4]} con parámetros {p[6]} y cuerpo {p[8]}")
 
-# Inicializador (constructor) para clases
 def p_initialize_method(p):
     '''statement : DEF INITIALIZE statement END
                  | DEF INITIALIZE LPAREN params RPAREN statement END'''
     if len(p) == 5:  # Sin parámetros
-        p[0] = f"def initialize {{{p[3]}}}"
+        p[0] = {
+            "tipo": "constructor",
+            "parametros": [],
+            "cuerpo": p[3]
+        }
         print(f"Constructor sin parámetros declarado con cuerpo {p[3]}")
     else:  # Con parámetros
-        p[0] = f"def initialize({', '.join(p[4])}) {{{p[6]}}}"
+        p[0] = {
+            "tipo": "constructor",
+            "parametros": p[4],
+            "cuerpo": p[6]
+        }
         print(f"Constructor con parámetros declarado con parámetros {p[4]} y cuerpo {p[6]}")
-# Añadir después de las reglas de clase existentes
 
-# Instanciación de objetos
 def p_object_instantiation(p):
     '''expression : CONSTANT DOT NEW
                   | CONSTANT DOT NEW LPAREN RPAREN
                   | CONSTANT DOT NEW LPAREN elements RPAREN'''
-    print(f"Instanciación del objeto de clase {p[1]} con parámetros {p[3]}")
-    # Caso 1: MyClass.new
-    if len(p) == 4:
+    if len(p) == 4:  # MyClass.new
         p[0] = {
-            "tipo": "expresión",
-            "contenido": [
-                {"tipo": "CONSTANT", "valor": p[1]},
-                {"tipo": "DOT", "valor": "."},
-                {"tipo": "NEW", "valor": "new"}
-            ]
+            "tipo": "instanciacion_objeto",
+            "clase": p[1],
+            "parametros": []
         }
         print(f"Instanciación del objeto de clase {p[1]} sin parámetros")
-    
-    # Caso 2: MyClass.new()
-    elif len(p) == 6:
+    elif len(p) == 6:  # MyClass.new()
         p[0] = {
-            "tipo": "expresión",
-            "contenido": [
-                {"tipo": "CONSTANT", "valor": p[1]},
-                {"tipo": "DOT", "valor": "."},
-                {"tipo": "NEW", "valor": "new"},
-                {"tipo": "LPAREN", "valor": "("},
-                {"tipo": "RPAREN", "valor": ")"}
-            ]
+            "tipo": "instanciacion_objeto",
+            "clase": p[1],
+            "parametros": []
         }
         print(f"Instanciación del objeto de clase {p[1]} sin parámetros")
-    
-    # Caso 3: MyClass.new(param1, param2)
-    else:
+    else:  # MyClass.new(param1, param2)
         p[0] = {
-            "tipo": "expresión",
-            "contenido": [
-                {"tipo": "CONSTANT", "valor": p[1]},
-                {"tipo": "DOT", "valor": "."},
-                {"tipo": "NEW", "valor": "new"},
-                {"tipo": "LPAREN", "valor": "("},
-                {"tipo": "elements", "valor": p[3]},
-                {"tipo": "RPAREN", "valor": ")"}
-            ]
+            "tipo": "instanciacion_objeto",
+            "clase": p[1],
+            "parametros": p[5]
         }
-        print(f"Instanciación del objeto de clase {p[1]} con parámetros {p[3]}")
-# Fin Jonathan
-
-# Parte de Giovanni 
-
-def p_instance_var(p):
-    '''statement : INSTANCE_VAR ASSIGN expression
-                | INSTANCE_VAR ASSIGN STRING
-                | INSTANCE_VAR ASSIGN factor'''
-    print(f"Instance variable {p[1]} assigned with value {p[3]}")
-    p[0] = f"{p[1]} = {p[3]}"
-
-def p_set(p):
-    '''expression : SET DOT NEW LPAREN elements RPAREN
-                  | SET DOT NEW'''
-    p[0] = set(p[5]) if p[5] else set()
-    print(f"Set created with elements: {p[0]}")
-
-
-def p_optional_elements(p):
-    '''optional_elements : elements
-                         | empty'''
-    p[0] = p[1]
-
-def p_empty(p):
-    '''empty :'''
-    p[0] = []
-
-def p_while_statement(p):
-    '''statement : WHILE expression statement END
-                 | WHILE expression statements END'''
-    p[0] = f"while ({p[2]}) {{{p[3]}}}"
-    print(f"Bucle while: Mientras {p[2]}, ejecutar {p[3]}")
-
-def p_gets_statement(p):
-    '''statement : IDENTIFIER ASSIGN GETS'''
-    p[0] = f"{p[1]} = gets"
-    print(f"Entrada del usuario almacenada en la variable {p[1]}")
-    
-def p_method_with_params_declaration(p):
-    '''statement : DEF IDENTIFIER LPAREN params RPAREN statements END'''
-    print(f"Método con parámetros declarado: {p[2]} con parámetros {p[4]} y cuerpo {p[6]}")
-
-def p_raise_statement(p):
-    '''statement : RAISE expression
-                 | RAISE STRING'''
-    print(f"Raise lanzado con mensaje: {p[2]}")
-
-def p_begin_rescue_ensure(p):
-    '''statement : BEGIN statements RESCUE statements ENSURE statements END'''
-    print("Bloque begin-rescue-ensure ejecutado")
-
-
-def p_range_expr(p):
-    '''range : expression RANGE expression'''
-    p[0] = f"{p[1]}..{p[3]}"
-
-def p_expression_and(p):
-    '''expression : expression AND expression'''
-    p[0] = f"({p[1]} && {p[3]})"
-
-def p_expression_or(p):
-    '''expression : expression OR expression'''
-    p[0] = f"({p[1]} || {p[3]})"
-
-
-# fin de parte de Giovanni
-
-def p_expression_term(p):
-    '''expression : term'''
-    p[0] = p[1]
-    print(f"Expresión: {p[1]}")
-
-def p_term_div(p):
-    '''term : factor DIVIDE factor
-            | statement DIVIDE statement
-            | factor DIVIDE statement
-            | statement DIVIDE factor'''
-    p[0] = p[1] / p[3]    
-
-def p_term_times(p):
-    '''term : factor TIMES factor
-            | statement TIMES statement
-            | factor TIMES statement
-            | statement TIMES factor'''
-    p[0] = p[1] * p[3]
-
-def p_expression_plus(p):
-    '''term : factor PLUS factor
-            | statement PLUS statement
-            | factor PLUS statement
-            | statement PLUS factor'''
-    p[0] = p[1] + p[3]
-
-def p_expression_minus(p):
-    '''term : factor MINUS factor
-            | statement MINUS statement
-            | factor MINUS statement
-            | statement MINUS factor'''
-    p[0] = p[1] - p[3]
-
-
-
-def p_factor_num(p):
-    '''factor : INTEGER
-              | FLOAT '''
-    p[0] = p[1]
-
-
-# Arreglo (array)
-def p_array(p):
-    '''expression : LBRACKET optional_elements RBRACKET'''
-    p[0] = p[2]  # Devuelve la lista de elementos dentro del arreglo
-
-# Elementos dentro del arreglo
-def p_elements(p):
-    '''elements : statement
-                | expression
-                | factor
-                | elements COMMA  expression
-                | elements COMMA statement
-                | elements COMMA factor'''
-    if len(p) == 2:
-        p[0] = [p[1]]  # Un solo elemento
-    else:
-        p[0] = p[1] + [p[3]]  # Lista con más elementos
-
-# Declaración de la estructura `for`
-def p_for_statement(p):
-    '''statement : FOR IDENTIFIER IN range statements END'''
-    print(f"Estructura For: Iterando de {p[3]} con la variable {p[2]} ejecutando {p[5]}")
-
-# Definición del rango (de número a número)
-def p_range(p):
-    '''range : factor RANGE factor'''
-    p[0] = f"{p[1]}..{p[3]}"  # Rango de 1..5
-
-# Impresión con puts
+        print(f"Instanciación del objeto de clase {p[1]} con parámetros: {p[5]}")
+# ==========================================================================
+# ENTRADA/SALIDA
+# ==========================================================================
 def p_puts_statement(p):
     '''statement : PUTS statement
                 | PUTS STRING
                 | PUTS factor'''
     print(f"Imprimiendo con puts: {p[2]}")
+    p[0] = {
+        "tipo": "puts",
+        "valor": p[2]
+    } 
 
-def p_method_with_return_declaration(p):
-    '''statement : DEF IDENTIFIER LPAREN params RPAREN statements RETURN statements END
-                |  DEF IDENTIFIER statements RETURN statements END '''
-    print(f"Method with parameters declared: {p[2]} with parameters {p[4]} and body {p[6]}")
+# ==========================================================================
+# MANEJO DE ERRORES Y EXCEPCIONES
+# ==========================================================================
+def p_begin_rescue_ensure(p):
+    '''statement : BEGIN statements RESCUE statements ENSURE statements END'''
+    print("Bloque begin-rescue-ensure ejecutado")
+    p[0] = {
+        "tipo": "begin_rescue_ensure",
+        "bloque_begin": p[2],
+        "bloque_rescue": p[4],
+        "bloque_ensure": p[6]
+    }
 
-def p_return_statement(p):
-    '''statement : RETURN expression
-                 | RETURN factor
-                 | RETURN'''
-    if len(p) == 3:
-        p[0] = {"tipo": "return", "valor": p[2]}
-        print(f"Return con valor: {p[2]}")
-    else:
-        p[0] = {"tipo": "return", "valor": None}
-        print("Return sin valor")
+def p_raise_statement(p):
+    '''statement : RAISE expression
+                 | RAISE STRING'''
+    print(f"Raise lanzado con mensaje: {p[2]}")
+    p[0] = {
+        "tipo": "raise",
+        "mensaje": p[2]
+    }
 
-# Manejo de errores
+
 def p_error(p):
     if p:
         print(f"Error de sintaxis en la línea {p.lineno}: Token inesperado '{p.value}'")
     else:
         print("Error de sintaxis: Fin de archivo inesperado.")
 
+# ==========================================================================
+# INICIALIZACIÓN Y UTILIDADES
+# ==========================================================================
 # Crear el analizador sintáctico
 parser = yacc.yacc()
 
+
 def test_parser(input_code):
-    import os
-    import datetime
-    from AnalizadorLexico import get_github_username
-    
     print("Parsing Ruby code:")
     print(input_code)
     
@@ -480,6 +926,7 @@ def test_parser(input_code):
     
     # Lista para almacenar errores
     syntax_errors = []
+    result = None
     
     # Crear una variable para saber si hubo errores
     had_errors = [False]
@@ -510,8 +957,8 @@ def test_parser(input_code):
     # Realizar el análisis
     try:
         result = parser.parse(input_code)
-        if not had_errors[0]:
-            syntax_errors.append("No se encontraron errores sintácticos")
+        #if not had_errors[0]:
+          #  syntax_errors.append("No se encontraron errores sintácticos")
     except Exception as e:
         syntax_errors.append(f"Error durante el análisis: {str(e)}")
     
@@ -535,4 +982,5 @@ def test_parser(input_code):
     print(f"Análisis sintáctico completado. Logs guardados en: {os.path.abspath(log_filename)}")
     print("Parse finished.")
 
+    return result, syntax_errors
 __all__ = ["parser", "test_parser"]

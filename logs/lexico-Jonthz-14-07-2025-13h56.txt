@@ -1,0 +1,7 @@
+Tokens reconocidos:
+IF: if
+IDENTIFIER: x
+END: end
+
+Errores léxicos:
+Error léxico: " en la línea 13

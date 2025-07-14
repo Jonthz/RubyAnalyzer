@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 11:47:20
+Usuario: Jonthz
+
+--- Código Analizado ---
+[1, 2, 3].length        # ¿Tu parser soporta llamadas a métodos sobre arrays?
+[1, 2, 3].map { |x| x*2 } # ¿Soporta bloques/lambdas?
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 24: Token inesperado 'x'

@@ -1,0 +1,13 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 14:43:31
+Usuario: Jonthz
+
+--- Código Analizado ---
+def suma(a, b)
+puts a
+end
+
+suma(1)
+
+--- Resultados del Análisis ---

@@ -1,0 +1,15 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 13:43:51
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+{ }
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

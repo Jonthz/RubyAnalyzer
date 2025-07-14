@@ -1,0 +1,15 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 14:25:46
+Usuario: Jonthz
+
+--- Código Analizado ---
+Set.new([1,2])
+
+x=5
+
+while true
+ puts "hola"
+end
+
+--- Resultados del Análisis ---

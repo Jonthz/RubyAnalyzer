@@ -1,0 +1,9 @@
+Tokens reconocidos:
+LBRACKET: [
+RBRACKET: ]
+PLUS: +
+LBRACKET: [
+INTEGER: 1
+COMMA: ,
+INTEGER: 2
+RBRACKET: ]

@@ -1,0 +1,31 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 14:33:14
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+def add_numbers(num1, num2)
+    result = num1.to_i + num2.to_i
+
+    puts "Suma realizada"
+    puts result
+    return result
+end
+
+
+add_numbers(1, 2, 3)
+
+TABLA DE SÍMBOLOS:
+--------------------
+  add_numbers: metodo (Inicializada)
+  num1: parameter (Inicializada)
+  num2: parameter (Inicializada)
+  result: numeric (Inicializada)
+
+MÉTODOS DEFINIDOS:
+--------------------
+  add_numbers
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

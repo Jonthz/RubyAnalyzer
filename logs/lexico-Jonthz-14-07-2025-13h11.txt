@@ -1,0 +1,6 @@
+Tokens reconocidos:
+CONSTANT: Animal
+DOT: .
+IDENTIFIER: func
+LPAREN: (
+RPAREN: )

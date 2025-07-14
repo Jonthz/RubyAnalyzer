@@ -1,0 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 11:48:46
+Usuario: Jonthz
+
+--- Código Analizado ---
+x = 10; y = x + 5 # 'x' está inicializada
+
+--- Resultados del Análisis ---

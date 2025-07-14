@@ -1,0 +1,20 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 12:25:09
+Usuario: Jonthz
+
+--- Código Analizado ---
+while < 10; x += 1; end     # Falta variable
+while x 10; x += 1; end     # Falta operador
+while x < ; x += 1; end     # Falta valor
+while x < 10 x += 1; end    # Falta punto y coma
+while x < 10; x += 1        # Falta END
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 53: Token inesperado '<'
+Error sintáctico en línea 53: Token inesperado 'end'
+Error sintáctico en línea 54: Token inesperado 'end'
+Error sintáctico en línea 55: Token inesperado ';'
+Error sintáctico en línea 55: Token inesperado 'end'
+Error sintáctico en línea 56: Token inesperado 'end'
+Error sintáctico: Fin de archivo inesperado

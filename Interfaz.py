@@ -113,7 +113,7 @@ class AnalysisWorker(QThread):
     def analyze_syntactic(self):
         """Análisis sintáctico mejorado"""
         try:
-            from AnalizadorSintacticoCopy import test_parser
+            from AnalizadorSintactico import test_parser
             
             # Ejecutar análisis
             result = test_parser(self.code)
@@ -866,7 +866,7 @@ class RubyExpressionValidator(QWidget):
 
 
         
-        self.text_area.setPlainText(sample_code)
+       # self.text_area.setPlainText(sample_code)
         self.result_console.setPlainText("✅ Código de ejemplo cargado exitosamente")
         self.errors_console.clear()
         self.status_label.setText("Código de ejemplo cargado - Listo para analizar")

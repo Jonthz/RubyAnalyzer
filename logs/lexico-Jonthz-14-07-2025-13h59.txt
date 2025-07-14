@@ -1,0 +1,7 @@
+Tokens reconocidos:
+IF: if
+IDENTIFIER: x
+GREATER: >
+INTEGER: 10
+BREAK: break
+END: end

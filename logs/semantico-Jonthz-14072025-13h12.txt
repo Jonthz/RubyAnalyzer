@@ -1,0 +1,15 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 13:12:00
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+Animal.func(2)
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

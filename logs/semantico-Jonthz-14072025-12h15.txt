@@ -1,0 +1,17 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 12:15:39
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+# Tu código:
+x=1
+while x < 10; x += 1; end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  x: integer (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

@@ -1,0 +1,20 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 14:00:26
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+edad = 20
+if edad >= 18
+    puts "Eres mayor de edad"
+else
+    puts "Eres menor de edad"
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  edad: integer (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

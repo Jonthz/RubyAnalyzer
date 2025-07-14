@@ -1,0 +1,5 @@
+Tokens reconocidos:
+IDENTIFIER: a
+ASSIGN: =
+LBRACKET: [
+RBRACKET: ]

@@ -1,0 +1,15 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 13:42:13
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+{"" => "value1", "key2" => "value2"}
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

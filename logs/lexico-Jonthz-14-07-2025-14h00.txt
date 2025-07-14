@@ -1,0 +1,26 @@
+Tokens reconocidos:
+IDENTIFIER: nota
+ASSIGN: =
+INTEGER: 85
+IF: if
+IDENTIFIER: nota
+GREATER_EQUAL: >=
+INTEGER: 90
+PUTS: puts
+STRING: Excelente
+ELSIF: elsif
+IDENTIFIER: nota
+GREATER_EQUAL: >=
+INTEGER: 80
+PUTS: puts
+STRING: Muy bien
+ELSIF: elsif
+IDENTIFIER: nota
+GREATER_EQUAL: >=
+INTEGER: 70
+PUTS: puts
+STRING: Bien
+ELSE: else
+PUTS: puts
+STRING: Necesitas mejorar
+END: end

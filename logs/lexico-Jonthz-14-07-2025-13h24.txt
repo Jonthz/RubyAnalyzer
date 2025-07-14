@@ -1,0 +1,6 @@
+Tokens reconocidos:
+GLOBAL_VAR: $x
+ASSIGN: =
+INTEGER: 10
+PUTS: puts
+IDENTIFIER: x

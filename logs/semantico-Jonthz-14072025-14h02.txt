@@ -1,0 +1,16 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 14:02:35
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+temperatura = 25
+if temperatura > 30; puts "Hace calor"; end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  temperatura: integer (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

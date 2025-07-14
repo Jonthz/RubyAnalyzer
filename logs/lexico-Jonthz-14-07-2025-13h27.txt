@@ -1,0 +1,9 @@
+Tokens reconocidos:
+LBRACE: {
+STRING: key1
+STRING: value1
+COMMA: ,
+STRING: key2
+HASH_ROCKET: =>
+STRING: value2
+RBRACKET: ]

@@ -1,0 +1,21 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 14:25:46
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+Set.new([1,2])
+
+x=5
+
+while true
+ puts "hola"
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  x: integer (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

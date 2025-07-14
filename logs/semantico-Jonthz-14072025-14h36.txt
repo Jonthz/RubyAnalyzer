@@ -1,0 +1,30 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 14:36:41
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+while x<10
+ x+5
+ break
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+ERRORES ENCONTRADOS (6):
+--------------------
+1. Variable 'x' usada sin ser declarada
+2. Variable 'x' no está definida
+3. Comparación '<' entre tipos incompatibles: 'undefined' y 'integer'
+4. Variable 'x' usada sin ser declarada
+5. Variable 'x' no está definida
+6. Operación '+' entre tipos incompatibles: 'undefined' y 'integer'
+
+ADVERTENCIAS (2):
+--------------------
+1. [JZ] Comparación de orden '<' entre tipos diferentes: undefined y integer
+2. [JZ] Esto puede lanzar una excepción en tiempo de ejecución

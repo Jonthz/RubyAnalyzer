@@ -1,0 +1,20 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 14:03:57
+Usuario: Jonthz
+
+--- Código Analizado ---
+edad = 25
+tiene_licencia = true
+
+if edad >= 18
+    if tiene_licencia
+        puts "Puede conducir"
+    else
+        puts "Necesita licencia"
+    end
+else
+    puts "Muy joven para conducir"
+end
+
+--- Resultados del Análisis ---

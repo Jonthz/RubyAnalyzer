@@ -1,0 +1,5 @@
+Tokens reconocidos:
+IDENTIFIER: x
+SEMICOLON: ;
+PUTS: puts
+IDENTIFIER: x

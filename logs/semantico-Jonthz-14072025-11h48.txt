@@ -1,0 +1,16 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 11:48:46
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+x = 10; y = x + 5 # 'x' está inicializada
+
+TABLA DE SÍMBOLOS:
+--------------------
+  x: integer (Inicializada)
+  y: numeric (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

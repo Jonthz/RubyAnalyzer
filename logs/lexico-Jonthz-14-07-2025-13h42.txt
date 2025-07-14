@@ -1,0 +1,14 @@
+Tokens reconocidos:
+LBRACE: {
+IDENTIFIER: symbol1
+HASH_ROCKET: =>
+STRING: value1
+COMMA: ,
+IDENTIFIER: symbol2
+HASH_ROCKET: =>
+STRING: value2
+RBRACE: }
+
+Errores léxicos:
+Error léxico: : en la línea 7
+Error léxico: : en la línea 7

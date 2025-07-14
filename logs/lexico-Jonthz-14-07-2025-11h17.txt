@@ -1,0 +1,8 @@
+Tokens reconocidos:
+DEF: def
+IDENTIFIER: say_hello
+SEMICOLON: ;
+PUTS: puts
+STRING: Hello, World!
+SEMICOLON: ;
+END: end

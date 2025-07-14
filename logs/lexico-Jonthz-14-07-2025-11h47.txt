@@ -1,0 +1,29 @@
+Tokens reconocidos:
+LBRACKET: [
+INTEGER: 1
+COMMA: ,
+INTEGER: 2
+COMMA: ,
+INTEGER: 3
+RBRACKET: ]
+DOT: .
+IDENTIFIER: length
+LBRACKET: [
+INTEGER: 1
+COMMA: ,
+INTEGER: 2
+COMMA: ,
+INTEGER: 3
+RBRACKET: ]
+DOT: .
+IDENTIFIER: map
+LBRACE: {
+IDENTIFIER: x
+IDENTIFIER: x
+TIMES: *
+INTEGER: 2
+RBRACE: }
+
+Errores léxicos:
+Error léxico: | en la línea 23
+Error léxico: | en la línea 23

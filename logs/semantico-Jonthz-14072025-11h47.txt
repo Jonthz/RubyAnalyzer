@@ -1,0 +1,17 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 11:47:14
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+[1, 2, 3].length        # ¿Tu parser soporta llamadas a métodos sobre arrays?
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Método 'length' no está definido

@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 12:47:34
+Usuario: Jonthz
+
+--- Código Analizado ---
+Set.new(1..3)
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 1: Token inesperado '..'

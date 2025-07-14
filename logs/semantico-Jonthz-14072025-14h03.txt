@@ -1,0 +1,27 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 14:03:57
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+edad = 25
+tiene_licencia = true
+
+if edad >= 18
+    if tiene_licencia
+        puts "Puede conducir"
+    else
+        puts "Necesita licencia"
+    end
+else
+    puts "Muy joven para conducir"
+end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  edad: integer (Inicializada)
+  tiene_licencia: string (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

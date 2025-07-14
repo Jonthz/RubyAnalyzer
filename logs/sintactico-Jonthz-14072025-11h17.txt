@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 11:17:12
+Usuario: Jonthz
+
+--- Código Analizado ---
+def say_hello; puts "Hello, World!"; end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 4: Token inesperado ';'
+Error sintáctico en línea 4: Token inesperado 'end'

@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 11:45:33
+Usuario: Jonthz
+
+--- Código Analizado ---
+[[1, 2], [3, 4]]        # Array de arrays
+matriz[0][1]            # Acceso a array bidimensional
+
+--- Resultados del Análisis ---

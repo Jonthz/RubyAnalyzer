@@ -1,0 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 14:39:03
+Usuario: Jonthz
+
+--- Código Analizado ---
+a = [1,"Hola",x]
+
+--- Resultados del Análisis ---

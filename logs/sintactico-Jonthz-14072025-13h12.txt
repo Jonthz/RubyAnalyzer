@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 13:12:00
+Usuario: Jonthz
+
+--- Código Analizado ---
+Animal.func(2)
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 31: Token inesperado 'func'

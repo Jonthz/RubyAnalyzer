@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 13:52:07
+Usuario: Jonthz
+
+--- Código Analizado ---
+if x > 10
+    puts "Mayor"
+
+--- Resultados del Análisis ---
+Error sintáctico: Fin de archivo inesperado

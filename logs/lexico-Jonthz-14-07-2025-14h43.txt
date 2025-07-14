@@ -1,0 +1,15 @@
+Tokens reconocidos:
+DEF: def
+IDENTIFIER: suma
+LPAREN: (
+IDENTIFIER: a
+COMMA: ,
+IDENTIFIER: b
+RPAREN: )
+PUTS: puts
+IDENTIFIER: a
+END: end
+IDENTIFIER: suma
+LPAREN: (
+INTEGER: 1
+RPAREN: )

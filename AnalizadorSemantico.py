@@ -1,4 +1,4 @@
-from AnalizadorSintacticoCopy import parser
+from AnalizadorSintactico import parser
 import time
 import os
 
@@ -262,16 +262,18 @@ def validar_operacion(op, izq, der):
         if op == "+":
             if left_type == "string" or right_type == "string":
                 if left_type == "string" and right_type == "string":
-                    print(f" Concatenación de strings válida")
+                    print(f"✅ Concatenación de strings válida")
                     return "string"
                 elif left_type == "string" and right_type in ["integer", "float"]:
-                    add_semantic_warning(f"Concatenación string + {right_type}: considere usar .to_s")
-                    print(f"Sugerencia: Use {get_var_name_jz(der)}.to_s para convertir a string")
-                    return "string"
+                    # CAMBIO: Error en lugar de advertencia
+                    add_semantic_error(f"Operación inválida: string + {right_type}")
+                    print(f"❌ No se puede sumar string con {right_type}")
+                    return "error"
                 elif right_type == "string" and left_type in ["integer", "float"]:
-                    add_semantic_warning(f"Concatenación {left_type} + string: considere usar .to_s")
-                    print(f"Sugerencia: Use {get_var_name_jz(izq)}.to_s para convertir a string")
-                    return "string"
+                    # CAMBIO: Error en lugar de advertencia  
+                    add_semantic_error(f"Operación inválida: {left_type} + string")
+                    print(f"❌ No se puede sumar {left_type} con string")
+                    return "error"
         
         # ===== VERIFICACIÓN DE COMPATIBILIDAD (original + JZ) =====
         if is_compatible_types(left_type, right_type):
@@ -604,6 +606,25 @@ def analizar_semantica(ast):
             # Analizar elementos si los hay
             if "elementos" in ast:
                 analizar_semantica(ast["elementos"])
+
+        elif tipo == "error_set":
+            # Manejar errores de Set desde el parser sintáctico
+            error_message = ast.get("mensaje", "Error desconocido en creación de Set")
+            add_semantic_error(error_message)
+            
+            # Información adicional para debug
+            if "valor_recibido" in ast:
+                valor = ast["valor_recibido"]
+                print(f"❌ Valor problemático recibido: {valor} (tipo: {type(valor).__name__})")
+                
+                # Sugerencias específicas según el tipo
+                if isinstance(valor, (int, float, str, bool)):
+                    print(f"💡 Sugerencia: Envuelva el valor en un array: Set.new([{valor}])")
+                elif valor is None:
+                    print(f"💡 Sugerencia: Use Set.new([]) para crear un Set vacío")
+                elif isinstance(valor, dict):
+                    if valor.get("tipo") == "uso_variable":
+                        var_name = valor.get("nombre")
                 
         # Llamada a método
         elif tipo == "llamada_metodo":

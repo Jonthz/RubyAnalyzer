@@ -1,0 +1,16 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 13:49:14
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+x = 2
+if x > 10; puts "Mayor"; end
+
+TABLA DE SÍMBOLOS:
+--------------------
+  x: integer (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

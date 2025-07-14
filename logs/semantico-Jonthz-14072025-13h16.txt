@@ -1,0 +1,15 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 13:16:49
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+Set.new([42])           # TypeError: primitivo
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

@@ -1,0 +1,23 @@
+Tokens reconocidos:
+IDENTIFIER: edad
+ASSIGN: =
+INTEGER: 25
+IDENTIFIER: tiene_licencia
+ASSIGN: =
+TRUE: true
+IF: if
+IDENTIFIER: edad
+GREATER_EQUAL: >=
+INTEGER: 18
+IF: if
+IDENTIFIER: tiene_licencia
+PUTS: puts
+STRING: Puede conducir
+ELSE: else
+PUTS: puts
+STRING: Necesita licencia
+END: end
+ELSE: else
+PUTS: puts
+STRING: Muy joven para conducir
+END: end

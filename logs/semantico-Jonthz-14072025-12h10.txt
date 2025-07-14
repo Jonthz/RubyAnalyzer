@@ -1,0 +1,33 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 12:10:59
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+# Código problemático:
+result = (undefined_var * 2) + 10
+# 'undefined_var' no existe
+
+# Tu función validar_operacion() detecta esto:
+left_type = infer_type(izq)  # Retorna "undefined"
+
+TABLA DE SÍMBOLOS:
+--------------------
+  result: numeric (Inicializada)
+  left_type: unknown (Inicializada)
+
+ERRORES ENCONTRADOS (11):
+--------------------
+1. Variable 'undefined_var' usada sin ser declarada
+2. Variable 'undefined_var' no está definida
+3. Operación '*' entre tipos incompatibles: 'undefined' y 'integer'
+4. Variable 'undefined_var' no está definida
+5. Variable 'undefined_var' no está definida
+6. Variable 'izq' usada sin ser declarada
+7. Método 'infer_type' no está definido
+8. Variable 'izq' usada sin ser declarada
+9. Variable 'izq' usada sin ser declarada
+10. Método 'infer_type' no está definido
+11. Variable 'izq' usada sin ser declarada

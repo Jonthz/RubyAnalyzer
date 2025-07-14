@@ -1,0 +1,9 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 13:16:49
+Usuario: Jonthz
+
+--- Código Analizado ---
+Set.new([42])           # TypeError: primitivo
+
+--- Resultados del Análisis ---

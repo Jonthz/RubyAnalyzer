@@ -1,0 +1,20 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 12:07:20
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+a = "Hola0"; b = 10 ; d= "mundo"; c = a + b + d
+
+TABLA DE SÍMBOLOS:
+--------------------
+  a: string (Inicializada)
+  b: integer (Inicializada)
+  d: string (Inicializada)
+  c: string (Inicializada)
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Operación inválida: string + integer

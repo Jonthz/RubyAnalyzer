@@ -1,0 +1,7 @@
+Tokens reconocidos:
+SET: Set
+DOT: .
+NEW: new
+LPAREN: (
+FLOAT: 3.14
+RPAREN: )

@@ -1,0 +1,10 @@
+Tokens reconocidos:
+WHILE: while
+IDENTIFIER: x
+LESS: <
+INTEGER: 10
+IDENTIFIER: x
+PLUS: +
+INTEGER: 5
+BREAK: break
+END: end

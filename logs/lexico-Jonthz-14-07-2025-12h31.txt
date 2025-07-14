@@ -1,0 +1,9 @@
+Tokens reconocidos:
+WHILE: while
+IDENTIFIER: x
+LESS: <
+INTEGER: 10
+SEMICOLON: ;
+IDENTIFIER: x
+PLUS_ASSIGN: +=
+INTEGER: 1

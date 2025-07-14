@@ -1,0 +1,52 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 11:18:56
+Usuario: Jonthz
+
+--- Código Analizado ---
+# Algoritmo de Ordenamiento por Inserción Mejorado
+def insertion_sort(arr)
+  # Verificar si el array está vacío
+  if arr.length == 0
+    return arr
+  end
+
+  for i in 1..(arr.length - 1)
+    key = arr[i]
+    j = i - 1
+
+    # Mover los elementos de arr[0..i-1] que son mayores que key, una posición hacia adelante
+    while j >= 0 && arr[j] > key
+      index=j + 1
+      arr[index] = arr[j]
+      j -= 1
+    end
+    arr[j + 1] = key
+  end
+  return arr
+end
+
+def verificar_ordenamiento(arr)
+  for i in 1..(arr.length - 1)
+    if arr[i - 1] > arr[i]
+      return false
+    end
+  end
+  return true
+end
+
+# Programa principal - igual que sum_max_min.rb
+numeros = [64, 34, 25, 12, 22, 11, 90, 5]
+copia_numeros = numeros
+resultado = insertion_sort(copia_numeros)
+es_correcto = verificar_ordenamiento(resultado)
+
+puts "Array original:"
+puts numeros
+puts "Array ordenado:"
+puts resultado
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 448: Token inesperado '='
+Error sintáctico en línea 450: Token inesperado 'end'
+Error sintáctico en línea 451: Token inesperado '='

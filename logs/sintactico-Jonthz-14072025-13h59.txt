@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 13:59:58
+Usuario: Jonthz
+
+--- Código Analizado ---
+# INCORRECTO
+if x > 10
+    break    # Error: break solo válido en bucles
+end
+
+--- Resultados del Análisis ---

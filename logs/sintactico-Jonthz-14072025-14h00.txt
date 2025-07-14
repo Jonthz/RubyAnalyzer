@@ -1,0 +1,20 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 14:00:39
+Usuario: Jonthz
+
+--- Código Analizado ---
+nota = 85
+if nota >= 90
+    puts "Excelente"
+elsif nota >= 80
+    puts "Muy bien"
+elsif nota >= 70
+    puts "Bien"
+else
+    puts "Necesitas mejorar"
+end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 72: Token inesperado 'elsif'
+Error sintáctico en línea 74: Token inesperado 'else'

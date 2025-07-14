@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 13:08:53
+Usuario: Jonthz
+
+--- Código Analizado ---
+# 2. Variables no definidas
+Set.new(undefined)    # TypeError: None
+
+--- Resultados del Análisis ---
+Error durante el análisis: Expected an iterable, got <class 'dict'>

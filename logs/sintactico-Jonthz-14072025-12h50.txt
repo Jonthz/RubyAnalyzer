@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 12:50:02
+Usuario: Jonthz
+
+--- Código Analizado ---
+Set.new([1, 2, 3])
+
+--- Resultados del Análisis ---
+Error durante el análisis: unhashable type: 'list'

@@ -1,0 +1,74 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 14:18:31
+Usuario: Jonthz
+
+--- Código Analizado ---
+class Calculator
+  def initialize(name)
+    @name = name
+  end
+
+  def add_numbers(num1, num2)
+    result = num1.to_i + num2.to_i
+
+    puts "Suma realizada"
+    puts result
+    return result
+  end
+
+  def multiply_values(val1, val2)
+    product = val1.to_i * val2.to_i
+    puts "Multiplicación completada"
+    puts product
+    return product
+  end
+
+  def get_memory
+    puts "Memoria actual"
+    puts @name
+    return @name
+  end
+end
+
+
+my_calc = Calculator.new("MiCalc")
+
+
+$calculator_active = true
+debug_mode = false
+calc_config = {"mode" => "basic", "precision" => "2"}
+
+puts "Sistema iniciado"
+puts $calculator_active
+
+
+my_calc.add_numbers("10", "20")
+my_calc.multiply_values("5", "4")
+my_calc.get_memory
+
+
+number_str = "42"
+converted = number_str.to_i
+
+puts "Resultado de conversión:"
+puts converted
+
+
+x = 15
+y = "25"
+good_sum = x + y.to_i
+
+puts "Suma válida con conversión:"
+puts good_sum
+
+
+$global_string = "999"
+$global_number = $global_string.to_i
+
+puts "Variable global convertida:"
+puts $global_number
+
+puts "Cálculo completado"
+
+--- Resultados del Análisis ---

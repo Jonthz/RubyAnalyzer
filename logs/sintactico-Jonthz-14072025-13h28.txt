@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 13:28:43
+Usuario: Jonthz
+
+--- Código Analizado ---
+{key1 => "value1", "key2" => "value2"}
+
+--- Resultados del Análisis ---
+Error durante el análisis: unhashable type: 'dict'

@@ -1,0 +1,20 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 11:43:53
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+[1, 2, 3] + [4, 5, 6]   # Ruby permite concatenar, pero tu parser puede no soportarlo
+[1, 2, 3] - [2]         # Ruby permite diferencia, pero tu parser puede no soportarlo
+[1, 2, 3] * 2           # Ruby repite el array, pero tu parser puede no soportarlo
+[1, 2, 3] / [1]         # Ruby NO permite esto, debería ser error
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Operación '*' entre tipos incompatibles: 'array' y 'integer'

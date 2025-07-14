@@ -1,0 +1,13 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 14:26:58
+Usuario: Jonthz
+
+--- Código Analizado ---
+{"key1" => "value1", "key2" => "value2"}
+
+x = 11
+
+if x > 10; puts "Mayor"; end
+
+--- Resultados del Análisis ---

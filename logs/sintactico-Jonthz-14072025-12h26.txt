@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 12:26:56
+Usuario: Jonthz
+
+--- Código Analizado ---
+while x < 10; x += 1    # Falta variable
+
+--- Resultados del Análisis ---
+Error sintáctico: Fin de archivo inesperado

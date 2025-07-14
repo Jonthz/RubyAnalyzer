@@ -1,0 +1,7 @@
+Tokens reconocidos:
+SET: Set
+DOT: .
+NEW: new
+LPAREN: (
+IDENTIFIER: undefined
+RPAREN: )

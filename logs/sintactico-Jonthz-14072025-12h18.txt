@@ -1,0 +1,10 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 12:18:37
+Usuario: Jonthz
+
+--- Código Analizado ---
+x = 5
+while x; x += 1; end  # 'x' es integer, no boolean
+
+--- Resultados del Análisis ---

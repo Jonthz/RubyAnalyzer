@@ -1,0 +1,19 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 11:56:06
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+a = "Hola"; b = 10; c = a + b
+
+TABLA DE SÍMBOLOS:
+--------------------
+  a: string (Inicializada)
+  b: integer (Inicializada)
+  c: string (Inicializada)
+
+ADVERTENCIAS (1):
+--------------------
+1. Concatenación string + integer: considere usar .to_s

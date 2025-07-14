@@ -1,0 +1,15 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 14:37:54
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+a = [1,2,3,4,5,6]
+
+TABLA DE SÍMBOLOS:
+--------------------
+  a: array (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

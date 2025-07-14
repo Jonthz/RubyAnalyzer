@@ -1,0 +1,13 @@
+Tokens reconocidos:
+SET: Set
+DOT: .
+NEW: new
+LPAREN: (
+LBRACKET: [
+INTEGER: 1
+COMMA: ,
+INTEGER: 2
+COMMA: ,
+INTEGER: 3
+RBRACKET: ]
+RPAREN: )

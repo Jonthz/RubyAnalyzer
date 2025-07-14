@@ -1,0 +1,16 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 14:24:38
+Usuario: Jonthz
+
+--- Código Analizado ---
+Set.new([1,2,])
+
+x=5
+
+while x < 10 
+ x+1 
+end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 643: Token inesperado ']'

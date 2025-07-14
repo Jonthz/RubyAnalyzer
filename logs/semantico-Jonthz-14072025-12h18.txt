@@ -1,0 +1,16 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 12:18:37
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+x = 5
+while x; x += 1; end  # 'x' es integer, no boolean
+
+TABLA DE SÍMBOLOS:
+--------------------
+  x: integer (Inicializada)
+
+NO SE ENCONTRARON ERRORES NI ADVERTENCIAS

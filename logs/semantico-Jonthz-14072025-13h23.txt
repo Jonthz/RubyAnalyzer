@@ -1,0 +1,17 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 13:23:02
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+Set.new("hola")
+
+TABLA DE SÍMBOLOS:
+--------------------
+  (Vacía)
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Set.new() espera un iterable, recibió str

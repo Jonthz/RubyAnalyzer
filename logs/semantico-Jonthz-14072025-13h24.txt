@@ -1,0 +1,19 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 13:24:39
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+$x = 10
+
+puts x
+
+TABLA DE SÍMBOLOS:
+--------------------
+  $x: integer (Inicializada)
+
+ERRORES ENCONTRADOS (1):
+--------------------
+1. Variable 'x' usada sin ser declarada

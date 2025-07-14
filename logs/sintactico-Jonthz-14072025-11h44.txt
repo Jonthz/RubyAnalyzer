@@ -1,0 +1,11 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 11:44:42
+Usuario: Jonthz
+
+--- Código Analizado ---
+arr[0] = 5              # ❌ No soportado por tu parser
+valor = arr[1]          # ❌ Solo soporta [arr[i]] como expresión, no como asignación o acceso directo
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 11: Token inesperado '='

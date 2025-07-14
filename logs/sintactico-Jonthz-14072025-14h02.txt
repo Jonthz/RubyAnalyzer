@@ -1,0 +1,12 @@
+=== Análisis Sintáctico de Código Ruby ===
+Fecha: 14/07/2025
+Hora: 14:02:45
+Usuario: Jonthz
+
+--- Código Analizado ---
+hora = 14
+if hora < 12; puts "Buenos días"; else; puts "Buenas tardes"; end
+
+--- Resultados del Análisis ---
+Error sintáctico en línea 111: Token inesperado ';'
+Error sintáctico en línea 111: Token inesperado 'end'

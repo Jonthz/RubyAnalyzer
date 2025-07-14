@@ -1,0 +1,24 @@
+ANÁLISIS SEMÁNTICO - REPORTE
+========================================
+
+Fecha: 14/07/2025 12:27:04
+Usuario: Jonthz
+
+CÓDIGO ANALIZADO:
+--------------------
+while x < 10; x += 1 ; end   # Falta variable
+
+TABLA DE SÍMBOLOS:
+--------------------
+  x: integer (Inicializada)
+
+ERRORES ENCONTRADOS (3):
+--------------------
+1. Variable 'x' usada sin ser declarada
+2. Variable 'x' no está definida
+3. Comparación '<' entre tipos incompatibles: 'undefined' y 'integer'
+
+ADVERTENCIAS (2):
+--------------------
+1. [JZ] Comparación de orden '<' entre tipos diferentes: undefined y integer
+2. [JZ] Esto puede lanzar una excepción en tiempo de ejecución
